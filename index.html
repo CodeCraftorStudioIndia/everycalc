@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>EveryCalc — World's First AI Responsive Calculator | Every Calculator Instantly</title>
+  <meta name="description" content="EveryCalc is the world's first AI-powered responsive calculator. Generate any calculator instantly — FD, EMI, BMI, GST, SIP, Scientific, Currency and thousands more in under 30 seconds."/>
+  <meta name="keywords" content="every calculator, ai calculator, online calculator, FD calculator, EMI calculator, BMI calculator, GST calculator, SIP calculator, scientific calculator, AI generated calculator, everycalc, responsive calculator"/>
+  <meta name="robots" content="index, follow, max-image-preview:large"/>
+  <meta name="author" content="EveryCalc"/>
+  <meta name="theme-color" content="#0A0A0A"/>
+  <link rel="canonical" href="https://everycalc.site/"/>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://everycalc.site/"/>
+  <meta property="og:title" content="EveryCalc — World's First AI Responsive Calculator"/>
+  <meta property="og:description" content="Type any calculator name. AI builds it in seconds. Every calculator, instantly."/>
+  <meta property="og:image" content="https://everycalc.site/og.png"/>
+  <meta property="og:site_name" content="EveryCalc"/>
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:site" content="@everycalc"/>
+  <meta name="twitter:title" content="EveryCalc — Every Calculator, Instantly"/>
+  <meta name="twitter:description" content="World's first AI-powered responsive calculator generator. Any calc in 30 seconds."/>
+
+  <!-- Geo SEO -->
+  <meta name="geo.region" content="IN"/>
+  <meta name="geo.placename" content="India"/>
+  <meta name="language" content="English"/>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"EveryCalc","alternateName":"Every Calculator","description":"World's first AI-powered responsive calculator generator. Generate any calculator instantly.","url":"https://everycalc.site","applicationCategory":"UtilitiesApplication","operatingSystem":"All","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["AI Calculator Generation","FD Calculator","EMI Calculator","BMI Calculator","GST Calculator","SIP Calculator","Scientific Calculator","Currency Converter","Mortgage Calculator"],"screenshot":"https://everycalc.site/og.png"}
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ═══════════════════════════════════════════
+       RESET & TOKENS
+    ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --c-bg:       #0A0A0A;
+      --c-s1:       #111111;
+      --c-s2:       #181818;
+      --c-s3:       #222222;
+      --c-border:   #2C2C2C;
+      --c-volt:     #C8FF00;
+      --c-volt2:    #DEFF33;
+      --c-volt-a:   rgba(200,255,0,.12);
+      --c-green:    #00E676;
+      --c-white:    #F5F5F5;
+      --c-muted:    #707070;
+      --c-danger:   #FF4444;
+
+      --f-disp:  'Bebas Neue', cursive;
+      --f-body:  'DM Sans', sans-serif;
+      --f-mono:  'JetBrains Mono', monospace;
+
+      --r-sm:  6px;
+      --r-md:  10px;
+      --r-lg:  16px;
+
+      /* fluid spacing */
+      --px: clamp(16px, 5vw, 80px);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      background: var(--c-bg);
+      color: var(--c-white);
+      font-family: var(--f-body);
+      overflow-x: hidden;
+      min-height: 100dvh;
+    }
+
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
+    ul { list-style: none; }
+
+    /* ═══ UTILITY ═══ */
+    .volt { color: var(--c-volt); }
+    .sr-only { position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0); }
+
+    /* ═══ VOLT LINE ═══ */
+    .volt-line {
+      position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 9999;
+      background: linear-gradient(90deg,#C8FF00,#00FF88,#00D4FF,#C8FF00);
+      background-size: 300%;
+      animation: vl 4s linear infinite;
+    }
+    @keyframes vl { to { background-position: -300%; } }
+
+    /* ═══ NOISE OVERLAY ═══ */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      opacity: .5;
+    }
+
+    /* ═══════════════════════════════════════════
+       NAVIGATION
+    ═══════════════════════════════════════════ */
+    .nav {
+      position: fixed; top: 3px; left: 0; right: 0; z-index: 500;
+      height: 60px;
+      display: flex; align-items: center;
+      padding: 0 var(--px);
+      gap: 16px;
+      transition: background .3s, border-color .3s, backdrop-filter .3s;
+    }
+    .nav.scrolled {
+      background: rgba(10,10,10,.92);
+      border-bottom: 1px solid var(--c-border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .nav-logo {
+      font-family: var(--f-disp);
+      font-size: clamp(20px, 4vw, 28px);
+      letter-spacing: 3px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .nav-logo .dot { color: var(--c-volt); }
+
+    .nav-spacer { flex: 1; }
+
+    .nav-link {
+      font-family: var(--f-body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--c-muted);
+      letter-spacing: .5px;
+      padding: 6px 12px;
+      border-radius: var(--r-sm);
+      transition: color .15s;
+      white-space: nowrap;
+    }
+    .nav-link:hover { color: var(--c-white); }
+
+    /* hide sign-in text on tiny screens */
+    @media (max-width: 360px) { .nav-link { display: none; } }
+
+    .nav-btn {
+      display: inline-flex; align-items: center;
+      background: var(--c-volt);
+      color: var(--c-bg);
+      font-size: clamp(11px, 2vw, 13px);
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: clamp(8px,2vw,10px) clamp(14px,3vw,22px);
+      border-radius: var(--r-sm);
+      transition: all .15s;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .nav-btn:hover { background: var(--c-volt2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(200,255,0,.25); }
+
+    /* ═══════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════ */
+    .hero {
+      min-height: 100dvh;
+      padding: calc(60px + clamp(40px,8vh,100px)) var(--px) clamp(48px,8vh,80px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* diagonal grid */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background: repeating-linear-gradient(-45deg,transparent,transparent 56px,rgba(200,255,0,.018) 56px,rgba(200,255,0,.018) 57px);
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: min(700px, 80vw); height: min(700px, 80vw);
+      background: radial-gradient(circle,rgba(200,255,0,.07) 0%,transparent 65%);
+      right: -15%; top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none; z-index: 0;
+    }
+
+    .hero-inner { position: relative; z-index: 1; max-width: 960px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--f-mono);
+      font-size: clamp(9px,2vw,11px);
+      letter-spacing: 3px;
+      color: var(--c-volt);
+      text-transform: uppercase;
+      margin-bottom: clamp(16px,3vh,24px);
+      opacity: 0;
+      animation: fadeUp .7s .1s ease both;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      background: var(--c-volt);
+      border-radius: 50%;
+      animation: blink 1.5s ease infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+    .hero-h1 {
+      font-family: var(--f-disp);
+      font-size: clamp(54px, 12vw, 160px);
+      line-height: .92;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      word-break: break-word;
+      hyphens: none;
+      opacity: 0;
+      animation: fadeUp .7s .2s ease both;
+    }
+    .hero-h1 .accent { color: var(--c-volt); display: block; }
+
+    .hero-sub {
+      font-size: clamp(14px,2.5vw,18px);
+      font-weight: 300;
+      color: var(--c-muted);
+      line-height: 1.65;
+      max-width: 480px;
+      margin-top: clamp(16px,3vh,28px);
+      opacity: 0;
+      animation: fadeUp .7s .35s ease both;
+    }
+
+    .hero-search {
+      margin-top: clamp(24px,4vh,40px);
+      opacity: 0;
+      animation: fadeUp .7s .45s ease both;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--c-s1);
+      border: 1.5px solid var(--c-border);
+      border-radius: var(--r-md);
+      padding: 5px 5px 5px 16px;
+      max-width: 620px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-box:focus-within {
+      border-color: var(--c-volt);
+      box-shadow: 0 0 0 4px var(--c-volt-a);
+    }
+
+    .search-icon { color: var(--c-muted); flex-shrink: 0; }
+
+    .search-inp {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--c-white);
+      font-family: var(--f-mono);
+      font-size: clamp(12px,2.5vw,14px);
+      padding: clamp(10px,2vh,13px) 8px;
+      min-width: 0;
+    }
+    .search-inp::placeholder { color: var(--c-muted); }
+
+    .search-go {
+      flex-shrink: 0;
+      background: var(--c-volt);
+      color: var(--c-bg);
+      font-family: var(--f-body);
+      font-size: clamp(11px,2vw,13px);
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: clamp(10px,2vh,12px) clamp(14px,3vw,22px);
+      border-radius: var(--r-sm);
+      transition: all .15s;
+      white-space: nowrap;
+    }
+    .search-go:hover { background: var(--c-volt2); }
+    .search-go:active { transform: scale(.97); }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 14px;
+      max-width: 620px;
+    }
+    .chip {
+      font-family: var(--f-mono);
+      font-size: clamp(10px,1.8vw,11px);
+      letter-spacing: .3px;
+      border: 1px solid var(--c-border);
+      color: var(--c-muted);
+      padding: 5px 12px;
+      border-radius: 100px;
+      transition: all .12s;
+      white-space: nowrap;
+    }
+    .chip:hover { border-color: var(--c-volt); color: var(--c-volt); background: var(--c-volt-a); }
+    .chip:active { transform: scale(.95); }
+
+    /* hero stats */
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(20px,4vw,56px);
+      margin-top: clamp(36px,6vh,64px);
+      padding-top: clamp(24px,4vh,40px);
+      border-top: 1px solid var(--c-border);
+      opacity: 0;
+      animation: fadeUp .7s .6s ease both;
+    }
+
+    .stat { }
+    .stat-n {
+      font-family: var(--f-disp);
+      font-size: clamp(28px,5vw,52px);
+      letter-spacing: 1px;
+      color: var(--c-volt);
+      line-height: 1;
+    }
+    .stat-l {
+      font-family: var(--f-mono);
+      font-size: clamp(9px,1.5vw,11px);
+      letter-spacing: 2px;
+      color: var(--c-muted);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ═══════════════════════════════════════════
+       SECTIONS SHARED
+    ═══════════════════════════════════════════ */
+    .section {
+      padding: clamp(56px,10vh,100px) var(--px);
+      position: relative;
+    }
+    .section + .section { border-top: 1px solid var(--c-border); }
+
+    .sec-label {
+      font-family: var(--f-mono);
+      font-size: clamp(9px,1.5vw,10px);
+      letter-spacing: 4px;
+      color: var(--c-volt);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .sec-label::before { content: '//'; margin-right: 8px; opacity: .5; }
+
+    .sec-heading {
+      font-family: var(--f-disp);
+      font-size: clamp(36px,7vw,88px);
+      letter-spacing: 1.5px;
+      line-height: .95;
+      text-transform: uppercase;
+      margin-bottom: clamp(32px,5vh,56px);
+    }
+
+    /* scroll reveal */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .55s ease, transform .55s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* ═══════════════════════════════════════════
+       HOW IT WORKS
+    ═══════════════════════════════════════════ */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+      gap: 1px;
+      background: var(--c-border);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-md);
+      overflow: hidden;
+    }
+
+    .step {
+      background: var(--c-bg);
+      padding: clamp(24px,4vw,40px) clamp(20px,3vw,32px);
+      transition: background .2s;
+    }
+    .step:hover { background: var(--c-s1); }
+
+    .step-num {
+      font-family: var(--f-disp);
+      font-size: clamp(48px,7vw,80px);
+      color: var(--c-border);
+      line-height: 1;
+      margin-bottom: 16px;
+      transition: color .2s;
+    }
+    .step:hover .step-num { color: var(--c-volt); }
+
+    .step-title {
+      font-size: clamp(14px,2vw,16px);
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .step-desc {
+      font-size: clamp(13px,1.8vw,14px);
+      font-weight: 400;
+      color: var(--c-muted);
+      line-height: 1.7;
+    }
+
+    /* ═══════════════════════════════════════════
+       CALCULATOR TYPES
+    ═══════════════════════════════════════════ */
+    .types-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(140px, calc(50% - 6px)), 1fr));
+      gap: 8px;
+    }
+
+    .type-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--c-s1);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-sm);
+      padding: clamp(14px,3vw,20px) clamp(12px,2.5vw,16px);
+      transition: all .15s;
+    }
+    .type-card:hover {
+      border-color: var(--c-volt);
+      background: var(--c-s2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(200,255,0,.07);
+    }
+    .type-card:active { transform: translateY(0); }
+
+    .tc-icon { font-size: clamp(20px,3vw,26px); margin-bottom: 8px; }
+    .tc-name {
+      font-size: clamp(11px,1.8vw,13px);
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      color: var(--c-white);
+    }
+    .tc-desc {
+      font-size: clamp(10px,1.5vw,11px);
+      color: var(--c-muted);
+      margin-top: 3px;
+    }
+
+    /* ═══════════════════════════════════════════
+       PRICING
+    ═══════════════════════════════════════════ */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+      gap: 14px;
+      max-width: 720px;
+    }
+
+    .price-card {
+      background: var(--c-s1);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-lg);
+      padding: clamp(28px,5vw,40px) clamp(24px,4vw,32px);
+      position: relative;
+      overflow: hidden;
+    }
+    .price-card.best {
+      border-color: var(--c-volt);
+      background: linear-gradient(135deg,var(--c-s1),rgba(200,255,0,.04));
+    }
+
+    .price-badge {
+      position: absolute;
+      top: 0; right: 24px;
+      background: var(--c-volt);
+      color: var(--c-bg);
+      font-family: var(--f-mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .price-tier {
+      font-family: var(--f-mono);
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--c-muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .price-amt {
+      font-family: var(--f-disp);
+      font-size: clamp(44px,7vw,60px);
+      letter-spacing: 1px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .price-per {
+      font-size: 12px;
+      color: var(--c-muted);
+      margin-bottom: clamp(20px,3vh,28px);
+    }
+
+    .price-feats {
+      margin-bottom: clamp(24px,4vh,32px);
+    }
+    .price-feats li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: clamp(12px,2vw,14px);
+      color: var(--c-muted);
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(44,44,44,.5);
+    }
+    .price-feats li:last-child { border-bottom: none; }
+    .price-feats li::before { content: '—'; color: var(--c-volt); font-family: var(--f-mono); flex-shrink: 0; }
+
+    .price-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 13px 20px;
+      border-radius: var(--r-sm);
+      font-family: var(--f-body);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: all .15s;
+    }
+    .price-cta-primary { background: var(--c-volt); color: var(--c-bg); }
+    .price-cta-primary:hover { background: var(--c-volt2); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(200,255,0,.2); }
+    .price-cta-outline { border: 1px solid var(--c-border); color: var(--c-muted); }
+    .price-cta-outline:hover { color: var(--c-white); border-color: var(--c-muted); }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    .footer {
+      border-top: 1px solid var(--c-border);
+      padding: clamp(28px,5vh,40px) var(--px);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-family: var(--f-disp);
+      font-size: 22px;
+      letter-spacing: 3px;
+    }
+    .footer-logo .dot { color: var(--c-volt); }
+
+    .footer-copy {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      color: var(--c-muted);
+      letter-spacing: 1px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .footer-links a {
+      font-size: 12px;
+      color: var(--c-muted);
+      transition: color .15s;
+    }
+    .footer-links a:hover { color: var(--c-white); }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE FINE-TUNING
+    ═══════════════════════════════════════════ */
+
+    /* prevent font rendering issues on small phones */
+    @media (max-width: 380px) {
+      .hero-h1 { font-size: 48px; }
+      .hero-stats { gap: 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .chips { gap: 6px; }
+      .chip { padding: 5px 10px; }
+      .search-go { padding: 10px 14px; }
+      .footer { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (min-width: 768px) {
+      .types-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+    }
+
+    @media (min-width: 1200px) {
+      .types-grid { grid-template-columns: repeat(6, 1fr); }
+    }
+
+    /* large screens — constrain max width */
+    @media (min-width: 1440px) {
+      .hero-inner { max-width: 1100px; }
+    }
+
+    /* safe area for notched phones */
+    @supports (padding: max(0px)) {
+      .nav { padding-left: max(var(--px), env(safe-area-inset-left)); padding-right: max(var(--px), env(safe-area-inset-right)); }
+      .hero, .section, .footer { padding-left: max(var(--px), env(safe-area-inset-left)); padding-right: max(var(--px), env(safe-area-inset-right)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="volt-line" role="presentation"></div>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav" role="navigation" aria-label="Main">
+    <a href="/" class="nav-logo" aria-label="EveryCalc home">EVERY<span class="dot">CALC</span></a>
+    <div class="nav-spacer"></div>
+    <a href="/auth.html" class="nav-link">Sign In</a>
+    <a href="/app.html" class="nav-btn">Launch App</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" aria-label="Hero — World's First AI Calculator">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <p class="hero-badge">
+        <span class="hero-badge-dot" aria-hidden="true"></span>
+        World's First AI Responsive Calculator
+      </p>
+
+      <h1 class="hero-h1">
+        EVERY<br>
+        <span class="accent">CALCULATOR.</span>
+        <br>INSTANTLY.
+      </h1>
+
+      <p class="hero-sub">
+        Type any calculator name. AI generates a fully working, pixel-perfect calculator in under 30 seconds — saved right in your browser.
+      </p>
+
+      <!-- SEARCH -->
+      <div class="hero-search">
+        <div class="search-box" role="search">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input class="search-inp" id="hs" type="search" placeholder="e.g. FD Calculator, mortgage, BMI..." autocomplete="off" aria-label="Search for a calculator"/>
+          <button class="search-go" onclick="goApp()" aria-label="Build calculator">BUILD IT</button>
+        </div>
+        <div class="chips" role="list" aria-label="Quick suggestions">
+          <button class="chip" role="listitem" onclick="setQ('FD Calculator')">FD Calculator</button>
+          <button class="chip" role="listitem" onclick="setQ('EMI Loan Calculator')">EMI / Loan</button>
+          <button class="chip" role="listitem" onclick="setQ('SIP Calculator')">SIP</button>
+          <button class="chip" role="listitem" onclick="setQ('BMI Calculator')">BMI</button>
+          <button class="chip" role="listitem" onclick="setQ('GST Calculator')">GST</button>
+          <button class="chip" role="listitem" onclick="setQ('Scientific Calculator')">Scientific</button>
+          <button class="chip" role="listitem" onclick="setQ('Currency Converter')">Currency</button>
+          <button class="chip" role="listitem" onclick="setQ('Mortgage Calculator')">Mortgage</button>
+          <button class="chip" role="listitem" onclick="setQ('Age Calculator')">Age</button>
+          <button class="chip" role="listitem" onclick="setQ('Tip Calculator')">Tip</button>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="hero-stats" aria-label="Key stats">
+        <div class="stat">
+          <div class="stat-n">∞</div>
+          <div class="stat-l">Calculator Types</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">&lt;30s</div>
+          <div class="stat-l">Generation Time</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">100%</div>
+          <div class="stat-l">Browser Saved</div>
+        </div>
+        <div class="stat">
+          <div class="stat-n">0</div>
+          <div class="stat-l">Setup Required</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section reveal" id="how" aria-labelledby="how-h">
+    <p class="sec-label">Process</p>
+    <h2 class="sec-heading" id="how-h">HOW IT<br>WORKS</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3 class="step-title">Type Any Calculator</h3>
+        <p class="step-desc">From simple arithmetic to complex FD, EMI, GST models — type anything. EveryCalc understands your intent.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3 class="step-title">AI Builds It Live</h3>
+        <p class="step-desc">Groq AI generates a fully working, responsive, pixel-perfect calculator in realtime. Typically in under 30 seconds.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3 class="step-title">Use It Instantly</h3>
+        <p class="step-desc">Your calculator is ready immediately. Auto-detects your region and displays the right currency format for you.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3 class="step-title">Saved Forever</h3>
+        <p class="step-desc">Every calculator lives in your browser library. Access it anytime without regenerating — even offline.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR TYPES -->
+  <section class="section reveal" aria-labelledby="types-h">
+    <p class="sec-label">What's possible</p>
+    <h2 class="sec-heading" id="types-h">EVERY TYPE.<br>EVER.</h2>
+    <div class="types-grid">
+      <a href="/app.html?q=FD+Calculator" class="type-card"><span class="tc-icon">🏦</span><span class="tc-name">FD Calculator</span><span class="tc-desc">Fixed deposit</span></a>
+      <a href="/app.html?q=SIP+Calculator" class="type-card"><span class="tc-icon">📈</span><span class="tc-name">SIP</span><span class="tc-desc">Investment plan</span></a>
+      <a href="/app.html?q=EMI+Loan+Calculator" class="type-card"><span class="tc-icon">🏠</span><span class="tc-name">EMI / Loan</span><span class="tc-desc">Repayment</span></a>
+      <a href="/app.html?q=BMI+Calculator" class="type-card"><span class="tc-icon">⚖️</span><span class="tc-name">BMI</span><span class="tc-desc">Body mass index</span></a>
+      <a href="/app.html?q=GST+Calculator" class="type-card"><span class="tc-icon">🧾</span><span class="tc-name">GST / Tax</span><span class="tc-desc">Tax breakdown</span></a>
+      <a href="/app.html?q=Currency+Converter" class="type-card"><span class="tc-icon">💱</span><span class="tc-name">Currency</span><span class="tc-desc">Converter</span></a>
+      <a href="/app.html?q=Scientific+Calculator" class="type-card"><span class="tc-icon">🔢</span><span class="tc-name">Scientific</span><span class="tc-desc">Advanced math</span></a>
+      <a href="/app.html?q=Age+Calculator" class="type-card"><span class="tc-icon">🎂</span><span class="tc-name">Age</span><span class="tc-desc">Date difference</span></a>
+      <a href="/app.html?q=Mortgage+Calculator" class="type-card"><span class="tc-icon">🏡</span><span class="tc-name">Mortgage</span><span class="tc-desc">Home loan</span></a>
+      <a href="/app.html?q=Tip+Calculator" class="type-card"><span class="tc-icon">🍽️</span><span class="tc-name">Tip</span><span class="tc-desc">Restaurant split</span></a>
+      <a href="/app.html?q=Percentage+Calculator" class="type-card"><span class="tc-icon">%</span><span class="tc-name">Percentage</span><span class="tc-desc">All % modes</span></a>
+      <a href="/app.html?q=Unit+Converter" class="type-card"><span class="tc-icon">📐</span><span class="tc-name">Unit Convert</span><span class="tc-desc">Length, weight…</span></a>
+      <a href="/app.html?q=Compound+Interest+Calculator" class="type-card"><span class="tc-icon">💰</span><span class="tc-name">Compound</span><span class="tc-desc">Interest growth</span></a>
+      <a href="/app.html?q=Calorie+Calculator" class="type-card"><span class="tc-icon">🏃</span><span class="tc-name">Calorie</span><span class="tc-desc">Health & diet</span></a>
+      <a href="/app.html?q=Date+Difference+Calculator" class="type-card"><span class="tc-icon">📅</span><span class="tc-name">Date Diff</span><span class="tc-desc">Day counter</span></a>
+      <a href="/app.html?q=HRA+Calculator" class="type-card"><span class="tc-icon">🏛️</span><span class="tc-name">HRA</span><span class="tc-desc">Tax exemption</span></a>
+      <a href="/app.html?q=Discount+Calculator" class="type-card"><span class="tc-icon">🏷️</span><span class="tc-name">Discount</span><span class="tc-desc">Sale & savings</span></a>
+      <a href="/app.html?q=Fuel+Cost+Calculator" class="type-card"><span class="tc-icon">⛽</span><span class="tc-name">Fuel Cost</span><span class="tc-desc">Trip expenses</span></a>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section reveal" aria-labelledby="pricing-h">
+    <p class="sec-label">Plans</p>
+    <h2 class="sec-heading" id="pricing-h">SIMPLE<br>PRICING</h2>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <p class="price-tier">Free</p>
+        <p class="price-amt">$0</p>
+        <p class="price-per">Forever · No credit card needed</p>
+        <ul class="price-feats">
+          <li>5 AI Calculators per day</li>
+          <li>Browser-saved library</li>
+          <li>Region currency detection</li>
+          <li>All calculator types</li>
+        </ul>
+        <a href="/auth.html" class="price-cta price-cta-outline">Get Started Free</a>
+      </div>
+      <div class="price-card best">
+        <div class="price-badge">MOST POPULAR</div>
+        <p class="price-tier">Pro</p>
+        <p class="price-amt volt">$9</p>
+        <p class="price-per">per month · Cancel anytime</p>
+        <ul class="price-feats">
+          <li>Unlimited AI Calculators</li>
+          <li>Priority AI speed</li>
+          <li>Cloud sync across devices</li>
+          <li>Export calculators</li>
+          <li>Early access to features</li>
+        </ul>
+        <a href="/auth.html" class="price-cta price-cta-primary">Start Pro</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <a href="/" class="footer-logo">EVERY<span class="dot">CALC</span></a>
+    <p class="footer-copy">© 2025 EveryCalc · everycalc.site</p>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/app.html">App</a>
+      <a href="#how">How it works</a>
+    </nav>
+  </footer>
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Scroll reveal
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    function setQ(v) {
+      document.getElementById('hs').value = v;
+      document.getElementById('hs').focus();
+    }
+
+    function goApp() {
+      const q = document.getElementById('hs').value.trim();
+      window.location.href = q ? `/app.html?q=${encodeURIComponent(q)}` : '/app.html';
+    }
+
+    document.getElementById('hs').addEventListener('keydown', e => { if (e.key === 'Enter') goApp(); });
+  </script>
+</body>
+</html>
