@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>Professional Budget Calculator | Every Calculator</title>
+    <meta name="title" content="Professional Budget Calculator | Every Calculator">
+    <meta name="description" content="A master-grade budget planning tool for personal finance. Inspired by traditional Indian bookkeeping and optimized for modern wealth management. Brought to you by Every Calculator.">
+    <meta name="keywords" content="Budget Calculator, Personal Finance India, Every Calculator, everycalc.site, 50-30-20 rule calculator, Monthly Expense Planner">
+    <meta name="author" content="Every Calculator">
+    <link rel="canonical" href="https://everycalc.site/budget-calculator">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://everycalc.site/">
+    <meta property="og:title" content="Professional Budget Calculator | Every Calculator">
+    <meta property="og:description" content="Plan your wealth with an Indian cultural aesthetic. Precision budgeting made beautiful.">
+    <meta property="og:image" content="logo.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Schema.org Implementation -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FinancialCalculator",
+      "name": "Professional Budget Calculator",
+      "description": "A high-precision monthly budget planner with 50/30/20 rule logic.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Every Calculator"
+      },
+      "url": "https://everycalc.site",
+      "applicationCategory": "PersonalFinance",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      }
+    }
+    </script>
+
+    <style>
+        :root {
+            --kumkum: #8B1E1E;
+            --haldi: #E9B824;
+            --kajal: #1A1A1A;
+            --parchment: #F4F1E6;
+            --ink-blue: #223355;
+            --border-soft: rgba(139, 30, 30, 0.15);
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--parchment);
+            font-family: 'Outfit', sans-serif;
+            color: var(--kajal);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* The Bahi Khata (Traditional Ledger) Texture */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Abstract Henna/Mandala Pattern */
+        .mandala-bg {
+            position: fixed;
+            width: 80vmax;
+            height: 80vmax;
+            border: 1px solid var(--kumkum);
+            opacity: 0.04;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            top: -20%;
+            left: -10%;
+            z-index: -1;
+            animation: rotate 60s infinite linear;
+        }
+
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .calculator-wrapper {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-soft);
+            display: grid;
+            grid-template-columns: 1fr 450px;
+            box-shadow: 40px 40px 100px rgba(0,0,0,0.05);
+            animation: reveal 1.2s ease-out;
+            position: relative;
+        }
+
+        @keyframes reveal {
+            from { opacity: 0; transform: translateY(40px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Left Section: Inputs */
+        .journal-section {
+            padding: clamp(2rem, 5vw, 4rem);
+            border-right: 1px solid var(--border-soft);
+        }
+
+        .header-branding {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            height: 60px;
+            width: auto;
+            filter: contrast(1.1) sepia(0.2);
+        }
+
+        .branding-text h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            line-height: 0.9;
+            color: var(--kumkum);
+        }
+
+        .branding-text p {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--ink-blue);
+        }
+
+        .input-card {
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: slideUp 0.8s forwards;
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(30px); }
+        }
+
+        .input-card:nth-child(2) { animation-delay: 0.2s; }
+        .input-card:nth-child(3) { animation-delay: 0.4s; }
+        .input-card:nth-child(4) { animation-delay: 0.6s; }
+
+        .category-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            color: var(--ink-blue);
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--haldi);
+        }
+
+        .field {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 0.9rem;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 180px;
+        }
+
+        .input-wrapper span {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--kumkum);
+            font-weight: 600;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 8px 8px 8px 20px;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            background: transparent;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        input[type="number"]:focus {
+            border-bottom-color: var(--kumkum);
+        }
+
+        /* Right Section: Results */
+        .summary-section {
+            background: var(--kajal);
+            color: white;
+            padding: clamp(2rem, 5vw, 3rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .balance-card {
+            text-align: center;
+            padding: 30px;
+            border: 1px dashed rgba(255,255,255,0.2);
+            margin-bottom: 2rem;
+        }
+
+        .balance-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--haldi);
+        }
+
+        .balance-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            font-weight: 600;
+            line-height: 1;
+            margin: 10px 0;
+        }
+
+        .metric-row {
+            margin-bottom: 2rem;
+        }
+
+        .metric-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            width: 100%;
+            background: rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        .progress-fill {
+            position: absolute;
+            height: 100%;
+            top: 0; left: 0;
+            transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .advice-box {
+            background: rgba(233, 184, 36, 0.1);
+            padding: 20px;
+            border-left: 3px solid var(--haldi);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            font-style: italic;
+            color: #ccc;
+        }
+
+        .domain-tag {
+            font-size: 0.65rem;
+            text-align: center;
+            margin-top: 2rem;
+            opacity: 0.4;
+            letter-spacing: 2px;
+        }
+
+        /* Responsive Logic */
+        @media (max-width: 1024px) {
+            .calculator-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .journal-section {
+                border-right: none;
+                border-bottom: 1px solid var(--border-soft);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .field {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .input-wrapper {
+                width: 100%;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mandala-bg"></div>
+
+    <main class="calculator-wrapper">
+        <!-- Input Side -->
+        <section class="journal-section">
+            <header class="header-branding">
+                <img src="logo.png" alt="Every Calculator Logo" class="logo" onerror="this.style.display='none'">
+                <div class="branding-text">
+                    <h1>Wealth Journal</h1>
+                    <p>By Every Calculator</p>
+                </div>
+            </header>
+
+            <div class="input-card">
+                <h2 class="category-title">Monthly Income <span>₹</span></h2>
+                <div class="field">
+                    <label>Primary Salary / Business</label>
+                    <div class="input-wrapper">
+                        <span>₹</span>
+                        <input type="number" id="income" value="80000" oninput="calculate()">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Secondary / Side Income</label>
+                    <div class="input-wrapper">
+                        <span>₹</span>
+                        <input type="number" id="otherIncome" value="5000" oninput="calculate()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-card">
+                <h2 class="category-title">Needs (Essentials) <span>50% Goal</span></h2>
+                <div class="field">
+                    <label>Rent / EMI / Home</label>
+                    <div class="input-wrapper">
+                        <span>₹</span>
+                        <input type="number" class="expense-need" value="25000" oninput="calculate()">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Groceries & Utilities</label>
+                    <div class="input-wrapper">
+                        <span>₹</span>
+                        <input type="number" class="expense-need" value="12000" oninput="calculate()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-card">
+                <h2 class="category-title">Wants (Lifestyle) <span>30% Goal</span></h2>
+                <div class="field">
+                    <label>Dining & Entertainment</label>
+                    <div class="input-wrapper">
+                        <span>₹</span>
+                        <input type="number" class="expense-want" value="8000" oninput="calculate()">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Shopping & Hobbies</label>
+                    <div class="input-wrapper">
+                        <span>₹</span>
+                        <input type="number" class="expense-want" value="5000" oninput="calculate()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-card">
+                <h2 class="category-title">Investments / Debt <span>20% Goal</span></h2>
+                <div class="field">
+                    <label>SIPs / Stocks / Gold</label>
+                    <div class="input-wrapper">
+                        <span>₹</span>
+                        <input type="number" class="expense-save" value="15000" oninput="calculate()">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Emergency Fund / Insurance</label>
+                    <div class="input-wrapper">
+                        <span>₹</span>
+                        <input type="number" class="expense-save" value="5000" oninput="calculate()">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Result Side -->
+        <section class="summary-section">
+            <div>
+                <div class="balance-card">
+                    <span class="balance-label">Remaining Balance</span>
+                    <div class="balance-value" id="finalBalance">₹10,000</div>
+                    <span id="statusText" style="color: var(--haldi); font-weight: 600;">Perfectly Balanced</span>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">
+                        <span>Needs (Essentials)</span>
+                        <span id="needPercent">44%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="needBar" style="width: 44%; background: #4a90e2;"></div>
+                    </div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">
+                        <span>Wants (Lifestyle)</span>
+                        <span id="wantPercent">15%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="wantBar" style="width: 15%; background: var(--haldi);"></div>
+                    </div>
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-label">
+                        <span>Savings & Debt</span>
+                        <span id="savePercent">24%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="saveBar" style="width: 24%; background: #2ecc71;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="advice-box" id="adviceText">
+                "Bahi Khata suggests: Your essential spending is well within the 50% limit. Consider moving some surplus to your 'Savings' category to build future wealth faster."
+            </div>
+
+            <div class="domain-tag">EVERYCALC.SITE • PROFESSIONAL GRADE</div>
+        </section>
+    </main>
+
+    <script>
+        function formatINR(num) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                maximumFractionDigits: 0
+            }).format(num);
+        }
+
+        function calculate() {
+            const income = parseFloat(document.getElementById('income').value || 0) + 
+                         parseFloat(document.getElementById('otherIncome').value || 0);
+            
+            let needs = 0;
+            document.querySelectorAll('.expense-need').forEach(i => needs += parseFloat(i.value || 0));
+            
+            let wants = 0;
+            document.querySelectorAll('.expense-want').forEach(i => wants += parseFloat(i.value || 0));
+            
+            let saves = 0;
+            document.querySelectorAll('.expense-save').forEach(i => saves += parseFloat(i.value || 0));
+
+            const totalSpent = needs + wants + saves;
+            const balance = income - totalSpent;
+
+            // Update UI
+            document.getElementById('finalBalance').innerText = formatINR(balance);
+
+            if (income > 0) {
+                const nP = Math.round((needs / income) * 100);
+                const wP = Math.round((wants / income) * 100);
+                const sP = Math.round((saves / income) * 100);
+
+                document.getElementById('needPercent').innerText = nP + '%';
+                document.getElementById('wantPercent').innerText = wP + '%';
+                document.getElementById('savePercent').innerText = sP + '%';
+
+                document.getElementById('needBar').style.width = Math.min(nP, 100) + '%';
+                document.getElementById('wantBar').style.width = Math.min(wP, 100) + '%';
+                document.getElementById('saveBar').style.width = Math.min(sP, 100) + '%';
+
+                updateAdvice(nP, wP, sP, balance);
+            }
+        }
+
+        function updateAdvice(nP, wP, sP, balance) {
+            let advice = "";
+            const status = document.getElementById('statusText');
+
+            if (balance < 0) {
+                status.innerText = "Deficit Detected";
+                status.style.color = "#e74c3c";
+                advice = "Your expenses exceed your income. Tradition warns against debt; review your 'Wants' category immediately to bring the balance back to positive.";
+            } else if (nP > 55) {
+                status.innerText = "High Essentials";
+                status.style.color = var(--haldi);
+                advice = "Your needs are taking up over 50% of your income. Look for ways to optimize utility bills or rent to free up space for savings.";
+            } else if (sP < 20) {
+                status.innerText = "Increase Savings";
+                status.style.color = "#f39c12";
+                advice = "The 50/30/20 rule suggests at least 20% for savings. You are currently at " + sP + "%. Try to divert some lifestyle spending here.";
+            } else {
+                status.innerText = "Healthy Budget";
+                status.style.color = "#2ecc71";
+                advice = "Your budget is professionally balanced. Following this 'Bahi Khata' discipline will lead to long-term financial freedom.";
+            }
+            document.getElementById('adviceText').innerText = '"' + advice + '"';
+        }
+
+        // Initial trigger
+        calculate();
+    </script>
+</body>
+</html>
