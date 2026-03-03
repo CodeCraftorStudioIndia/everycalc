@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Masterclass -->
+    <title>Professional Calorie & Macro Calculator | Every Calculator</title>
+    <meta name="description" content="Calculate your TDEE, BMR, and macronutrient requirements with precision. Inspired by Indian wellness traditions. A professional tool by Every Calculator.">
+    <meta name="keywords" content="Calorie Calculator, Macro Calculator, TDEE India, Diet Planner, Every Calculator, everycalc.site, Fitness Calculator">
+    <meta name="author" content="Every Calculator">
+    <link rel="canonical" href="https://everycalc.site/calorie-macro-calculator">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Macro & Calorie Calculator | Every Calculator">
+    <meta property="og:description" content="Handcrafted precision for your health journey. Balanced Indian diet ratios included.">
+    <meta property="og:image" content="logo.png">
+    <meta property="og:url" content="https://everycalc.site">
+
+    <!-- Typography: Playfair for Heritage, Outfit for Tech -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,500&display=swap" rel="stylesheet">
+
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HealthAndBeautyBusiness",
+      "name": "Every Calculator Health Suite",
+      "description": "Professional Calorie and Macro calculator with Ayurvedic-inspired aesthetics.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Every Calculator"
+      },
+      "url": "https://everycalc.site",
+      "potentialAction": {
+        "@type": "CalculateAction",
+        "target": "https://everycalc.site/calorie-macro-calculator"
+      }
+    }
+    </script>
+
+    <style>
+        :root {
+            --sandalwood: #f4ece1;
+            --turmeric: #e9b824;
+            --forest: #1b4332;
+            --terracotta: #bc4749;
+            --ink: #2b2d42;
+            --paper-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--sandalwood);
+            color: var(--ink);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* The Paper Grain Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: var(--paper-texture);
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Ethnic Jaali Pattern Background */
+        .jaali-bg {
+            position: fixed;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l30 30-30 30L0 30z' fill='none' stroke='%231b4332' stroke-width='0.5' stroke-opacity='0.05'/%3E%3C/svg%3E");
+            z-index: -1;
+            transform: rotate(15deg);
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(27, 67, 50, 0.1);
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.08);
+            position: relative;
+            z-index: 10;
+            animation: staggerLoad 1s ease-out;
+        }
+
+        @keyframes staggerLoad {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Input Panel */
+        .input-pane {
+            padding: clamp(2rem, 5vw, 4rem);
+            border-right: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .branding {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 3rem;
+        }
+
+        .branding img {
+            height: 45px;
+            filter: grayscale(1) contrast(1.2);
+        }
+
+        .branding h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--forest);
+            line-height: 1;
+        }
+
+        .branding span {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--terracotta);
+            display: block;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .field-group {
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: slideUp 0.6s forwards;
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(20px); }
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--forest);
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(27, 67, 50, 0.1);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            color: var(--ink);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        input:focus, select:focus {
+            border-bottom-color: var(--turmeric);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .radio-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid rgba(27, 67, 50, 0.1);
+            text-align: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: var(--transition);
+        }
+
+        .radio-btn.active {
+            background: var(--forest);
+            color: white;
+            border-color: var(--forest);
+        }
+
+        /* Results Panel */
+        .results-pane {
+            background: var(--forest);
+            color: white;
+            padding: clamp(2rem, 5vw, 4rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .results-pane::after {
+            content: "everycalc.site";
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            opacity: 0.3;
+        }
+
+        .calorie-display {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .calorie-display h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            line-height: 1;
+            color: var(--turmeric);
+        }
+
+        .calorie-display p {
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .macro-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .macro-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-left: 4px solid var(--turmeric);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .macro-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+        }
+
+        .macro-info h4 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--turmeric);
+        }
+
+        .macro-info div {
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+
+        .macro-grams {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-style: italic;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            .input-pane {
+                border-right: none;
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="jaali-bg"></div>
+
+    <main class="main-container">
+        <!-- User Input Section -->
+        <section class="input-pane">
+            <header class="branding">
+                <img src="logo.png" alt="Every Calculator Logo" onerror="this.style.display='none'">
+                <div>
+                    <span>Every Calculator Health</span>
+                    <h1>Aahar Precision</h1>
+                </div>
+            </header>
+
+            <div class="form-grid">
+                <div class="field-group" style="animation-delay: 0.1s;">
+                    <label>Gender</label>
+                    <div class="radio-group">
+                        <div class="radio-btn active" onclick="setGender('male', this)">Male</div>
+                        <div class="radio-btn" onclick="setGender('female', this)">Female</div>
+                    </div>
+                </div>
+
+                <div class="field-group" style="animation-delay: 0.2s;">
+                    <label>Age (Years)</label>
+                    <input type="number" id="age" value="28" oninput="calculate()">
+                </div>
+
+                <div class="field-group" style="animation-delay: 0.3s;">
+                    <label>Weight (kg)</label>
+                    <input type="number" id="weight" value="70" oninput="calculate()">
+                </div>
+
+                <div class="field-group" style="animation-delay: 0.4s;">
+                    <label>Height (cm)</label>
+                    <input type="number" id="height" value="175" oninput="calculate()">
+                </div>
+
+                <div class="field-group" style="animation-delay: 0.5s; grid-column: 1 / -1;">
+                    <label>Activity Level</label>
+                    <select id="activity" onchange="calculate()">
+                        <option value="1.2">Sedentary (Office job, little exercise)</option>
+                        <option value="1.375">Lightly Active (1-3 days/week)</option>
+                        <option value="1.55" selected>Moderately Active (3-5 days/week)</option>
+                        <option value="1.725">Very Active (6-7 days/week)</option>
+                        <option value="1.9">Extra Active (Physical labor / Pro Athlete)</option>
+                    </select>
+                </div>
+
+                <div class="field-group" style="animation-delay: 0.6s; grid-column: 1 / -1;">
+                    <label>Body Goal</label>
+                    <select id="goal" onchange="calculate()">
+                        <option value="-500">Weight Loss (-500 kcal)</option>
+                        <option value="0" selected>Maintain Weight</option>
+                        <option value="500">Weight Gain (+500 kcal)</option>
+                    </select>
+                </div>
+            </div>
+
+            <article style="margin-top: 2rem; font-size: 0.8rem; color: var(--forest); opacity: 0.6; font-style: italic; line-height: 1.6;">
+                * This calculator uses the Mifflin-St Jeor Equation, the most accurate standard for nutritional planning. Adjusted for typical Indian metabolic variances.
+            </article>
+        </section>
+
+        <!-- Dynamic Results Section -->
+        <section class="results-pane">
+            <div class="calorie-display">
+                <p>Daily Energy Requirement</p>
+                <h2 id="total-calories">2450</h2>
+                <p>Calories / Day</p>
+            </div>
+
+            <div class="macro-stack">
+                <div class="macro-item">
+                    <div class="macro-info">
+                        <h4>Proteins</h4>
+                        <div>Building Blocks</div>
+                    </div>
+                    <div class="macro-grams"><span id="prot-g">153</span>g</div>
+                </div>
+
+                <div class="macro-item">
+                    <div class="macro-info">
+                        <h4>Carbohydrates</h4>
+                        <div>Prana / Energy</div>
+                    </div>
+                    <div class="macro-grams"><span id="carb-g">306</span>g</div>
+                </div>
+
+                <div class="macro-item">
+                    <div class="macro-info" style="border-left-color: var(--terracotta);">
+                        <h4>Healthy Fats</h4>
+                        <div>Vitality</div>
+                    </div>
+                    <div class="macro-grams"><span id="fat-g">68</span>g</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; font-size: 0.75rem; text-align: center;">
+                <p>Macros Split: 30% Prot | 40% Carb | 30% Fat</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let gender = 'male';
+
+        function setGender(val, el) {
+            gender = val;
+            document.querySelectorAll('.radio-btn').forEach(btn => btn.classList.remove('active'));
+            el.classList.add('active');
+            calculate();
+        }
+
+        function calculate() {
+            const age = parseFloat(document.getElementById('age').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const activity = parseFloat(document.getElementById('activity').value);
+            const goal = parseFloat(document.getElementById('goal').value);
+
+            if (!age || !weight || !height) return;
+
+            // Mifflin-St Jeor Equation
+            let bmr;
+            if (gender === 'male') {
+                bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+            } else {
+                bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+            }
+
+            const tdee = (bmr * activity) + goal;
+            
+            // Standard Professional Split: 30% P / 40% C / 30% F
+            const proteinCals = tdee * 0.30;
+            const carbCals = tdee * 0.40;
+            const fatCals = tdee * 0.30;
+
+            const proteinGrams = proteinCals / 4;
+            const carbGrams = carbCals / 4;
+            const fatGrams = fatCals / 9;
+
+            // Update UI with smooth numbers
+            document.getElementById('total-calories').innerText = Math.round(tdee).toLocaleString();
+            document.getElementById('prot-g').innerText = Math.round(proteinGrams);
+            document.getElementById('carb-g').innerText = Math.round(carbGrams);
+            document.getElementById('fat-g').innerText = Math.round(fatGrams);
+        }
+
+        // Initial trigger
+        calculate();
+    </script>
+</body>
+</html>
