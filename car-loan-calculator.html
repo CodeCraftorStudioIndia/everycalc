@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & META -->
+    <title>Professional Car Loan EMI Calculator | Every Calculator</title>
+    <meta name="description" content="Calculate your car loan EMI with precision using Every Calculator's Indian-themed financial tool. Accurate calculations for new and used car loans at everycalc.site.">
+    <meta name="keywords" content="Car Loan Calculator, Auto Loan EMI, Every Calculator, everycalc.site, Vehicle Finance India, EMI Repayment Schedule">
+    <meta name="author" content="Every Calculator">
+    <link rel="canonical" href="https://everycalc.site/car-loan-calculator">
+
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="Car Loan EMI Calculator | Every Calculator">
+    <meta property="og:description" content="A handcrafted, precise car loan calculator with an elegant Indian cultural theme. Plan your drive today.">
+    <meta property="og:url" content="https://everycalc.site">
+    <meta property="og:type" content="website">
+
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Lexend:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- SCHEMA.ORG MARKUP -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FinancialCalculator",
+      "name": "Every Calculator Car Loan Tool",
+      "description": "Professional car loan EMI calculator with Indian cultural aesthetics.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Every Calculator"
+      },
+      "url": "https://everycalc.site",
+      "applicationCategory": "Finance",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      }
+    }
+    </script>
+
+    <style>
+        :root {
+            --peacock-blue: #005f73;
+            --saffron: #ee9b00;
+            --earth-red: #ae2012;
+            --paper-base: #f1ede1;
+            --ink: #001219;
+            --glass: rgba(255, 255, 255, 0.4);
+            --transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--paper-base);
+            color: var(--ink);
+            font-family: 'Lexend', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Handmade Paper Texture Effect */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Indian Geometric 'Jaali' Pattern in Background */
+        .jaali-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l30 30-30 30L0 30z' fill='none' stroke='%23005f73' stroke-width='0.5' stroke-opacity='0.1'/%3E%3C/svg%3E");
+            z-index: -1;
+        }
+
+        main {
+            width: 100%;
+            max-width: 1000px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: var(--glass);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 95, 115, 0.1);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 20;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Left Side: Inputs */
+        .config-panel {
+            padding: clamp(2rem, 5vw, 4rem);
+            border-right: 1px solid rgba(0, 95, 115, 0.1);
+        }
+
+        .header {
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-family: 'Marcellus', serif;
+            font-size: 2.5rem;
+            color: var(--peacock-blue);
+            line-height: 1.1;
+        }
+
+        .header p {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--earth-red);
+            margin-top: 8px;
+            font-weight: 700;
+        }
+
+        .input-group {
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: slideIn 0.8s forwards;
+        }
+
+        .input-group:nth-child(1) { animation-delay: 0.2s; }
+        .input-group:nth-child(2) { animation-delay: 0.4s; }
+        .input-group:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes slideIn {
+            to { opacity: 1; transform: translateX(0); }
+            from { opacity: 0; transform: translateX(-20px); }
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            color: var(--peacock-blue);
+        }
+
+        .input-container {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 2px solid rgba(0, 95, 115, 0.2);
+            padding-bottom: 10px;
+            transition: var(--transition);
+        }
+
+        .input-container:focus-within {
+            border-color: var(--saffron);
+        }
+
+        .input-container input {
+            background: transparent;
+            border: none;
+            outline: none;
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            width: 100%;
+            color: var(--ink);
+        }
+
+        .currency-prefix {
+            font-size: 1.2rem;
+            color: var(--saffron);
+            font-weight: 700;
+        }
+
+        /* Right Side: Results */
+        .display-panel {
+            background: var(--peacock-blue);
+            color: white;
+            padding: clamp(2rem, 5vw, 4rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .display-panel::after {
+            content: "Every Calculator";
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            font-family: 'Marcellus';
+            font-size: 4rem;
+            opacity: 0.05;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .result-item {
+            margin-bottom: 3rem;
+        }
+
+        .label-sm {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .value-lg {
+            font-family: 'Marcellus', serif;
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .breakdown-chart {
+            height: 4px;
+            width: 100%;
+            background: rgba(255,255,255,0.1);
+            margin-top: 3rem;
+            position: relative;
+        }
+
+        #interest-fill {
+            height: 100%;
+            background: var(--saffron);
+            width: 30%;
+            transition: width 1s ease-in-out;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 800px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+            .config-panel {
+                border-right: none;
+                border-bottom: 1px solid rgba(0, 95, 115, 0.1);
+            }
+        }
+
+        /* Slider Customization */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+            margin-top: 15px;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 95, 115, 0.1);
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            background: var(--ink);
+            cursor: pointer;
+            margin-top: -7px;
+            border-radius: 0;
+            border: 2px solid var(--saffron);
+        }
+
+        .domain-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 0.6rem;
+            background: var(--saffron);
+            color: var(--ink);
+            padding: 4px 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="jaali-bg"></div>
+
+    <main>
+        <div class="domain-badge">everycalc.site</div>
+        
+        <section class="config-panel">
+            <header class="header">
+                <h1>Car Loan Master</h1>
+                <p>By Every Calculator</p>
+            </header>
+
+            <div class="input-group">
+                <label for="amount">Total Loan Amount</label>
+                <div class="input-container">
+                    <span class="currency-prefix">₹</span>
+                    <input type="number" id="amount" value="800000" step="10000">
+                </div>
+                <input type="range" id="amountRange" min="100000" max="10000000" step="50000" value="800000">
+            </div>
+
+            <div class="input-group">
+                <label for="rate">Interest Rate (% P.A.)</label>
+                <div class="input-container">
+                    <input type="number" id="rate" value="9.5" step="0.1">
+                    <span class="currency-prefix">%</span>
+                </div>
+                <input type="range" id="rateRange" min="5" max="20" step="0.1" value="9.5">
+            </div>
+
+            <div class="input-group">
+                <label for="tenure">Loan Tenure (Years)</label>
+                <div class="input-container">
+                    <input type="number" id="tenure" value="5">
+                    <span class="currency-prefix">YRS</span>
+                </div>
+                <input type="range" id="tenureRange" min="1" max="7" step="1" value="5">
+            </div>
+
+            <article style="font-size: 0.7rem; color: #666; line-height: 1.6; margin-top: 2rem; font-style: italic;">
+                Designed with precision for Indian auto finance market. Powered by <strong>Every Calculator</strong>.
+            </article>
+        </section>
+
+        <section class="display-panel">
+            <div class="result-item">
+                <span class="label-sm">Monthly Installment (EMI)</span>
+                <div class="value-lg">₹ <span id="emi-display">16,801</span></div>
+            </div>
+
+            <div class="summary-grid">
+                <div>
+                    <span class="label-sm">Total Interest</span>
+                    <div style="font-size: 1.2rem; font-weight: 500;">₹ <span id="interest-display">2,08,060</span></div>
+                </div>
+                <div>
+                    <span class="label-sm">Total Payment</span>
+                    <div style="font-size: 1.2rem; font-weight: 500;">₹ <span id="total-display">10,08,060</span></div>
+                </div>
+            </div>
+
+            <div class="breakdown-chart">
+                <div id="interest-fill"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.6rem; margin-top: 8px; text-transform: uppercase; letter-spacing: 1px;">
+                <span>Principal</span>
+                <span style="color: var(--saffron)">Interest Component</span>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const inputs = {
+            amount: document.getElementById('amount'),
+            amountRange: document.getElementById('amountRange'),
+            rate: document.getElementById('rate'),
+            rateRange: document.getElementById('rateRange'),
+            tenure: document.getElementById('tenure'),
+            tenureRange: document.getElementById('tenureRange')
+        };
+
+        const displays = {
+            emi: document.getElementById('emi-display'),
+            interest: document.getElementById('interest-display'),
+            total: document.getElementById('total-display'),
+            fill: document.getElementById('interest-fill')
+        };
+
+        function formatIndian(num) {
+            return new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(num);
+        }
+
+        function calculate() {
+            let P = parseFloat(inputs.amount.value);
+            let R = parseFloat(inputs.rate.value) / 12 / 100;
+            let N = parseFloat(inputs.tenure.value) * 12;
+
+            if (P > 0 && R > 0 && N > 0) {
+                // EMI Formula: [P x R x (1+R)^N]/[((1+R)^N)-1]
+                let emi = (P * R * Math.pow(1 + R, N)) / (Math.pow(1 + R, N) - 1);
+                let totalPayment = emi * N;
+                let totalInterest = totalPayment - P;
+
+                displays.emi.innerText = formatIndian(emi);
+                displays.interest.innerText = formatIndian(totalInterest);
+                displays.total.innerText = formatIndian(totalPayment);
+
+                // Update Visual Chart
+                let interestPercent = (totalInterest / totalPayment) * 100;
+                displays.fill.style.width = interestPercent + "%";
+            }
+        }
+
+        // Sync inputs and ranges
+        const sync = (input, range) => {
+            input.addEventListener('input', () => {
+                range.value = input.value;
+                calculate();
+            });
+            range.addEventListener('input', () => {
+                input.value = range.value;
+                calculate();
+            });
+        };
+
+        sync(inputs.amount, inputs.amountRange);
+        sync(inputs.rate, inputs.rateRange);
+        sync(inputs.tenure, inputs.tenureRange);
+
+        // Initial Calc
+        calculate();
+
+        // Reveal effect for display items
+        window.onload = () => {
+            const items = document.querySelectorAll('.result-item, .summary-grid');
+            items.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'all 1s ease-out';
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, 800 + (index * 200));
+            });
+        };
+    </script>
+</body>
+</html>
