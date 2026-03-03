@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>Professional Travel Budget Calculator | Every Calculator</title>
+    <meta name="title" content="Professional Travel Budget Calculator | Every Calculator">
+    <meta name="description" content="Plan your journey with the Every Calculator Travel Budget tool. Accurate trip expense forecasting with an elegant Indian-inspired design. Calculate transport, stay, and food costs.">
+    <meta name="keywords" content="travel budget calculator, trip expense planner, every calculator, everycalc.site, india travel budget, holiday cost estimator">
+    <meta name="author" content="Every Calculator">
+    <link rel="canonical" href="https://everycalc.site/travel-budget-calculator">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://everycalc.site/travel-budget-calculator">
+    <meta property="og:title" content="Professional Travel Budget Calculator | Every Calculator">
+    <meta property="og:description" content="Master your travel finances with our culturally-inspired, high-precision budget planner.">
+    <meta property="og:image" content="https://everycalc.site/og-image.jpg">
+
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,500&display=swap" rel="stylesheet">
+
+    <!-- Schema.org Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FinancialCalculator",
+      "name": "Travel Budget Calculator",
+      "description": "A professional-grade travel expense forecasting tool.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Every Calculator"
+      },
+      "url": "https://everycalc.site/travel-budget-calculator",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All"
+    }
+    </script>
+
+    <style>
+        :root {
+            /* Palette: Marigold Saffron, Deep Indigo, Sandalwood Parchment */
+            --saffron: #f4a261;
+            --indigo: #264653;
+            --terracotta: #e76f51;
+            --paper: #fdfaf0;
+            --ink: #1d1d1b;
+            --border: rgba(29, 29, 27, 0.12);
+            --transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--paper);
+            color: var(--ink);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: clamp(1rem, 5vw, 3rem);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* The "Rough Paper" Texture filter */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Decorative Mandala Motif */
+        .mandala-bg {
+            position: fixed;
+            width: 80vmax;
+            height: 80vmax;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z' fill='none' stroke='%23264653' stroke-width='0.5' stroke-opacity='0.1'/%3E%3C/svg%3E");
+            top: -10%;
+            right: -10%;
+            opacity: 0.3;
+            z-index: -1;
+            animation: rotate 180s linear infinite;
+        }
+
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Calculator Container */
+        .calculator-wrapper {
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.05);
+            animation: reveal 1.2s ease-out;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes reveal {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Branding Section */
+        .branding-header {
+            padding: 3rem 3rem 1rem 3rem;
+            grid-column: 1 / -1;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .branding-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: var(--indigo);
+            line-height: 1;
+        }
+
+        .branding-header span {
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--terracotta);
+        }
+
+        /* Input Pane */
+        .input-pane {
+            padding: 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: slideUp 0.8s forwards;
+        }
+
+        .input-group:nth-child(1) { animation-delay: 0.2s; }
+        .input-group:nth-child(2) { animation-delay: 0.3s; }
+        .input-group:nth-child(3) { animation-delay: 0.4s; }
+        .input-group:nth-child(4) { animation-delay: 0.5s; }
+        .input-group:nth-child(5) { animation-delay: 0.6s; }
+        .input-group:nth-child(6) { animation-delay: 0.7s; }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(20px); }
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.8rem;
+            color: var(--indigo);
+            font-weight: 600;
+        }
+
+        .field-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .field-container span {
+            position: absolute;
+            left: 0;
+            font-weight: 300;
+            font-size: 1.4rem;
+            color: var(--saffron);
+        }
+
+        input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--border);
+            padding: 10px 0 10px 25px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            color: var(--ink);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        input:focus {
+            border-bottom-color: var(--saffron);
+        }
+
+        /* Result Pane (The Dashboard) */
+        .result-pane {
+            background: var(--indigo);
+            color: white;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-pane::before {
+            content: "Shubh Yatra";
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            font-family: 'Playfair Display', serif;
+            font-size: 6rem;
+            opacity: 0.03;
+            white-space: nowrap;
+        }
+
+        .result-item {
+            margin-bottom: 3rem;
+        }
+
+        .result-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--saffron);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .result-value {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1;
+        }
+
+        .mini-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .mini-val {
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        /* Visualization */
+        .chart-container {
+            margin-top: 3rem;
+        }
+
+        .progress-stack {
+            height: 6px;
+            width: 100%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-segment {
+            height: 100%;
+            transition: width 1s ease;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 900px) {
+            .calculator-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .input-pane {
+                grid-template-columns: 1fr;
+                padding: 2rem;
+            }
+            .branding-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        .domain-tag {
+            position: absolute;
+            bottom: 20px;
+            left: 3rem;
+            font-size: 0.65rem;
+            opacity: 0.3;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="mandala-bg"></div>
+
+    <main class="calculator-wrapper">
+        <header class="branding-header">
+            <div>
+                <span>Every Calculator Presents</span>
+                <h1>Journey Ledger</h1>
+            </div>
+            <div style="text-align: right;">
+                <img src="logo.png" alt="Every Calc Logo" style="height: 40px; filter: contrast(0);" onerror="this.style.display='none'">
+            </div>
+        </header>
+
+        <section class="input-pane">
+            <div class="input-group">
+                <label>Total Trip Days</label>
+                <div class="field-container">
+                    <span style="font-size: 0.8rem; font-weight: 600;">#</span>
+                    <input type="number" id="days" value="5" oninput="calculate()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Flight / Train (Total)</label>
+                <div class="field-container">
+                    <span>₹</span>
+                    <input type="number" id="transport" value="12000" oninput="calculate()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Stay (Per Night)</label>
+                <div class="field-container">
+                    <span>₹</span>
+                    <input type="number" id="stay" value="3500" oninput="calculate()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Food (Per Day)</label>
+                <div class="field-container">
+                    <span>₹</span>
+                    <input type="number" id="food" value="1500" oninput="calculate()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Local Commute (Total)</label>
+                <div class="field-container">
+                    <span>₹</span>
+                    <input type="number" id="local" value="5000" oninput="calculate()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Activities / Shopping</label>
+                <div class="field-container">
+                    <span>₹</span>
+                    <input type="number" id="misc" value="8000" oninput="calculate()">
+                </div>
+            </div>
+        </section>
+
+        <section class="result-pane">
+            <div class="result-item">
+                <span class="result-label">Estimated Total Expense</span>
+                <div class="result-value">₹ <span id="total-out">47,500</span></div>
+            </div>
+
+            <div class="mini-stats">
+                <div>
+                    <span class="result-label">Cost Per Day</span>
+                    <div class="mini-val">₹ <span id="per-day-out">9,500</span></div>
+                </div>
+                <div>
+                    <span class="result-label">Contingency (10%)</span>
+                    <div class="mini-val">₹ <span id="buffer-out">4,750</span></div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <span class="result-label" style="font-size: 0.6rem;">Expense Breakdown</span>
+                <div class="progress-stack">
+                    <div id="bar-fixed" class="progress-segment" style="background: var(--saffron); width: 40%;" title="Transport"></div>
+                    <div id="bar-stay" class="progress-segment" style="background: var(--terracotta); width: 30%;" title="Stay"></div>
+                    <div id="bar-food" class="progress-segment" style="background: #8ab17d; width: 20%;" title="Food"></div>
+                    <div id="bar-misc" class="progress-segment" style="background: #2a9d8f; width: 10%;" title="Misc"></div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 10px; font-size: 0.55rem; text-transform: uppercase; opacity: 0.7; letter-spacing: 1px;">
+                    <span style="color: var(--saffron)">■ Travel</span>
+                    <span style="color: var(--terracotta)">■ Stay</span>
+                    <span style="color: #8ab17d">■ Food</span>
+                </div>
+            </div>
+
+            <div class="domain-tag">everycalc.site</div>
+        </section>
+    </main>
+
+    <script>
+        function formatNumber(num) {
+            return new Intl.NumberFormat('en-IN').format(Math.round(num));
+        }
+
+        function calculate() {
+            // Inputs
+            const days = parseFloat(document.getElementById('days').value) || 0;
+            const transport = parseFloat(document.getElementById('transport').value) || 0;
+            const stayPerNight = parseFloat(document.getElementById('stay').value) || 0;
+            const foodPerDay = parseFloat(document.getElementById('food').value) || 0;
+            const local = parseFloat(document.getElementById('local').value) || 0;
+            const misc = parseFloat(document.getElementById('misc').value) || 0;
+
+            // Calculations
+            const totalStay = stayPerNight * (days > 0 ? days - 1 : 0); // Assuming n-1 nights for n days
+            const totalFood = foodPerDay * days;
+            const totalFixed = transport + local;
+            
+            const grandTotal = totalFixed + totalStay + totalFood + misc;
+            const perDay = days > 0 ? grandTotal / days : 0;
+            const buffer = grandTotal * 0.10;
+
+            // UI Update
+            document.getElementById('total-out').innerText = formatNumber(grandTotal);
+            document.getElementById('per-day-out').innerText = formatNumber(perDay);
+            document.getElementById('buffer-out').innerText = formatNumber(buffer);
+
+            // Chart Animation
+            if(grandTotal > 0) {
+                document.getElementById('bar-fixed').style.width = (totalFixed / grandTotal * 100) + '%';
+                document.getElementById('bar-stay').style.width = (totalStay / grandTotal * 100) + '%';
+                document.getElementById('bar-food').style.width = (totalFood / grandTotal * 100) + '%';
+                document.getElementById('bar-misc').style.width = (misc / grandTotal * 100) + '%';
+            }
+        }
+
+        // Initialize on load
+        window.onload = calculate;
+    </script>
+</body>
+</html>
