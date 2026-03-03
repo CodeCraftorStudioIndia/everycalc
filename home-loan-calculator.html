@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Optimization -->
+    <title>Professional Home Loan EMI Calculator | Every Calculator</title>
+    <meta name="description" content="Calculate your Home Loan EMI with precision. Featuring a unique Indian-themed architectural design. Get detailed repayment schedules and interest breakdowns. Powered by Every Calculator.">
+    <meta name="keywords" content="Home Loan Calculator, EMI Calculator India, Housing Loan EMI, everycalc.site, Every Calculator, Home Loan Repayment Schedule">
+    <meta name="author" content="Every Calculator">
+    <link rel="canonical" href="https://everycalc.site/home-loan-calculator">
+
+    <!-- Open Graph for Social Media -->
+    <meta property="og:title" content="Home Loan EMI Calculator | Every Calculator">
+    <meta property="og:description" content="A culturally inspired, high-precision financial tool for your dream home planning.">
+    <meta property="og:image" content="logo.png">
+    <meta property="og:url" content="https://everycalc.site">
+
+    <!-- Typography: Cormorant Garamond (Elegant Serif) & Outfit (Modern Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Schema.org Implementation -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FinancialCalculator",
+      "name": "Every Calculator Home Loan Tool",
+      "description": "Premium Home Loan EMI calculator with Indian cultural aesthetics.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Every Calculator"
+      },
+      "url": "https://everycalc.site",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      }
+    }
+    </script>
+
+    <style>
+        :root {
+            /* Palette: Henna Red, Aged Parchment, Deep Ink, Sandalwood */
+            --henna: #8a2e2e;
+            --ink: #1a2238;
+            --parchment: #fdfaf0;
+            --sandalwood: #d4a373;
+            --clay: #e76f51;
+            --text-main: #2d2d2d;
+            --border-ink: rgba(26, 34, 56, 0.12);
+            --curve: 0px; /* Sharp professional edges */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--parchment);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* The Paper Texture Overlay */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.06;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Subtle Geometric Blueprint Pattern */
+        .bg-pattern {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(var(--border-ink) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        header {
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo-container img {
+            max-height: 70px;
+            margin-bottom: 1rem;
+            filter: sepia(0.2) contrast(1.1);
+        }
+
+        .branding-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            color: var(--henna);
+            text-align: center;
+            line-height: 0.9;
+        }
+
+        .branding-title span {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--ink);
+            font-family: 'Outfit', sans-serif;
+            margin-top: 5px;
+        }
+
+        main {
+            width: 95%;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 2rem;
+            padding: 2rem 0;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        .calc-card {
+            background: white;
+            border: 1px solid var(--border-ink);
+            padding: clamp(1.5rem, 4vw, 3rem);
+            position: relative;
+            box-shadow: 15px 15px 0px rgba(138, 46, 46, 0.05);
+        }
+
+        .calc-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 5px;
+            background: linear-gradient(90deg, var(--henna), var(--sandalwood), var(--clay));
+        }
+
+        .input-group {
+            margin-bottom: 2.5rem;
+        }
+
+        .input-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 12px;
+        }
+
+        label {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .value-display {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            color: var(--henna);
+            font-weight: 600;
+        }
+
+        /* Custom Professional Slider */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: #eee;
+            outline: none;
+            margin-top: 10px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--ink);
+            border: 2px solid var(--sandalwood);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: var(--henna);
+        }
+
+        /* Results Panel */
+        .results-side {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .result-box {
+            background: var(--ink);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-box::after {
+            content: "₹";
+            position: absolute;
+            right: -10px;
+            bottom: -20px;
+            font-size: 8rem;
+            opacity: 0.05;
+            font-family: 'Cormorant Garamond';
+        }
+
+        .result-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--sandalwood);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .result-amount {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            line-height: 1;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .mini-stat {
+            background: white;
+            border: 1px solid var(--border-ink);
+            padding: 1.5rem;
+        }
+
+        .stat-val {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--ink);
+            display: block;
+        }
+
+        /* Visualization */
+        .chart-wrap {
+            height: 10px;
+            width: 100%;
+            background: #eee;
+            margin-top: 10px;
+            display: flex;
+        }
+
+        #p-bar { background: var(--henna); height: 100%; transition: width 0.5s ease; }
+        #i-bar { background: var(--sandalwood); height: 100%; transition: width 0.5s ease; }
+
+        /* Table Styles */
+        .schedule-container {
+            grid-column: 1 / -1;
+            background: white;
+            border: 1px solid var(--border-ink);
+            margin-top: 1rem;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: var(--parchment);
+            text-align: left;
+            padding: 1rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            border-bottom: 2px solid var(--border-ink);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-ink);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 850px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+            .branding-title { font-size: 2.2rem; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .calc-card { padding: 1.2rem; }
+        }
+
+        /* Professional Accent */
+        .stamp {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--henna);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.5rem;
+            font-weight: 900;
+            color: var(--henna);
+            transform: rotate(-15deg);
+            opacity: 0.3;
+            pointer-events: none;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-pattern"></div>
+
+    <header>
+        <div class="logo-container">
+            <img src="logo.png" alt="Every Calculator Logo" onerror="this.style.display='none'">
+        </div>
+        <h1 class="branding-title">
+            Vastu-Gyan Home Loan
+            <span>Architecture of Finance by Every Calculator</span>
+        </h1>
+    </header>
+
+    <main>
+        <!-- User Input Section -->
+        <section class="calc-card">
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="amount">Property Loan Amount</label>
+                    <span class="value-display">₹ <span id="amount-val">50,00,000</span></span>
+                </div>
+                <input type="range" id="amount" min="100000" max="100000000" step="50000" value="5000000">
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="interest">Interest Rate (% P.A.)</label>
+                    <span class="value-display"><span id="interest-val">8.5</span>%</span>
+                </div>
+                <input type="range" id="interest" min="5" max="15" step="0.05" value="8.5">
+            </div>
+
+            <div class="input-group">
+                <div class="input-header">
+                    <label for="tenure">Loan Tenure (Years)</label>
+                    <span class="value-display"><span id="tenure-val">20</span> Years</span>
+                </div>
+                <input type="range" id="tenure" min="1" max="30" step="1" value="20">
+            </div>
+
+            <div style="font-size: 0.75rem; color: #777; font-style: italic; border-top: 1px dashed #ccc; padding-top: 1rem;">
+                Design Logic: Calculated using the monthly reducing balance method. Recommended for HDFC, SBI, and ICICI loan estimates.
+            </div>
+            <div class="stamp">Verified Logic<br>EveryCalc.site</div>
+        </section>
+
+        <!-- Dynamic Results Section -->
+        <section class="results-side">
+            <div class="result-box">
+                <span class="result-label">Monthly EMI Payment</span>
+                <div class="result-amount">₹ <span id="emi-out">43,391</span></div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="mini-stat">
+                    <span class="result-label" style="color: var(--henna)">Total Interest</span>
+                    <span class="stat-val">₹ <span id="interest-out">54,13,840</span></span>
+                </div>
+                <div class="mini-stat">
+                    <span class="result-label" style="color: var(--ink)">Total Amount</span>
+                    <span class="stat-val">₹ <span id="total-out">1,04,13,840</span></span>
+                </div>
+            </div>
+
+            <div class="mini-stat">
+                <span class="result-label">Principal vs Interest Breakdown</span>
+                <div class="chart-wrap">
+                    <div id="p-bar" title="Principal"></div>
+                    <div id="i-bar" title="Interest"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.6rem; margin-top: 5px; text-transform: uppercase;">
+                    <span>Principal (Henna)</span>
+                    <span>Interest (Sandalwood)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Amortization Table -->
+        <section class="schedule-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Opening Balance</th>
+                        <th>EMI * 12</th>
+                        <th>Principal Paid</th>
+                        <th>Interest Paid</th>
+                        <th>Closing Balance</th>
+                    </tr>
+                </thead>
+                <tbody id="schedule-body">
+                    <!-- JS Generated Rows -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script>
+        const inputs = ['amount', 'interest', 'tenure'];
+        const elements = {};
+        
+        // Initialize elements
+        inputs.forEach(id => {
+            elements[id] = document.getElementById(id);
+            elements[id + '-val'] = document.getElementById(id + '-val');
+        });
+
+        const emiOut = document.getElementById('emi-out');
+        const interestOut = document.getElementById('interest-out');
+        const totalOut = document.getElementById('total-out');
+        const pBar = document.getElementById('p-bar');
+        const iBar = document.getElementById('i-bar');
+        const scheduleBody = document.getElementById('schedule-body');
+
+        function formatIndian(num) {
+            const x = Math.round(num).toString();
+            let lastThree = x.substring(x.length - 3);
+            const otherNumbers = x.substring(0, x.length - 3);
+            if (otherNumbers != '') lastThree = ',' + lastThree;
+            return otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+        }
+
+        function calculate() {
+            const P = parseFloat(elements.amount.value);
+            const R = (parseFloat(elements.interest.value) / 12) / 100;
+            const N = parseFloat(elements.tenure.value) * 12;
+
+            // EMI Formula: [P x R x (1+R)^N]/[((1+R)^N)-1]
+            const emi = P * R * Math.pow(1 + R, N) / (Math.pow(1 + R, N) - 1);
+            const totalPayment = emi * N;
+            const totalInterest = totalPayment - P;
+
+            // Updates
+            elements['amount-val'].innerText = formatIndian(P);
+            elements['interest-val'].innerText = elements.interest.value;
+            elements['tenure-val'].innerText = elements.tenure.value;
+
+            emiOut.innerText = formatIndian(emi);
+            interestOut.innerText = formatIndian(totalInterest);
+            totalOut.innerText = formatIndian(totalPayment);
+
+            // Chart Update
+            const pRatio = (P / totalPayment) * 100;
+            pBar.style.width = pRatio + "%";
+            iBar.style.width = (100 - pRatio) + "%";
+
+            generateSchedule(P, R, emi, elements.tenure.value);
+        }
+
+        function generateSchedule(P, R, emi, years) {
+            scheduleBody.innerHTML = '';
+            let balance = P;
+            const yearlyEMI = emi * 12;
+
+            for (let i = 1; i <= years; i++) {
+                let yearlyInterest = 0;
+                let openingBalance = balance;
+
+                for (let m = 1; m <= 12; m++) {
+                    let interestComponent = balance * R;
+                    yearlyInterest += interestComponent;
+                    balance -= (emi - interestComponent);
+                }
+
+                if (balance < 0) balance = 0;
+
+                const row = `
+                    <tr>
+                        <td>Year ${i}</td>
+                        <td>₹ ${formatIndian(openingBalance)}</td>
+                        <td>₹ ${formatIndian(yearlyEMI)}</td>
+                        <td>₹ ${formatIndian(yearlyEMI - yearlyInterest)}</td>
+                        <td>₹ ${formatIndian(yearlyInterest)}</td>
+                        <td>₹ ${formatIndian(balance)}</td>
+                    </tr>
+                `;
+                scheduleBody.innerHTML += row;
+            }
+        }
+
+        // Event Listeners
+        inputs.forEach(id => {
+            elements[id].addEventListener('input', calculate);
+        });
+
+        // Initial trigger
+        calculate();
+    </script>
+</body>
+</html>
