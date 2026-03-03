@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & META -->
+    <title>Rule of 72 Calculator | Investment Doubling Time | Every Calculator</title>
+    <meta name="description" content="Calculate how long it takes to double your money with the Rule of 72. A professional, culturally-inspired financial tool by Every Calculator (everycalc.site).">
+    <meta name="keywords" content="Rule of 72, Investment Calculator, Double Money Calculator, Every Calculator, everycalc.site, India Investment Tools, Financial Literacy">
+    <meta name="author" content="Every Calculator">
+    <link rel="canonical" href="https://everycalc.site/rule-of-72-calculator">
+
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="Professional Rule of 72 Calculator | Every Calculator">
+    <meta property="og:description" content="Estimate your investment's doubling time with precision and elegance. Discover the power of compounding.">
+    <meta property="og:url" content="https://everycalc.site">
+    <meta property="og:type" content="website">
+
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,500&display=swap" rel="stylesheet">
+
+    <!-- SCHEMA.ORG MARKUP -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FinancialCalculator",
+      "name": "Professional Rule of 72 Calculator",
+      "description": "Calculate the time required to double an investment at a fixed annual rate of interest.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Every Calculator"
+      },
+      "url": "https://everycalc.site",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All"
+    }
+    </script>
+
+    <style>
+        :root {
+            /* Palette: Peacock Teal, Marigold Saffron, Crimson Silk, and Aged Parchment */
+            --peacock: #0a4d5c;
+            --saffron: #f4a261;
+            --crimson: #9b2226;
+            --parchment: #fdfaf0;
+            --ink: #1b1b1b;
+            --border: rgba(10, 77, 92, 0.15);
+            --transition-main: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--parchment);
+            color: var(--ink);
+            font-family: 'Jost', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Handmade Paper Texture Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise)'/%3E%3C/svg%3E");
+            opacity: 0.06;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Abstract Indian Motif (Lotus/Mandala influence) */
+        .bg-ornament {
+            position: fixed;
+            width: 70vmax;
+            height: 70vmax;
+            border: 1px solid var(--peacock);
+            opacity: 0.05;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            top: -10%;
+            right: -10%;
+            z-index: -1;
+            animation: drift 40s infinite linear;
+        }
+
+        @keyframes drift {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .calc-card {
+            width: 100%;
+            max-width: 900px;
+            background: #fff;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+            position: relative;
+            z-index: 20;
+            animation: reveal 1s ease-out;
+            overflow: hidden;
+        }
+
+        @keyframes reveal {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* LEFT SIDE: INPUT */
+        .input-side {
+            padding: clamp(2rem, 5vw, 4rem);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        header {
+            margin-bottom: 3rem;
+        }
+
+        .brand-logo {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--crimson);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 1.1;
+            color: var(--peacock);
+        }
+
+        .field {
+            margin-bottom: 2.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            color: var(--peacock);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: baseline;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            border: none;
+            border-bottom: 2px solid var(--border);
+            padding: 10px 40px 10px 0;
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--ink);
+            outline: none;
+            background: transparent;
+            transition: var(--transition-main);
+        }
+
+        input[type="number"]:focus {
+            border-bottom-color: var(--saffron);
+        }
+
+        .unit {
+            position: absolute;
+            right: 0;
+            font-size: 1.5rem;
+            color: var(--saffron);
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+        }
+
+        .description {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* RIGHT SIDE: RESULTS */
+        .result-side {
+            background: var(--peacock);
+            color: white;
+            padding: clamp(2rem, 5vw, 4rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .result-side::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at bottom right, var(--saffron) 0%, transparent 70%);
+            opacity: 0.2;
+        }
+
+        .stat-group {
+            margin-bottom: 4rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--saffron);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            line-height: 1;
+        }
+
+        .stat-sub {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-top: 10px;
+            display: block;
+        }
+
+        /* Doubling Visualization */
+        .viz-container {
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .viz-box {
+            height: 40px;
+            width: 40px;
+            border: 1px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            position: relative;
+        }
+
+        .viz-box.doubled {
+            background: var(--saffron);
+            border-color: var(--saffron);
+            color: var(--peacock);
+            font-weight: 700;
+            width: 80px;
+            transition: var(--transition-main);
+        }
+
+        .viz-arrow {
+            width: 30px;
+            height: 1px;
+            background: rgba(255,255,255,0.3);
+            position: relative;
+        }
+
+        .viz-arrow::after {
+            content: "→";
+            position: absolute;
+            right: -5px;
+            top: -10px;
+        }
+
+        /* Domain Tag */
+        .domain-tag {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 0.65rem;
+            opacity: 0.4;
+            letter-spacing: 1px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 800px) {
+            .calc-card {
+                grid-template-columns: 1fr;
+            }
+            .input-side {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            .result-side {
+                padding: 3rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-ornament"></div>
+
+    <main class="calc-card">
+        <section class="input-side">
+            <header>
+                <span class="brand-logo">Every Calculator</span>
+                <h1>Rule of 72</h1>
+            </header>
+
+            <div class="field">
+                <label for="rate">Annual Interest Rate</label>
+                <div class="input-wrapper">
+                    <input type="number" id="rate" value="8" step="0.1" min="0.1" oninput="calculate()">
+                    <span class="unit">%</span>
+                </div>
+            </div>
+
+            <article class="description">
+                The Rule of 72 is a simple way to estimate how long it takes to double an investment with fixed annual returns. 
+                <br><br>
+                <em>Logic: Divide 72 by your annual interest rate.</em>
+            </article>
+
+            <div class="domain-tag">everycalc.site</div>
+        </section>
+
+        <section class="result-side">
+            <div class="stat-group">
+                <span class="stat-label">Estimated Doubling Time</span>
+                <div class="stat-value"><span id="years">9</span> <small style="font-size: 1.5rem">Yrs</small></div>
+                <span class="stat-sub" id="precise-note">Precise math: 8.99 years</span>
+            </div>
+
+            <div class="stat-label">Investment Growth</div>
+            <div class="viz-container">
+                <div class="viz-box">₹100</div>
+                <div class="viz-arrow"></div>
+                <div class="viz-box doubled">₹200</div>
+            </div>
+            <span class="stat-sub" style="margin-top: 1.5rem">Your wealth doubles every <span id="years-text">9</span> years at this rate.</span>
+        </section>
+    </main>
+
+    <script>
+        /**
+         * Rule of 72 Logic
+         * Formula: Years = 72 / Rate
+         * Precise Formula: Years = ln(2) / ln(1 + rate/100)
+         */
+        function calculate() {
+            const rateInput = document.getElementById('rate');
+            const yearsOutput = document.getElementById('years');
+            const preciseNote = document.getElementById('precise-note');
+            const yearsText = document.getElementById('years-text');
+
+            let rate = parseFloat(rateInput.value);
+
+            // Handle invalid or zero input
+            if (!rate || rate <= 0) {
+                yearsOutput.innerText = "∞";
+                preciseNote.innerText = "Please enter a positive rate";
+                yearsText.innerText = "∞";
+                return;
+            }
+
+            // Rule of 72 (Approximation)
+            const ruleOf72 = (72 / rate).toFixed(1);
+
+            // Exact Compounding Calculation
+            const precise = (Math.log(2) / Math.log(1 + (rate / 100))).toFixed(2);
+
+            // UI Updates
+            yearsOutput.innerText = ruleOf72;
+            yearsText.innerText = ruleOf72;
+            preciseNote.innerText = `Precise mathematical time: ${precise} years`;
+
+            // Micro-interaction: Scale the doubled box based on input validity
+            const doubledBox = document.querySelector('.viz-box.doubled');
+            if(rate > 0) {
+                doubledBox.style.opacity = "1";
+                doubledBox.style.transform = "scale(1)";
+            } else {
+                doubledBox.style.opacity = "0.3";
+                doubledBox.style.transform = "scale(0.9)";
+            }
+        }
+
+        // Initialize calculation on load
+        window.addEventListener('DOMContentLoaded', calculate);
+    </script>
+</body>
+</html>
