@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & META TAGS -->
+    <title>Savings Goal Calculator | Every Calculator</title>
+    <meta name="description" content="Plan your financial future with the Every Calculator Savings Goal tool. Calculate monthly contributions required to reach your target, adjusted for inflation. A culturally inspired professional tool.">
+    <meta name="keywords" content="Savings Goal Calculator, Financial Planning India, Every Calculator, Investment Calculator, Inflation Adjusted Savings, everycalc.site">
+    <meta name="author" content="Every Calculator">
+    <link rel="canonical" href="https://everycalc.site/savings-goal-calculator">
+
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="Savings Goal Calculator | Every Calculator">
+    <meta property="og:description" content="Reach your dreams faster. Precise savings goal planning with an Indian cultural aesthetic.">
+    <meta property="og:url" content="https://everycalc.site">
+    <meta property="og:type" content="website">
+
+    <!-- FONTS: Lora for Heritage, Montserrat for Precision -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;500;800&display=swap" rel="stylesheet">
+
+    <!-- SCHEMA.ORG -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FinancialCalculator",
+      "name": "Savings Goal Calculator",
+      "description": "A high-precision savings planning tool with inflation adjustment and compounding logic.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Every Calculator"
+      },
+      "url": "https://everycalc.site",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      }
+    }
+    </script>
+
+    <style>
+        :root {
+            --kumkum-red: #8B0000;
+            --turmeric-gold: #D4AF37;
+            --earth-brown: #3E2723;
+            --paper-bg: #FDF5E6;
+            --ink-black: #1A1A1B;
+            --teal-accent: #006064;
+            --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--paper-bg);
+            color: var(--ink-black);
+            font-family: 'Lora', serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Paper Texture Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Background Pattern - Mandala Geometric Style */
+        .bg-pattern {
+            position: fixed;
+            top: -10%;
+            right: -10%;
+            width: 800px;
+            height: 800px;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z' fill='none' stroke='%238B0000' stroke-width='0.2' stroke-opacity='0.1'/%3E%3C/svg%3E");
+            z-index: -1;
+            opacity: 0.4;
+            animation: rotatePattern 240s linear infinite;
+        }
+
+        @keyframes rotatePattern { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .calculator-container {
+            width: 95%;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 0, 0, 0.1);
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.1);
+            animation: revealPage 1.2s ease-out;
+            position: relative;
+        }
+
+        @keyframes revealPage {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Left Side: Inputs */
+        .input-pane {
+            padding: clamp(2rem, 5vw, 4rem);
+            background: white;
+            border-right: 1px solid rgba(0,0,0,0.05);
+        }
+
+        header {
+            margin-bottom: 3rem;
+            border-bottom: 3px solid var(--kumkum-red);
+            padding-bottom: 1rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--kumkum-red);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            color: var(--earth-brown);
+            margin-top: 5px;
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: slideIn 0.6s forwards;
+        }
+
+        .input-group:nth-child(2) { animation-delay: 0.2s; }
+        .input-group:nth-child(3) { animation-delay: 0.3s; }
+        .input-group:nth-child(4) { animation-delay: 0.4s; }
+        .input-group:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes slideIn {
+            to { opacity: 1; transform: translateX(0); }
+            from { opacity: 0; transform: translateX(-20px); }
+        }
+
+        label {
+            display: block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--ink-black);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .input-field {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-field span {
+            position: absolute;
+            left: 0;
+            font-weight: 300;
+            color: var(--kumkum-red);
+            font-size: 1.2rem;
+        }
+
+        input {
+            width: 100%;
+            border: none;
+            border-bottom: 2px solid #EEE;
+            padding: 10px 0 10px 25px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            background: transparent;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        input:focus {
+            border-bottom-color: var(--turmeric-gold);
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px; width: 14px;
+            left: 4px; bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider { background-color: var(--teal-accent); }
+        input:checked + .slider:before { transform: translateX(22px); }
+
+        /* Right Side: Results */
+        .result-pane {
+            padding: clamp(2rem, 5vw, 4rem);
+            background: var(--kumkum-red);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .result-card {
+            margin-bottom: 3rem;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .result-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--turmeric-gold);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .result-value {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .chart-container {
+            margin-top: 2rem;
+            height: 12px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #chart-fill {
+            height: 100%;
+            background: var(--turmeric-gold);
+            width: 0%;
+            transition: width 1s ease-out;
+        }
+
+        .disclaimer {
+            font-size: 0.7rem;
+            opacity: 0.6;
+            margin-top: 2rem;
+            line-height: 1.6;
+        }
+
+        .branding-tag {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            opacity: 0.3;
+            text-transform: uppercase;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Mobile Adjustments */
+        @media (max-width: 850px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+            }
+            .input-pane {
+                border-right: none;
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-pattern"></div>
+
+    <main class="calculator-container">
+        <section class="input-pane">
+            <header>
+                <h1>Lakshya Sanchay</h1>
+                <p>By Every Calculator</p>
+            </header>
+
+            <div class="input-group">
+                <label>Savings Goal Target</label>
+                <div class="input-field">
+                    <span>₹</span>
+                    <input type="number" id="goalAmount" value="1000000" oninput="calculate()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Current Savings</label>
+                <div class="input-field">
+                    <span>₹</span>
+                    <input type="number" id="currentSavings" value="50000" oninput="calculate()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Years to Reach Goal</label>
+                <div class="input-field">
+                    <span style="left: auto; right: 0; font-size: 0.8rem; text-transform: uppercase;">Years</span>
+                    <input type="number" id="years" value="5" oninput="calculate()" style="padding-left: 0;">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Expected Annual Return (%)</label>
+                <div class="input-field">
+                    <span style="left: auto; right: 0;">%</span>
+                    <input type="number" id="returnRate" value="12" step="0.1" oninput="calculate()" style="padding-left: 0;">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Adjust for Inflation (6%)</label>
+                <div class="toggle-container">
+                    <label class="switch">
+                        <input type="checkbox" id="inflationAdjust" onchange="calculate()">
+                        <span class="slider"></span>
+                    </label>
+                    <span style="font-size: 0.8rem; opacity: 0.7;">Keep purchasing power</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="result-pane">
+            <div class="result-card">
+                <span class="result-label">Monthly Contribution Required</span>
+                <div class="result-value">₹ <span id="monthlyRequired">0</span></div>
+            </div>
+
+            <div class="result-card" style="opacity: 0.9;">
+                <span class="result-label">Total Amount to Save</span>
+                <div class="result-value" style="font-size: 1.8rem;">₹ <span id="finalTarget">0</span></div>
+            </div>
+
+            <div class="result-card" style="margin-bottom: 0;">
+                <span class="result-label">The Power of Returns</span>
+                <div class="chart-container">
+                    <div id="chart-fill"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-family: 'Montserrat'; font-size: 0.6rem; margin-top: 8px; text-transform: uppercase;">
+                    <span>Your Money</span>
+                    <span style="color: var(--turmeric-gold);">Market Returns</span>
+                </div>
+            </div>
+
+            <p class="disclaimer">
+                Calculations are based on monthly compounding. Actual market performance may vary. Logic designed by Every Calculator (everycalc.site) specifically for Indian inflation trends.
+            </p>
+
+            <div class="branding-tag">everycalc.site</div>
+        </section>
+    </main>
+
+    <script>
+        function calculate() {
+            // Inputs
+            let goal = parseFloat(document.getElementById('goalAmount').value) || 0;
+            let current = parseFloat(document.getElementById('currentSavings').value) || 0;
+            let years = parseFloat(document.getElementById('years').value) || 0;
+            let rate = parseFloat(document.getElementById('returnRate').value) || 0;
+            const adjust = document.getElementById('inflationAdjust').checked;
+
+            const inflationRate = 0.06; // Standard Indian inflation estimate
+            let months = years * 12;
+            let monthlyRate = (rate / 100) / 12;
+
+            // Step 1: Adjust Goal for Inflation if toggle is on
+            let futureGoal = goal;
+            if (adjust) {
+                futureGoal = goal * Math.pow((1 + inflationRate), years);
+            }
+
+            // Step 2: Calculate Future Value of Current Savings
+            let fvCurrent = current * Math.pow((1 + monthlyRate), months);
+
+            // Step 3: Calculate Monthly Contribution Needed
+            // Formula: PMT = (FV_remaining * r) / ((1 + r)^n - 1)
+            let remainingGoal = futureGoal - fvCurrent;
+            let monthlyPayment = 0;
+
+            if (remainingGoal > 0 && months > 0) {
+                if (monthlyRate > 0) {
+                    monthlyPayment = (remainingGoal * monthlyRate) / (Math.pow(1 + monthlyRate, months) - 1);
+                } else {
+                    monthlyPayment = remainingGoal / months;
+                }
+            }
+
+            // Step 4: UI Updates
+            document.getElementById('finalTarget').innerText = formatIndianNumber(futureGoal);
+            document.getElementById('monthlyRequired').innerText = formatIndianNumber(monthlyPayment);
+
+            // Chart Logic (Total Deposits vs Future Interest)
+            let totalDeposited = (monthlyPayment * months) + current;
+            let interestEarned = futureGoal - totalDeposited;
+            let ratio = (totalDeposited / futureGoal) * 100;
+            
+            if (futureGoal > 0) {
+                document.getElementById('chart-fill').style.width = Math.min(ratio, 100) + "%";
+            }
+        }
+
+        function formatIndianNumber(num) {
+            let x = Math.round(num).toString();
+            let lastThree = x.substring(x.length - 3);
+            let otherNumbers = x.substring(0, x.length - 3);
+            if (otherNumbers != '') lastThree = ',' + lastThree;
+            let res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+            return res;
+        }
+
+        // Initialize on load
+        window.onload = calculate;
+    </script>
+</body>
+</html>
