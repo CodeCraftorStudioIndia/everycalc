@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FD Calculator by EveryCalc – Free Online Calculator</title>
+    <meta name="description" content="Use the free FD (Fixed Deposit) Calculator by EveryCalc for fast, accurate maturity and interest calculations. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/fd-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "FD Calculator by EveryCalc",
+      "applicationCategory": "CalculatorApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/fd-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex-grow: 1;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        header, footer {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); }
+        li { margin-bottom: 0.5rem; }
+
+        .subtitle {
+            font-size: var(--font-size-md);
+            color: var(--color-secondary);
+            font-weight: 400;
+            margin: 0;
+        }
+
+        section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; gap: 1.5rem; }
+        
+        @media (min-width: 640px) {
+            .calculator-grid { grid-template-columns: repeat(2, 1fr); }
+            .grid-span-2 { grid-column: span 2; }
+        }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .input-wrapper { position: relative; }
+        .input-wrapper span.prefix {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+         .input-wrapper span.suffix {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        
+        .form-group input[name="principal"] { padding-left: 2.5rem; }
+        .form-group input[name="interestRate"] { padding-right: 2.5rem; }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s, color 0.2s, opacity 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        @media (min-width: 640px) { .results-grid { grid-template-columns: repeat(3, 1fr); } }
+        
+        .result-card { text-align: center; }
+        .result-card-label { font-weight: 500; color: var(--color-secondary); margin-bottom: 0.25rem; display: block; }
+        .result-card-value { font-size: var(--font-size-lg); font-weight: 700; color: var(--color-primary); }
+        
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+        
+        .faq-item { margin-bottom: 1.5rem; }
+        .faq-item h3 { margin-bottom: 0.5rem; }
+
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { overflow: visible; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>FD Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Project Your Fixed Deposit Returns</h2>
+            <p>Welcome to the Fixed Deposit (FD) Calculator by EveryCalc, a streamlined tool for accurately forecasting the maturity value of your investment. A Fixed Deposit is a secure investment instrument offered by banks and financial institutions, providing a fixed interest rate until a given maturity date. This calculator is designed for savers, investors, and financial planners who require a quick, reliable way to understand the potential earnings from an FD. By removing unnecessary complexity, we provide a clear view of your investment's growth, helping you make informed decisions for your financial future. Trust EveryCalc for a confident, high-performance calculation experience.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Enter Your FD Details</h2>
+            <form id="fd-form" novalidate>
+                <div class="calculator-grid">
+                    <div class="form-group">
+                        <label for="principal">Investment Amount</label>
+                        <div class="input-wrapper">
+                            <span class="prefix">₹</span>
+                            <input type="number" id="principal" name="principal" placeholder="e.g., 100000" required min="1">
+                        </div>
+                        <p class="error-message" id="principal-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="interestRate">Annual Interest Rate</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="interestRate" name="interestRate" placeholder="e.g., 7.5" required min="0.1" step="0.01">
+                            <span class="suffix">%</span>
+                        </div>
+                        <p class="error-message" id="rate-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="tenure">Tenure (in years)</label>
+                        <input type="number" id="tenure" name="tenure" placeholder="e.g., 5" required min="0.1" step="0.1">
+                        <p class="error-message" id="tenure-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="compounding">Compounding Frequency</label>
+                        <select id="compounding" name="compounding" required>
+                            <option value="12">Monthly</option>
+                            <option value="4" selected>Quarterly</option>
+                            <option value="2">Half-Yearly</option>
+                            <option value="1">Annually</option>
+                        </select>
+                        <p class="error-message" id="compounding-error"></p>
+                    </div>
+                    <div class="button-group grid-span-2">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">Calculate Maturity</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Your Investment Summary</h2>
+            <div class="results-grid">
+                 <div class="result-card">
+                    <span class="result-card-label">Invested Amount</span>
+                    <span class="result-card-value" id="invested-amount"></span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">Total Interest Earned</span>
+                    <span class="result-card-value" id="total-interest"></span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">Maturity Value</span>
+                    <span class="result-card-value" id="maturity-value"></span>
+                </div>
+            </div>
+            <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Summary</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Summary</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the FD Calculator</h2>
+            <p>This tool is engineered for ease of use and precision. To calculate the returns on your Fixed Deposit, you will need to provide four key pieces of information:</p>
+            <ol>
+                <li><strong>Investment Amount:</strong> Enter the initial principal amount you plan to deposit. This is the base on which your interest will be calculated.</li>
+                <li><strong>Annual Interest Rate:</strong> Input the rate of interest offered by your bank, expressed as a percentage. For instance, if the rate is 7.25%, enter '7.25'.</li>
+                <li><strong>Tenure (in years):</strong> Specify the duration for which you will keep the money in the FD. The tool accepts decimal values, so a tenure of 18 months can be entered as 1.5 years.</li>
+                <li><strong>Compounding Frequency:</strong> Select how often the interest is calculated and added to the principal. Quarterly compounding is most common for FDs in India, but options for monthly, half-yearly, and yearly are available. This choice significantly impacts your final returns.</li>
+            </ol>
+            <p>Once these fields are correctly filled, click the "Calculate Maturity" button. The results will be instantly generated and displayed, showing your initial investment, the interest earned, and the total value upon maturity.</p>
+            <h3>Tips for Accuracy</h3>
+            <p>Always double-check the compounding frequency with your bank, as it is a critical factor in the calculation. Be aware that some banks may quote an "effective yield" which can be different from the nominal interest rate. Use the nominal rate for this calculation. Avoid using commas or currency symbols in the numerical fields to ensure the calculation runs smoothly.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formula & Methodology Explained</h2>
+            <p>To ensure full transparency, EveryCalc uses the standard financial formula for calculating the maturity value of a lump-sum investment with compound interest. The formula is:</p>
+            <p style="text-align: center; font-size: 1.2em; font-weight: 600; color: var(--color-primary);">A = P (1 + r/n)<sup>nt</sup></p>
+            <p>Here’s a detailed breakdown of each component in this formula:</p>
+            <ul>
+                <li><strong>A</strong> is the <strong>Maturity Amount</strong>, the final value of the investment including interest.</li>
+                <li><strong>P</strong> is the <strong>Principal Amount</strong>, which is your initial "Investment Amount".</li>
+                <li><strong>r</strong> is the <strong>Annual Interest Rate</strong> in decimal form. We convert the percentage you enter by dividing it by 100 (e.g., 7.5% becomes 0.075).</li>
+                <li><strong>n</strong> is the <strong>Compounding Frequency</strong> per year. This corresponds to your selection: 1 for Annually, 2 for Half-Yearly, 4 for Quarterly, and 12 for Monthly.</li>
+                <li><strong>t</strong> is the <strong>Tenure</strong> of the investment in years.</li>
+            </ul>
+            <p>The Total Interest Earned is then calculated by subtracting the initial principal from the final maturity amount (Interest = A - P). This calculator applies this formula rigorously to provide a precise and reliable projection of your FD's growth over the specified term.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical FD Scenarios</h2>
+            <p>The final return on a Fixed Deposit can vary significantly based on the principal, rate, and tenure. The table below illustrates a few common real-world scenarios to help you understand the potential outcomes.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Investment</th>
+                            <th>Rate (p.a.)</th>
+                            <th>Tenure</th>
+                            <th>Maturity Value</th>
+                            <th>Interest Earned</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Short-Term Goal Saver</strong></td>
+                            <td>₹50,000</td>
+                            <td>6.5%</td>
+                            <td>1 year</td>
+                            <td>₹53,303</td>
+                            <td>₹3,303</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tax-Saving FD</strong></td>
+                            <td>₹1,50,000</td>
+                            <td>7.2%</td>
+                            <td>5 years</td>
+                            <td>₹2,14,357</td>
+                            <td>₹64,357</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Long-Term Wealth Building</strong></td>
+                            <td>₹5,00,000</td>
+                            <td>7.5%</td>
+                            <td>10 years</td>
+                            <td>₹10,51,929</td>
+                            <td>₹5,51,929</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Senior Citizen Scheme</strong></td>
+                            <td>₹2,00,000</td>
+                            <td>8.0%</td>
+                            <td>3 years</td>
+                            <td>₹2,53,648</td>
+                            <td>₹53,648</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size: var(--font-size-sm); color: var(--color-secondary); margin-top: 1rem;">*All scenarios above assume quarterly compounding for calculation purposes.</p>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. What is compounding frequency and why does it matter?</h3>
+                <p>Compounding frequency is how often the interest earned is calculated and added back to the principal amount. The more frequently interest is compounded (e.g., monthly vs. annually), the higher your "interest on interest" earnings will be, resulting in a slightly higher maturity amount over the same period.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. Is the interest earned from an FD taxable?</h3>
+                <p>Yes, the interest earned on a Fixed Deposit is fully taxable under the head "Income from Other Sources" as per your income tax slab. Banks are also required to deduct Tax at Source (TDS) if the interest income exceeds a certain threshold in a financial year (e.g., ₹40,000 for individuals).</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. What happens if I withdraw my FD before the maturity date?</h3>
+                <p>Premature withdrawal is usually allowed, but it comes with a penalty. The penalty typically involves a reduction in the applicable interest rate (e.g., 0.5% to 1% lower than the contracted rate). The exact terms vary from bank to bank and are specified when you open the FD account.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. What is the difference between a cumulative and non-cumulative FD?</h3>
+                <p>In a cumulative FD, the interest is compounded and paid out at the end of the tenure along with the principal. This is what our calculator computes. In a non-cumulative FD, the interest is paid out at regular intervals (monthly, quarterly, etc.) and is not reinvested. This option is suitable for those seeking regular income.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. Is my money in an FD safe?</h3>
+                <p>Fixed Deposits are considered one of the safest investment options. In India, deposits in scheduled banks are insured by the Deposit Insurance and Credit Guarantee Corporation (DICGC), an RBI subsidiary, for up to ₹5,00,000 per depositor per bank.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. Can I use this calculator for recurring deposits (RDs)?</h3>
+                <p>No, this calculator is specifically designed for Fixed Deposits, which involve a single lump-sum investment. A Recurring Deposit (RD) involves regular monthly investments, and its maturity calculation uses a different formula.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. Do senior citizens get a higher interest rate on FDs?</h3>
+                <p>Yes, most banks and financial institutions in India offer a higher interest rate for senior citizens (typically those aged 60 and above). This additional rate is usually 0.50% to 0.75% over and above the regular rates.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. How accurate is this calculator?</h3>
+                <p>This calculator uses the standard mathematical formula for compound interest and is highly accurate for estimation purposes. However, the final maturity amount from your bank might differ by a very small margin due to their specific rounding rules and day-count conventions.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: Maximizing Your FD Returns</h2>
+            <p>While FDs offer fixed returns, you can still employ strategies to maximize your earnings. Firstly, always compare interest rates across different banks and NBFCs before investing, as even a small difference can add up over time. Secondly, consider the impact of inflation. If the inflation rate is higher than your FD interest rate, your real return (the growth in your purchasing power) will be negative. It's important to view FDs as a tool for capital preservation and stable, predictable growth rather than high-return wealth creation. Lastly, for longer-term goals, you can use a technique called "laddering"—splitting your investment into multiple FDs with different maturity dates. This provides liquidity at regular intervals and allows you to reinvest maturing funds at potentially higher interest rates, mitigating reinvestment risk.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('fd-form');
+            const principalInput = document.getElementById('principal');
+            const rateInput = document.getElementById('interestRate');
+            const tenureInput = document.getElementById('tenure');
+            const compoundingSelect = document.getElementById('compounding');
+
+            const principalError = document.getElementById('principal-error');
+            const rateError = document.getElementById('rate-error');
+            const tenureError = document.getElementById('tenure-error');
+
+            const resultsSection = document.getElementById('results-section');
+            const investedAmountEl = document.getElementById('invested-amount');
+            const totalInterestEl = document.getElementById('total-interest');
+            const maturityValueEl = document.getElementById('maturity-value');
+
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            
+            const currencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+
+            const validateInput = (input, errorEl, message, min = 0.01) => {
+                const value = parseFloat(input.value);
+                if (input.value.trim() === '' || isNaN(value) || value < min) {
+                    input.style.borderColor = 'var(--color-danger)';
+                    errorEl.textContent = message;
+                    errorEl.style.display = 'block';
+                    return false;
+                }
+                input.style.borderColor = 'var(--color-border)';
+                errorEl.style.display = 'none';
+                return true;
+            };
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const isPrincipalValid = validateInput(principalInput, principalError, 'Enter an amount greater than 0.', 1);
+                const isRateValid = validateInput(rateInput, rateError, 'Enter a rate greater than 0.', 0.1);
+                const isTenureValid = validateInput(tenureInput, tenureError, 'Enter a tenure greater than 0.', 0.1);
+
+                if (!isPrincipalValid || !isRateValid || !isTenureValid) {
+                    return;
+                }
+                
+                calculateBtn.textContent = 'Calculating...';
+                calculateBtn.disabled = true;
+
+                setTimeout(() => {
+                    const P = parseFloat(principalInput.value);
+                    const r = parseFloat(rateInput.value) / 100;
+                    const t = parseFloat(tenureInput.value);
+                    const n = parseInt(compoundingSelect.value);
+
+                    const maturityAmount = P * Math.pow((1 + r / n), n * t);
+                    const totalInterest = maturityAmount - P;
+
+                    investedAmountEl.textContent = currencyFormatter.format(P);
+                    totalInterestEl.textContent = currencyFormatter.format(totalInterest);
+                    maturityValueEl.textContent = currencyFormatter.format(maturityAmount);
+
+                    resultsSection.style.display = 'block';
+                    resultsSection.scrollIntoView({ behavior: 'smooth' });
+                    
+                    calculateBtn.textContent = 'Calculate Maturity';
+                    calculateBtn.disabled = false;
+                }, 500);
+            });
+
+            resetBtn.addEventListener('click', function() {
+                form.reset();
+                [principalInput, rateInput, tenureInput].forEach(input => {
+                    input.style.borderColor = 'var(--color-border)';
+                });
+                [principalError, rateError, tenureError].forEach(errorEl => {
+                    errorEl.style.display = 'none';
+                });
+                resultsSection.style.display = 'none';
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const summaryText = `FD Summary by EveryCalc:\n` +
+                                  `--------------------------\n` +
+                                  `Invested Amount: ${investedAmountEl.textContent}\n` +
+                                  `Interest Rate: ${rateInput.value}%\n` +
+                                  `Tenure: ${tenureInput.value} years\n` +
+                                  `Compounding: ${compoundingSelect.options[compoundingSelect.selectedIndex].text}\n` +
+                                  `--------------------------\n` +
+                                  `Total Interest: ${totalInterestEl.textContent}\n` +
+                                  `Maturity Value: ${maturityValueEl.textContent}\n` +
+                                  `--------------------------\n` +
+                                  `Calculated at https://everycalc.site`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

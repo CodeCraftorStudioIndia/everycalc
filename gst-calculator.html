@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GST Calculator by EveryCalc – Free Online Calculator</title>
+    <meta name="description" content="Use the free GST Calculator by EveryCalc for fast, accurate results to add or remove GST from any amount. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/gst-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "GST Calculator by EveryCalc",
+      "applicationCategory": "FinancialApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/gst-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main { flex-grow: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+        header, footer { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--color-primary); }
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        li { margin-bottom: 0.5rem; }
+        strong { font-weight: 600; color: var(--color-primary); }
+
+        .subtitle { font-size: var(--font-size-md); color: var(--color-secondary); font-weight: 400; margin: 0; }
+        section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media (min-width: 640px) { .calculator-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .input-wrapper { position: relative; }
+        .input-wrapper span.prefix {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+        .input-wrapper span.suffix {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        
+        .form-group input[name="amount"] { padding-left: 2.5rem; }
+        .form-group input[name="gstRate"] { padding-right: 2.5rem; }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .radio-group { display: flex; gap: 1rem; margin-top: 0.5rem; }
+        .radio-group label {
+            padding: 0.75rem 1rem; border: 1px solid var(--color-border); border-radius: 0.375rem;
+            text-align: center; cursor: pointer; transition: all 0.2s;
+            background-color: var(--color-surface); font-weight: 400; margin-bottom: 0;
+            flex: 1;
+        }
+        .radio-group input[type="radio"] { display: none; }
+        .radio-group input[type="radio"]:checked + label {
+            background-color: var(--color-accent); color: var(--color-bg); border-color: var(--color-accent);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+        .btn {
+            padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-size: var(--font-size-base);
+            font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex;
+            align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .result-card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        @media (min-width: 640px) { .result-card-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .result-card {
+            text-align: center; padding: 1.5rem; background-color: var(--color-bg);
+            border: 1px solid var(--color-border); border-radius: 0.375rem;
+        }
+
+        .result-card-label { font-weight: 500; color: var(--color-secondary); margin-bottom: 0.25rem; display: block; }
+        .result-card-value { font-size: var(--font-size-lg); font-weight: 700; color: var(--color-primary); }
+        .highlight-value { color: var(--color-action); }
+        
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { margin-top: 1.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+
+        .faq-item { margin-bottom: 1.5rem; }
+        
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        /* Print Styles */
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            .result-card { border: 1px solid #ccc; background-color: transparent !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { overflow: visible; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>GST Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Simplify Your Goods & Services Tax (GST) Calculations</h2>
+            <p>The GST Calculator by EveryCalc is an essential, production-grade tool designed to quickly and accurately calculate Goods and Services Tax for any amount. Whether you're a business owner pricing products, a consumer understanding total costs, or an accountant preparing invoices, this calculator streamlines the process of adding or removing GST. It helps you navigate tax complexities with ease, ensuring transparent financial transactions. Built with a confident, minimal design and high-contrast elements, EveryCalc provides a distraction-free experience, delivering reliable results compliant with modern web standards and accessibility guidelines. Trust EveryCalc for precise GST calculations every time.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Enter Amount and GST Rate</h2>
+            <form id="gst-form" novalidate>
+                <div class="calculator-grid">
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <div class="input-wrapper">
+                            <span class="prefix">₹</span>
+                            <input type="number" id="amount" name="amount" placeholder="e.g., 1000" required min="0.01">
+                        </div>
+                        <p class="error-message" id="amount-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gstRate">GST Rate</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="gstRate" name="gstRate" placeholder="e.g., 18" required min="0" max="100">
+                            <span class="suffix">%</span>
+                        </div>
+                        <p class="error-message" id="gstRate-error"></p>
+                    </div>
+
+                    <div class="form-group grid-span-2">
+                        <label>Calculation Type</label>
+                        <div class="radio-group">
+                            <input type="radio" id="add-gst" name="calculationType" value="add" checked>
+                            <label for="add-gst">Add GST</label>
+                            <input type="radio" id="remove-gst" name="calculationType" value="remove">
+                            <label for="remove-gst">Remove GST</label>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group grid-span-2">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">Calculate GST</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>GST Calculation Details</h2>
+            <div class="result-card-grid">
+                 <div class="result-card">
+                    <span class="result-card-label" id="card-label-original">Original Amount</span>
+                    <span class="result-card-value" id="original-amount-display">₹0.00</span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">GST Amount</span>
+                    <span class="result-card-value highlight-value" id="gst-amount-display">₹0.00</span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label" id="card-label-final">Total Amount</span>
+                    <span class="result-card-value" id="final-amount-display">₹0.00</span>
+                </div>
+            </div>
+             <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Results</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Summary</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the GST Calculator</h2>
+            <p>Our GST Calculator simplifies common tax calculations. Follow these three straightforward steps to get your results:</p>
+            <ol>
+                <li><strong>Enter Amount:</strong> Input the numerical value of your base amount into the "Amount" field. This could be the price of a product, a service fee, or any value you need to apply GST to (or remove it from). The calculator uses Indian Rupees (₹) as the currency symbol for display, but it works with any numerical value.</li>
+                <li><strong>Enter GST Rate:</strong> Input the applicable Goods and Services Tax rate as a percentage (e.g., 5, 12, 18, 28) into the "GST Rate" field. Ensure this is a positive number.</li>
+                <li><strong>Select Calculation Type:</strong> Choose either "Add GST" if you want to calculate the total price including tax, or "Remove GST" if you have a gross amount and need to find the price before tax and the GST component.</li>
+            </ol>
+            <p>After entering all the details, click the "Calculate GST" button. The results section will instantly display the original amount, the calculated GST amount, and the final (or net) amount. To perform a new calculation, simply click the "Reset" button to clear all fields.</p>
+            <h3>Accuracy Tips</h3>
+            <p>Always ensure that the GST rate you enter is the correct one applicable to your goods or services. Incorrect rates are the most common source of error. The calculator handles fractional percentages (e.g., 0.25%, 7.5%) accurately, so feel free to use them if needed. For precise financial reporting, always verify results with official tax guidelines.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formula & Methodology</h2>
+            <p>The GST Calculator employs standard mathematical formulas to ensure accurate tax calculations, whether you're adding or removing GST. Understanding these formulas provides transparency and confidence in the results.</p>
+            
+            <h3>1. Adding GST to an Amount (Excluding Tax)</h3>
+            <p>When you have an amount *before* GST and want to find the total amount *including* GST, the formula is:</p>
+            <ul>
+                <li><strong>GST Amount = Amount (Excluding Tax) × (GST Rate / 100)</strong></li>
+                <li><strong>Total Amount (Including Tax) = Amount (Excluding Tax) + GST Amount</strong></li>
+            </ul>
+            <p>Alternatively, a combined formula can be used:</p>
+            <p style="text-align: center; font-size: 1.2em; font-weight: 600; color: var(--color-primary);">Total Amount = Amount (Excluding Tax) × (1 + (GST Rate / 100))</p>
+
+            <h3>2. Removing GST from an Amount (Including Tax)</h3>
+            <p>When you have a total amount *including* GST and want to find the original amount *before* tax and the GST component, the formulas are:</p>
+            <ul>
+                <li><strong>Net Amount (Excluding Tax) = Amount (Including Tax) / (1 + (GST Rate / 100))</strong></li>
+                <li><strong>GST Amount = Amount (Including Tax) - Net Amount (Excluding Tax)</strong></li>
+            </ul>
+            <p>Our calculator applies these formulas directly, using the provided amount and GST rate. All results are rounded to two decimal places, which is standard for currency calculations.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical GST Calculation Examples</h2>
+            <p>Here are several real-world scenarios demonstrating how the GST Calculator can be applied for both adding and removing Goods and Services Tax.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Amount</th>
+                            <th>GST Rate (%)</th>
+                            <th>Calculation Type</th>
+                            <th>GST Amount</th>
+                            <th>Final/Net Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Adding GST to a Product</strong></td>
+                            <td>₹500</td>
+                            <td>18</td>
+                            <td>Add GST</td>
+                            <td>₹90.00</td>
+                            <td>₹590.00</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Removing GST from an Invoice</strong></td>
+                            <td>₹1180</td>
+                            <td>18</td>
+                            <td>Remove GST</td>
+                            <td>₹180.00</td>
+                            <td>₹1000.00</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Service Charge with GST</strong></td>
+                            <td>₹1500</td>
+                            <td>5</td>
+                            <td>Add GST</td>
+                            <td>₹75.00</td>
+                            <td>₹1575.00</td>
+                        </tr>
+                         <tr>
+                            <td><strong>High-Value Item (GST Removed)</strong></td>
+                            <td>₹28000</td>
+                            <td>28</td>
+                            <td>Remove GST</td>
+                            <td>₹6111.11</td>
+                            <td>₹21888.89</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>*Note: All amounts are displayed in Indian Rupees (₹) and rounded to two decimal places.</p>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. What is GST?</h3>
+                <p>GST, or Goods and Services Tax, is a value-added tax levied on most goods and services sold for domestic consumption. It's a comprehensive, multi-stage, destination-based tax that is collected at each stage of sale/purchase but is ultimately borne by the end consumer.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. Is this calculator specific to Indian GST?</h3>
+                <p>While the currency symbol used is for Indian Rupees (₹), the underlying mathematical formulas for adding and removing a percentage tax are universal. Therefore, this calculator can be used for any Goods and Services Tax (GST), Value Added Tax (VAT), or Sales Tax calculation, as long as you input the correct amount and percentage rate.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. What are typical GST rates?</h3>
+                <p>GST rates vary significantly by country and by the type of goods or services. In India, common rates are 0%, 5%, 12%, 18%, and 28%. Other countries have different structures; for example, Canada has federal and provincial GST/HST rates, while Australia has a single 10% GST. Always refer to your local tax authority for applicable rates.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. Can this calculator handle negative amounts or GST rates?</h3>
+                <p>No, the calculator is designed for positive monetary amounts and GST rates. Inputting negative values will trigger an error message, as tax calculations are typically performed on positive values for goods and services.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. How many decimal places does the calculator use for currency?</h3>
+                <p>All currency-related results (Original Amount, GST Amount, Final/Net Amount) are rounded to two decimal places, which is the standard precision for monetary values. Internal calculations maintain higher precision before final rounding for display.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. Why is it important to differentiate between "Add GST" and "Remove GST"?</h3>
+                <p>These are inverse operations. "Add GST" starts with a price *before* tax and calculates the total *with* tax. "Remove GST" starts with a total price *including* tax and calculates the original price *before* tax and the tax component itself. Using the wrong calculation type will lead to incorrect figures.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. Can this calculator handle multiple GST components (e.g., CGST, SGST, IGST)?</h3>
+                <p>This calculator is designed to calculate a single, aggregated GST rate. In systems like India's, where GST might be composed of CGST (Central GST) and SGST (State GST) or IGST (Integrated GST), you would enter the *total* applicable GST rate (e.g., if CGST is 9% and SGST is 9%, you enter 18%). It does not break down the tax into sub-components.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. What is the significance of the "Original Amount" and "Final/Net Amount" labels changing?</h3>
+                <p>When you select "Add GST", the initial amount is labelled "Original Amount (Excluding GST)" and the result is "Total Amount (Including GST)". Conversely, when you select "Remove GST", the initial amount is treated as "Total Amount (Including GST)" and the result is "Net Amount (Excluding GST)". This dynamic labeling provides clarity on what each displayed value represents in the context of your chosen calculation.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: The Impact of GST on Business and Consumers</h2>
+            <p>GST (or similar value-added taxes) fundamentally reshapes how businesses price goods and services and how consumers perceive costs. For businesses, a GST calculator is crucial for accurate invoicing, compliance with tax regulations, and effective financial planning. It helps in determining profit margins and managing input tax credits. For consumers, understanding GST means a clear picture of the actual cost of a product or service. The transparency brought by GST aims to reduce cascading tax effects (tax on tax), theoretically leading to a more efficient economy. However, adapting to new GST rates or structures requires constant vigilance. Tools like this calculator play a vital role in empowering both businesses and individuals to effortlessly navigate these essential tax calculations, promoting financial literacy and compliance.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+        <p class="disclaimer">
+            EveryCalc does not store or share any personal data.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const amountInput = document.getElementById('amount');
+            const gstRateInput = document.getElementById('gstRate');
+            const calculationTypeRadios = document.querySelectorAll('input[name="calculationType"]');
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const resultsSection = document.getElementById('results-section');
+
+            const amountError = document.getElementById('amount-error');
+            const gstRateError = document.getElementById('gstRate-error');
+
+            const originalAmountDisplay = document.getElementById('original-amount-display');
+            const gstAmountDisplay = document.getElementById('gst-amount-display');
+            const finalAmountDisplay = document.getElementById('final-amount-display');
+
+            const cardLabelOriginal = document.getElementById('card-label-original');
+            const cardLabelFinal = document.getElementById('card-label-final');
+
+            const currencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' });
+
+            const validateInput = (inputEl, errorEl, min = 0.01, max = Infinity) => {
+                errorEl.style.display = 'none';
+                inputEl.style.borderColor = 'var(--color-border)';
+                const value = parseFloat(inputEl.value);
+
+                if (inputEl.value.trim() === '' || isNaN(value)) {
+                    errorEl.textContent = 'Please enter a valid number.';
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                if (value < min || value > max) {
+                    errorEl.textContent = `Value must be between ${min} and ${max}.`;
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                return true;
+            };
+
+            const performCalculation = () => {
+                const amount = parseFloat(amountInput.value);
+                const gstRate = parseFloat(gstRateInput.value);
+                const calculationType = document.querySelector('input[name="calculationType"]:checked').value;
+
+                let gstAmount, finalAmount, originalAmount;
+
+                if (calculationType === 'add') {
+                    gstAmount = amount * (gstRate / 100);
+                    finalAmount = amount + gstAmount;
+                    originalAmount = amount;
+
+                    cardLabelOriginal.textContent = 'Original Amount (Excluding GST)';
+                    cardLabelFinal.textContent = 'Total Amount (Including GST)';
+                } else { // remove GST
+                    originalAmount = amount / (1 + (gstRate / 100));
+                    gstAmount = amount - originalAmount;
+                    finalAmount = originalAmount; // In 'remove' context, finalAmount means the net amount
+
+                    cardLabelOriginal.textContent = 'Total Amount (Including GST)';
+                    cardLabelFinal.textContent = 'Net Amount (Excluding GST)';
+                }
+
+                originalAmountDisplay.textContent = currencyFormatter.format(amount); // This will always display the raw input
+                gstAmountDisplay.textContent = currencyFormatter.format(gstAmount);
+                finalAmountDisplay.textContent = currencyFormatter.format(finalAmount);
+            };
+
+            calculateBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                calculateBtn.textContent = 'Calculating...';
+                calculateBtn.disabled = true;
+
+                setTimeout(() => {
+                    let allValid = true;
+                    allValid = validateInput(amountInput, amountError, 0.01) && allValid;
+                    allValid = validateInput(gstRateInput, gstRateError, 0, 100) && allValid;
+
+                    if (allValid) {
+                        performCalculation();
+                        resultsSection.style.display = 'block';
+                        resultsSection.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        resultsSection.style.display = 'none'; // Hide results if validation fails
+                    }
+                    
+                    calculateBtn.textContent = 'Calculate GST';
+                    calculateBtn.disabled = false;
+                }, 500);
+            });
+
+            resetBtn.addEventListener('click', function() {
+                document.getElementById('gst-form').reset();
+                amountInput.style.borderColor = 'var(--color-border)';
+                gstRateInput.style.borderColor = 'var(--color-border)';
+                amountError.style.display = 'none';
+                gstRateError.style.display = 'none';
+                resultsSection.style.display = 'none';
+                
+                document.getElementById('add-gst').checked = true; // Reset default radio
+                cardLabelOriginal.textContent = 'Original Amount';
+                cardLabelFinal.textContent = 'Total Amount';
+            });
+
+            // Update labels dynamically when radio changes
+            calculationTypeRadios.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    if (radio.value === 'add') {
+                        cardLabelOriginal.textContent = 'Original Amount (Excluding GST)';
+                        cardLabelFinal.textContent = 'Total Amount (Including GST)';
+                    } else {
+                        cardLabelOriginal.textContent = 'Total Amount (Including GST)';
+                        cardLabelFinal.textContent = 'Net Amount (Excluding GST)';
+                    }
+                    // Optionally, re-calculate if inputs are valid and results are visible
+                    if (resultsSection.style.display !== 'none' && parseFloat(amountInput.value) > 0 && parseFloat(gstRateInput.value) >= 0) {
+                        performCalculation();
+                    }
+                });
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const summaryText = `GST Calculation Report by EveryCalc:\n` +
+                                  `----------------------------------------\n` +
+                                  `Calculation Type: ${document.querySelector('input[name="calculationType"]:checked').value.toUpperCase()}\n` +
+                                  `${cardLabelOriginal.textContent}: ${originalAmountDisplay.textContent}\n` +
+                                  `GST Rate: ${gstRateInput.value}%\n` +
+                                  `GST Amount: ${gstAmountDisplay.textContent}\n` +
+                                  `${cardLabelFinal.textContent}: ${finalAmountDisplay.textContent}\n` +
+                                  `----------------------------------------\n` +
+                                  `Calculated at https://everycalc.site`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

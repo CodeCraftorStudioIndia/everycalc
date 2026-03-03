@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BMR Calculator by EveryCalc – Free Online Calculator</title>
+    <meta name="description" content="Use the free BMR (Basal Metabolic Rate) Calculator by EveryCalc for fast, accurate results. Determine your baseline calorie needs with clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/bmr-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BMR Calculator by EveryCalc",
+      "applicationCategory": "HealthAndFitness",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/bmr-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main { flex-grow: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+        header, footer { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--color-primary); }
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        li { margin-bottom: 0.5rem; }
+        strong { font-weight: 600; color: var(--color-primary); }
+
+        .subtitle { font-size: var(--font-size-md); color: var(--color-secondary); font-weight: 400; margin: 0; }
+        section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media (min-width: 640px) {
+            .calculator-grid { grid-template-columns: repeat(3, 1fr); }
+            .grid-span-3 { grid-column: span 3; }
+        }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .input-unit-group { display: flex; gap: 0.5rem; position: relative; }
+        .input-unit-group input { padding-right: 3rem; }
+        .input-unit-group .unit-label {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+            font-size: var(--font-size-base);
+        }
+
+        .form-group input, .form-group select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+
+        .form-group input[type="radio"] + label {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: var(--color-surface);
+            font-weight: 400;
+            margin-bottom: 0;
+        }
+        .form-group input[type="radio"]:checked + label {
+            background-color: var(--color-accent);
+            color: var(--color-bg);
+            border-color: var(--color-accent);
+        }
+        .gender-radio-group { display: flex; gap: 1rem; }
+        .gender-radio-group > div { flex: 1; }
+        .gender-radio-group input[type="radio"] { display: none; }
+        
+        .form-group select:focus, .form-group input:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .unit-toggle { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .unit-toggle label {
+            padding: 0.5rem 1rem; border: 1px solid var(--color-border); border-radius: 0.375rem;
+            cursor: pointer; font-weight: 500; transition: all 0.2s; background-color: var(--color-surface);
+        }
+        .unit-toggle input[type="radio"] { display: none; }
+        .unit-toggle input[type="radio"]:checked + label {
+            background-color: var(--color-accent); color: var(--color-bg); border-color: var(--color-accent);
+        }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+        .btn {
+            padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-size: var(--font-size-base);
+            font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex;
+            align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .result-card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        @media (min-width: 640px) { .result-card-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .result-card {
+            text-align: center; padding: 1rem; background-color: var(--color-bg);
+            border: 1px solid var(--color-border); border-radius: 0.375rem;
+        }
+
+        .result-card:first-child { grid-column: span 1; }
+        .result-card:nth-child(2) { grid-column: span 2; }
+        @media (min-width: 640px) { .result-card:nth-child(2) { grid-column: span 1; } }
+
+        .result-card-label { font-weight: 500; color: var(--color-secondary); margin-bottom: 0.25rem; display: block; }
+        .result-card-value { font-size: var(--font-size-lg); font-weight: 700; color: var(--color-primary); }
+        .highlight-value { color: var(--color-action); }
+        
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .activity-table-container { 
+            margin-top: 1.5rem;
+            overflow-x: auto; -webkit-overflow-scrolling: touch; 
+            border: 1px solid var(--color-border); border-radius: 0.375rem;
+        }
+        .activity-table { width: 100%; border-collapse: collapse; }
+        .activity-table th, .activity-table td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        .activity-table th { font-weight: 600; background-color: var(--color-surface); }
+        .activity-table tr:last-child td { border-bottom: none; }
+
+        .faq-item { margin-bottom: 1.5rem; }
+        
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        /* Print Styles */
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .unit-toggle, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            .result-card { border: 1px solid #ccc; background-color: transparent !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .activity-table-container { overflow: visible; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>BMR Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Determine Your Baseline Calorie Needs (BMR)</h2>
+            <p>The BMR (Basal Metabolic Rate) Calculator by EveryCalc is a sophisticated yet easy-to-use tool for estimating the minimum amount of energy (calories) your body needs to function at rest. This calculation is a critical starting point for any successful diet, weight loss, or fitness plan. BMR represents the calories your body burns performing essential, non-active functions like breathing, circulation, and cell production. Knowing your BMR allows you to set a precise Total Daily Energy Expenditure (TDEE) and calorie intake goal, replacing guesswork with data. Our tool is built by senior engineers for accuracy and is compliant with all modern standards, ensuring you receive reliable results every time.</p>
+            <p>We provide results based on the widely accepted **Mifflin-St Jeor Equation** for maximum accuracy.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Enter Your Details</h2>
+            
+            <div class="unit-toggle grid-span-3">
+                <input type="radio" id="unit-metric" name="units" value="metric" checked>
+                <label for="unit-metric">Metric (kg, cm)</label>
+                <input type="radio" id="unit-imperial" name="units" value="imperial">
+                <label for="unit-imperial">Imperial (lbs, ft/in)</label>
+            </div>
+
+            <form id="bmr-form" novalidate>
+                <div class="calculator-grid">
+                    
+                    <div class="form-group grid-span-3">
+                        <label>Gender</label>
+                        <div class="gender-radio-group">
+                             <div>
+                                <input type="radio" id="gender-male" name="gender" value="male" checked>
+                                <label for="gender-male">Male</label>
+                             </div>
+                             <div>
+                                <input type="radio" id="gender-female" name="gender" value="female">
+                                <label for="gender-female">Female</label>
+                             </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" name="age" placeholder="e.g., 30" required min="15" max="100">
+                        <p class="error-message" id="age-error"></p>
+                    </div>
+
+                    <!-- Metric Inputs -->
+                    <div class="form-group metric-input">
+                        <label for="weight-kg">Weight (kg)</label>
+                        <div class="input-unit-group">
+                            <input type="number" id="weight-kg" name="weight-kg" placeholder="e.g., 75" required min="1">
+                            <span class="unit-label">kg</span>
+                        </div>
+                        <p class="error-message" id="weight-kg-error"></p>
+                    </div>
+                    <div class="form-group metric-input">
+                        <label for="height-cm">Height (cm)</label>
+                        <div class="input-unit-group">
+                            <input type="number" id="height-cm" name="height-cm" placeholder="e.g., 175" required min="1">
+                            <span class="unit-label">cm</span>
+                        </div>
+                        <p class="error-message" id="height-cm-error"></p>
+                    </div>
+
+                    <!-- Imperial Inputs (Initially Hidden) -->
+                    <div class="form-group imperial-input" style="display: none;">
+                        <label for="weight-lbs">Weight (lbs)</label>
+                        <div class="input-unit-group">
+                            <input type="number" id="weight-lbs" name="weight-lbs" placeholder="e.g., 165" required min="1" disabled>
+                            <span class="unit-label">lbs</span>
+                        </div>
+                        <p class="error-message" id="weight-lbs-error"></p>
+                    </div>
+                    <div class="form-group imperial-input" style="display: none;">
+                        <label for="height-ft">Height (ft)</label>
+                        <div class="input-unit-group" style="gap: 0.5rem;">
+                            <input type="number" id="height-ft" name="height-ft" placeholder="ft" required min="1" max="8" disabled>
+                            <span class="unit-label" style="position: static; transform: none; padding-left: 0.25rem;">ft</span>
+                             <input type="number" id="height-in" name="height-in" placeholder="in" required min="0" max="11" disabled>
+                             <span class="unit-label" style="position: static; transform: none; padding-left: 0.25rem;">in</span>
+                        </div>
+                        <p class="error-message" id="height-ft-error"></p>
+                    </div>
+
+                    <div class="form-group grid-span-3">
+                        <label for="activity">Daily Activity Level (Crucial for TDEE)</label>
+                        <select id="activity" name="activity" required>
+                            <option value="1.2">Sedentary (little or no exercise)</option>
+                            <option value="1.375">Lightly Active (light exercise/sports 1-3 days/week)</option>
+                            <option value="1.55" selected>Moderately Active (moderate exercise/sports 3-5 days/week)</option>
+                            <option value="1.725">Very Active (hard exercise/sports 6-7 days/week)</option>
+                            <option value="1.9">Extremely Active (hard daily exercise/physical job)</option>
+                        </select>
+                    </div>
+
+                    <div class="button-group grid-span-3">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">Calculate BMR & TDEE</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Your Metabolic Rate Summary</h2>
+            <div class="result-card-grid">
+                 <div class="result-card">
+                    <span class="result-card-label">Basal Metabolic Rate (BMR)</span>
+                    <span class="result-card-value highlight-value" id="bmr-value">0</span>
+                    <span class="result-card-label" style="font-size: var(--font-size-sm); margin-top: 0.5rem;">Calories/day at rest</span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">Total Daily Energy Expenditure (TDEE)</span>
+                    <span class="result-card-value highlight-value" id="tdee-value">0</span>
+                    <span class="result-card-label" style="font-size: var(--font-size-sm); margin-top: 0.5rem;">Calories/day with activity</span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">Calorie Goal for Weight Loss</span>
+                    <span class="result-card-value highlight-value" id="loss-goal">0</span>
+                    <span class="result-card-label" style="font-size: var(--font-size-sm); margin-top: 0.5rem;">For ~1 lb/week loss (-500 kcal)</span>
+                </div>
+            </div>
+             <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Summary</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Plan</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the BMR Calculator</h2>
+            <p>To obtain an accurate BMR and TDEE estimate, you must provide a few key biometric and activity details. Follow these steps precisely:</p>
+            <ol>
+                <li><strong>Select Units:</strong> Choose between Metric (kg, cm) or Imperial (lbs, ft/in) for all your physical measurements.</li>
+                <li><strong>Provide Biometric Data:</strong> Enter your **Gender** (Male or Female), **Age** (in years), **Weight**, and **Height**. Ensure your weight and height are entered correctly based on the unit system selected. The age input is essential because metabolic rate naturally slows with age.</li>
+                <li><strong>Select Activity Level:</strong> This is the most crucial step for calculating your TDEE. Choose the option that best describes your weekly exercise routine, from Sedentary (desk job, little activity) to Extremely Active (daily intense training).</li>
+            </ol>
+            <p>After all required fields are complete, click "Calculate BMR & TDEE". The results section will display your calculated BMR, your TDEE, and a suggested calorie goal for sustainable weight loss. The "Reset" button clears all fields to start a new calculation.</p>
+            <h3>Accuracy Tips</h3>
+            <p>The calculation’s accuracy hinges on your honesty with the **Activity Level**. Overestimating your exercise frequency or intensity will lead to an inflated TDEE, potentially sabotaging a weight loss effort. If in doubt, select a lower activity level, or choose 'Sedentary' as a safe, conservative baseline.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formula & Methodology</h2>
+            <p>The EveryCalc BMR Calculator relies on the **Mifflin-St Jeor Equation**, which is scientifically proven to be the most accurate predictive formula for BMR in the general population, surpassing older formulas like Harris-Benedict.</p>
+            
+            <h3>1. The Mifflin-St Jeor BMR Equation</h3>
+            <p>The formula differs slightly for men and women:</p>
+            <ul>
+                <li><strong>Men:</strong> BMR = (10 × Weight in kg) + (6.25 × Height in cm) - (5 × Age in years) + 5</li>
+                <li><strong>Women:</strong> BMR = (10 × Weight in kg) + (6.25 × Height in cm) - (5 × Age in years) - 161</li>
+            </ul>
+            <p>If you select Imperial units, the calculator automatically converts your input to the metric units (kg and cm) required for the equation before performing the BMR calculation.</p>
+            
+            <h3>2. Total Daily Energy Expenditure (TDEE)</h3>
+            <p>Your BMR is then scaled up to account for the calories burned through physical activity and digestion. This gives you your TDEE. The TDEE is your BMR multiplied by an Activity Multiplier:</p>
+            <p style="text-align: center; font-size: 1.2em; font-weight: 600; color: var(--color-primary);">TDEE = BMR × Activity Multiplier</p>
+            <p>The activity multiplier values used are standard factors based on your selected activity level, as detailed in the table below. The weight loss goal is simply the TDEE minus a conservative 500 calories per day, which typically leads to a loss of approximately one pound per week.</p>
+        </section>
+        
+        <section class="results-explanation">
+            <h2>Understanding Your TDEE and Activity Multipliers</h2>
+            <p>The TDEE is the most important number for diet planning. It's the daily calorie intake required to maintain your current weight given your activity level. Below are the activity multipliers used to calculate your TDEE from your BMR:</p>
+            <div class="activity-table-container">
+                <table class="activity-table">
+                    <thead>
+                        <tr>
+                            <th>Activity Level</th>
+                            <th>Multiplier</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sedentary</td>
+                            <td>1.2</td>
+                            <td>Little to no exercise, desk job.</td>
+                        </tr>
+                        <tr>
+                            <td>Lightly Active</td>
+                            <td>1.375</td>
+                            <td>Light exercise 1-3 times per week.</td>
+                        </tr>
+                        <tr>
+                            <td>Moderately Active</td>
+                            <td>1.55</td>
+                            <td>Moderate exercise 3-5 times per week.</td>
+                        </tr>
+                        <tr>
+                            <td>Very Active</td>
+                            <td>1.725</td>
+                            <td>Hard exercise 6-7 times per week.</td>
+                        </tr>
+                        <tr>
+                            <td>Extremely Active</td>
+                            <td>1.9</td>
+                            <td>Very hard exercise, physical job, or two-a-day workouts.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>If you aim to **maintain** your weight, you should eat at or around your TDEE. If you aim to **lose** weight, you should consistently consume fewer calories than your TDEE. Our suggested loss goal of TDEE - 500 is a standard, safe deficit.</p>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. What is the fundamental difference between BMR and TDEE?</h3>
+                <p>BMR (Basal Metabolic Rate) is the minimum energy your body requires to simply exist at complete rest (e.g., sleeping). TDEE (Total Daily Energy Expenditure) is the total number of calories you burn throughout the day, including BMR, the energy from digestion, and the calories burned through all physical activity and exercise.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. Is the BMR calculation different for muscular people?</h3>
+                <p>The Mifflin-St Jeor equation is an excellent general predictor, but it can slightly underestimate the BMR of very muscular individuals and overestimate the BMR of very obese individuals. This is because it uses total weight, not lean body mass. Muscle tissue requires more energy at rest than fat tissue.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. Which BMR formula is the most accurate?</h3>
+                <p>The **Mifflin-St Jeor Equation**, which EveryCalc uses, is generally considered the most accurate BMR formula for the majority of the population. Studies have shown it to be more precise than the older, more widely known Harris-Benedict Equation.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. Why is the age input required for the BMR calculation?</h3>
+                <p>Age is a crucial factor because metabolic rate gradually decreases as people get older. The Mifflin-St Jeor formula explicitly includes an age variable to account for this natural and inevitable metabolic slowdown.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. What is a safe calorie deficit for weight loss?</h3>
+                <p>A daily calorie deficit of 500 to 1,000 calories is generally considered safe and effective. A 500-calorie deficit per day typically results in a weight loss of about one pound (0.45 kg) per week, which is often considered the ideal sustainable rate.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. Should I eat exactly my BMR if I'm trying to lose weight?</h3>
+                <p>No, eating at or below your BMR is generally not recommended unless medically supervised. Your TDEE is the target for maintenance, and your weight loss goal should be between your TDEE and BMR. Eating too few calories can slow your metabolism and cause nutritional deficiencies.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. Can my BMR change?</h3>
+                <p>Yes, your BMR can change due to several factors, most notably changes in body composition (gaining muscle or losing fat), age, and certain medical conditions or hormonal changes. Gaining lean muscle mass will slightly increase your BMR.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. How is my TDEE used for weight gain?</h3>
+                <p>If you are aiming for weight gain, you would need to consume a calorie surplus—that is, eat *more* than your calculated TDEE. A surplus of 250 to 500 calories per day is often recommended for gradual, sustainable weight gain.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: The Thermic Effect of Food (TEF)</h2>
+            <p>When calculating TDEE, the BMR is multiplied by an activity factor. This factor inherently includes the energy used for digestion, also known as the Thermic Effect of Food (TEF). TEF is the energy required to eat, digest, absorb, and metabolize food, and it accounts for about 10% of your total calorie expenditure. However, the type of food you eat significantly impacts the TEF. Protein has the highest TEF (20–30% of its calories), while fats have the lowest (0–3%). For those tracking with extreme precision, prioritizing protein in the diet can slightly increase the effective calorie deficit without changing the calculated TDEE.</p>
+            <p>Furthermore, it’s vital to understand that BMR calculators provide an estimate. For the most accurate BMR measurement (within 10%), a clinical test involving gas analysis (indirect calorimetry) is required. Use this calculator as a highly effective guide, but view the numbers as starting points to be adjusted based on real-world results over time.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const unitToggle = document.querySelector('.unit-toggle');
+            const form = document.getElementById('bmr-form');
+            const metricInputs = {
+                weight: document.getElementById('weight-kg'),
+                height: document.getElementById('height-cm')
+            };
+            const imperialInputs = {
+                weight: document.getElementById('weight-lbs'),
+                heightFt: document.getElementById('height-ft'),
+                heightIn: document.getElementById('height-in')
+            };
+            const ageInput = document.getElementById('age');
+            const activitySelect = document.getElementById('activity');
+
+            const resultEls = {
+                section: document.getElementById('results-section'),
+                bmr: document.getElementById('bmr-value'),
+                tdee: document.getElementById('tdee-value'),
+                lossGoal: document.getElementById('loss-goal')
+            };
+
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            
+            let currentUnit = 'metric';
+
+            const validateInput = (inputEl, errorId, min, max) => {
+                const errorEl = document.getElementById(errorId);
+                errorEl.style.display = 'none';
+                inputEl.style.borderColor = 'var(--color-border)';
+                const value = parseFloat(inputEl.value);
+
+                if (inputEl.disabled) { return true; }
+
+                if (inputEl.value.trim() === '' || isNaN(value)) {
+                    errorEl.textContent = 'Value cannot be empty.';
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                if (value < min || value > max) {
+                    errorEl.textContent = `Value must be between ${min} and ${max}.`;
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                return true;
+            };
+
+            const calculateBMR = () => {
+                const gender = form.querySelector('input[name="gender"]:checked').value;
+                const age = parseFloat(ageInput.value);
+                const activityMultiplier = parseFloat(activitySelect.value);
+
+                let weightKg, heightCm;
+
+                if (currentUnit === 'metric') {
+                    weightKg = parseFloat(metricInputs.weight.value);
+                    heightCm = parseFloat(metricInputs.height.value);
+                } else {
+                    const weightLbs = parseFloat(imperialInputs.weight.value);
+                    const heightFt = parseFloat(imperialInputs.heightFt.value);
+                    const heightIn = parseFloat(imperialInputs.heightIn.value);
+                    
+                    // Conversion Factors
+                    weightKg = weightLbs * 0.453592;
+                    heightCm = ((heightFt * 12) + heightIn) * 2.54;
+                }
+
+                let bmr;
+                // Mifflin-St Jeor Equation
+                if (gender === 'male') {
+                    bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
+                } else {
+                    bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
+                }
+                
+                const tdee = bmr * activityMultiplier;
+                const lossGoal = tdee - 500;
+
+                resultEls.bmr.textContent = Math.round(bmr).toLocaleString();
+                resultEls.tdee.textContent = Math.round(tdee).toLocaleString();
+                resultEls.lossGoal.textContent = Math.round(lossGoal).toLocaleString();
+
+                resultEls.section.style.display = 'block';
+                resultEls.section.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            const toggleUnits = (unit) => {
+                currentUnit = unit;
+                document.querySelectorAll('.metric-input, .imperial-input').forEach(el => {
+                    el.style.display = 'none';
+                    el.querySelectorAll('input').forEach(input => input.disabled = true);
+                });
+
+                if (unit === 'metric') {
+                    document.querySelectorAll('.metric-input').forEach(el => {
+                        el.style.display = 'flex';
+                        el.querySelectorAll('input').forEach(input => input.disabled = false);
+                    });
+                } else {
+                    document.querySelectorAll('.imperial-input').forEach(el => {
+                        el.style.display = 'flex';
+                        el.querySelectorAll('input').forEach(input => input.disabled = false);
+                    });
+                }
+                // Clear errors on unit switch
+                document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('input').forEach(input => input.style.borderColor = 'var(--color-border)');
+            };
+
+            unitToggle.addEventListener('change', (e) => {
+                toggleUnits(e.target.value);
+                form.reset();
+                resultEls.section.style.display = 'none';
+                document.getElementById('gender-male').checked = true; // Default back to male
+            });
+            
+            // Initial setup
+            toggleUnits('metric');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                let allValid = true;
+                allValid = validateInput(ageInput, 'age-error', 15, 100) && allValid;
+
+                if (currentUnit === 'metric') {
+                    allValid = validateInput(metricInputs.weight, 'weight-kg-error', 1, 300) && allValid;
+                    allValid = validateInput(metricInputs.height, 'height-cm-error', 50, 250) && allValid;
+                } else {
+                    allValid = validateInput(imperialInputs.weight, 'weight-lbs-error', 1, 700) && allValid;
+                    allValid = validateInput(imperialInputs.heightFt, 'height-ft-error', 1, 8) && allValid;
+                    allValid = validateInput(imperialInputs.heightIn, 'height-ft-error', 0, 11) && allValid;
+                }
+
+                if (allValid) {
+                    calculateBtn.textContent = 'Calculating...';
+                    calculateBtn.disabled = true;
+
+                    setTimeout(() => {
+                        calculateBMR();
+                        calculateBtn.textContent = 'Calculate BMR & TDEE';
+                        calculateBtn.disabled = false;
+                    }, 500);
+                }
+            });
+
+            resetBtn.addEventListener('click', function() {
+                form.reset();
+                document.querySelectorAll('input').forEach(input => input.style.borderColor = 'var(--color-border)');
+                document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+                resultEls.section.style.display = 'none';
+                // Reset radio buttons explicitly
+                document.getElementById('unit-metric').checked = true;
+                document.getElementById('gender-male').checked = true;
+                toggleUnits('metric');
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const gender = form.querySelector('input[name="gender"]:checked').value;
+                const activityLevel = activitySelect.options[activitySelect.selectedIndex].text;
+                const weightText = currentUnit === 'metric' ? `${metricInputs.weight.value} kg` : `${imperialInputs.weight.value} lbs`;
+                const heightText = currentUnit === 'metric' ? `${metricInputs.height.value} cm` : `${imperialInputs.heightFt.value}' ${imperialInputs.heightIn.value}''`;
+
+                const summaryText = `BMR & TDEE Summary by EveryCalc:\n` +
+                                  `---------------------------------\n` +
+                                  `Gender: ${gender.charAt(0).toUpperCase() + gender.slice(1)}\n` +
+                                  `Age: ${ageInput.value} years\n` +
+                                  `Height: ${heightText}\n` +
+                                  `Weight: ${weightText}\n` +
+                                  `Activity: ${activityLevel}\n` +
+                                  `---------------------------------\n` +
+                                  `BMR (Base Calories): ${resultEls.bmr.textContent} kcal/day\n` +
+                                  `TDEE (Total Calories): ${resultEls.tdee.textContent} kcal/day\n` +
+                                  `Weight Loss Goal: ${resultEls.lossGoal.textContent} kcal/day\n` +
+                                  `---------------------------------\n` +
+                                  `Calculated at https://everycalc.site`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

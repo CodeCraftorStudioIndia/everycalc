@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fuel Cost Calculator by EveryCalc – Free Online Calculator</title>
+    <meta name="description" content="Use the free Fuel Cost Calculator by EveryCalc for fast, accurate results. Estimate trip costs, compare fuel efficiency, and plan your budget. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/fuel-cost-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Fuel Cost Calculator by EveryCalc",
+      "applicationCategory": "FinancialApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/fuel-cost-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main { flex-grow: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+        header, footer { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--color-primary); }
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        li { margin-bottom: 0.5rem; }
+        strong { font-weight: 600; color: var(--color-primary); }
+
+        .subtitle { font-size: var(--font-size-md); color: var(--color-secondary); font-weight: 400; margin: 0; }
+        section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media (min-width: 640px) { .calculator-grid { grid-template-columns: repeat(2, 1fr); } }
+        .grid-span-2 { grid-column: span 2; }
+
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .input-with-select { display: flex; }
+        .input-with-select input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            flex-grow: 1;
+            padding-right: 0.75rem; /* Adjust for select padding */
+        }
+        .input-with-select select {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-left: none;
+            width: auto; /* Allow select to shrink */
+        }
+        /* Specific adjustment for number inputs to ensure padding */
+        .form-group input[type="number"] {
+             padding: 0.75rem 1rem;
+        }
+
+        .form-group input, .form-group select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; grid-column: span 2; }
+        .btn {
+            padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-size: var(--font-size-base);
+            font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex;
+            align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .result-group { margin-bottom: 1.5rem; }
+        .result-group h3 { margin-bottom: 0.75rem; color: var(--color-action); font-size: var(--font-size-lg); }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--color-border);
+        }
+        .result-item:last-child { border-bottom: none; }
+
+        .result-label { font-weight: 500; color: var(--color-primary); }
+        .result-value { font-size: var(--font-size-base); font-weight: 600; color: var(--color-primary); }
+        .main-result-value { font-size: var(--font-size-xl); font-weight: 700; color: var(--color-success); }
+
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { margin-top: 1.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+
+        .faq-item { margin-bottom: 1.5rem; }
+        
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        /* Print Styles */
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            .result-group { border: none !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { overflow: visible; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>Fuel Cost Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Estimate Your Trip's Fuel Expenses</h2>
+            <p>The Fuel Cost Calculator by EveryCalc is an essential, production-grade tool designed to quickly and accurately estimate the cost of fuel for your journey. Whether you're planning a road trip, commuting daily, or managing vehicle expenses for your business, understanding your fuel budget is crucial. This calculator simplifies the process by factoring in your vehicle's fuel efficiency, the distance to be traveled, and the current fuel price. It eliminates guesswork and complex manual calculations, providing you with clear, reliable financial insights. Built with a confident, minimal design and high-contrast elements, EveryCalc offers a distraction-free experience, adhering to modern web standards and accessibility guidelines. Trust EveryCalc for precise fuel cost estimations every time.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Enter Trip & Vehicle Details</h2>
+            <form id="fuel-cost-form" novalidate>
+                <div class="calculator-grid">
+                    <div class="form-group">
+                        <label for="distance">Total Distance</label>
+                        <div class="input-with-select">
+                            <input type="number" id="distance" name="distance" placeholder="e.g., 500" required min="0.01">
+                            <select id="distanceUnit" name="distanceUnit">
+                                <option value="km" selected>Kilometers (km)</option>
+                                <option value="miles">Miles (mi)</option>
+                            </select>
+                        </div>
+                        <p class="error-message" id="distance-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fuelEfficiency">Fuel Efficiency (Mileage)</label>
+                        <div class="input-with-select">
+                            <input type="number" id="fuelEfficiency" name="fuelEfficiency" placeholder="e.g., 15" required min="0.01">
+                            <select id="fuelEfficiencyUnit" name="fuelEfficiencyUnit">
+                                <option value="km/L" selected>km/Liter</option>
+                                <option value="mpg_us">mpg (US)</option>
+                                <option value="mpg_uk">mpg (Imperial)</option>
+                                <option value="L/100km">L/100km</option>
+                            </select>
+                        </div>
+                        <p class="error-message" id="fuelEfficiency-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fuelPrice">Fuel Price</label>
+                        <div class="input-with-select">
+                            <input type="number" id="fuelPrice" name="fuelPrice" placeholder="e.g., 1.50" required min="0.01">
+                            <select id="fuelPriceUnit" name="fuelPriceUnit">
+                                <option value="per_liter" selected>per Liter ($/L)</option>
+                                <option value="per_gallon_us">per US Gallon ($/gal)</option>
+                                <option value="per_gallon_uk">per Imperial Gallon ($/gal)</option>
+                            </select>
+                        </div>
+                        <p class="error-message" id="fuelPrice-error"></p>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">Calculate Fuel Cost</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Your Fuel Cost Summary</h2>
+            
+            <div class="result-group">
+                <h3>Key Totals</h3>
+                <div class="result-item">
+                    <span class="result-label">Total Fuel Needed:</span>
+                    <span class="main-result-value" id="total-fuel-needed-display">0.00 L</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Fuel Cost:</span>
+                    <span class="main-result-value" id="total-fuel-cost-display">$0.00</span>
+                </div>
+            </div>
+
+            <div class="result-group">
+                <h3>Cost Efficiency</h3>
+                <div class="result-item">
+                    <span class="result-label">Cost per 100 km:</span>
+                    <span class="result-value" id="cost-per-100km-display">$0.00</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Cost per 100 miles:</span>
+                    <span class="result-value" id="cost-per-100miles-display">$0.00</span>
+                </div>
+            </div>
+
+            <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Results</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Summary</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the Fuel Cost Calculator</h2>
+            <p>Our Fuel Cost Calculator is designed for quick and accurate trip cost estimation. You need three key inputs:</p>
+            <ol>
+                <li><strong>Total Distance:</strong> Enter the distance you plan to travel. Use the adjacent dropdown to select the unit (Kilometers or Miles). Ensure this is a positive numerical value.</li>
+                <li><strong>Fuel Efficiency (Mileage):</strong> Input your vehicle's average fuel efficiency. Select the appropriate unit from the dropdown: `km/Liter` (kilometers per liter), `mpg (US)` (miles per US gallon), `mpg (Imperial)` (miles per Imperial gallon), or `L/100km` (liters per 100 kilometers). A positive numerical value is required.</li>
+                <li><strong>Fuel Price:</strong> Enter the current price of fuel. Select the unit from the dropdown: `per Liter` ($/L), `per US Gallon` ($/gal), or `per Imperial Gallon` ($/gal). A positive numerical value is required.</li>
+            </ol>
+            <p>After all three fields are correctly filled, click the "Calculate Fuel Cost" button. The results section will instantly display the total fuel needed, the total estimated cost for your trip, and cost-efficiency metrics per 100 km and 100 miles. The "Reset" button clears all fields for a new calculation.</p>
+            <h3>Accuracy Tips & Disclaimers</h3>
+            <p>Accuracy heavily relies on precise inputs. Ensure your vehicle's fuel efficiency is accurate (e.g., from your car's display or calculated over several fill-ups). Fuel prices can fluctuate; use the most current price available. This calculator provides an *estimate* and does not account for variations in driving conditions (e.g., city vs. highway), traffic, vehicle load, or unexpected detours, which can all impact actual fuel consumption. Remember the distinction between US and Imperial gallons/mpg, as they have different volumes.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formula & Methodology</h2>
+            <p>The Fuel Cost Calculator uses a two-step methodology to ensure accurate calculations across various units. All inputs are first converted to a standardized base system (kilometers for distance, liters for fuel volume, and currency per liter for price) for internal calculation. This prevents compounding errors that can occur when converting directly between disparate units.</p>
+            
+            <h3>Base Units for Calculation:</h3>
+            <ul>
+                <li><strong>Distance:</strong> Kilometers (km)</li>
+                <li><strong>Fuel Volume:</strong> Liters (L)</li>
+                <li><strong>Fuel Price:</strong> Currency per Liter ($/L)</li>
+            </ul>
+
+            <h3>Conversion Factors Used:</h3>
+            <ul>
+                <li>1 mile = 1.60934 km</li>
+                <li>1 US Gallon = 3.78541 Liters</li>
+                <li>1 Imperial Gallon = 4.54609 Liters</li>
+            </ul>
+
+            <h3>The Calculation Process:</h3>
+            <ol>
+                <li><strong>Standardize Inputs:</strong>
+                    <ul>
+                        <li>`Distance_km` = Convert input `Distance` to km.</li>
+                        <li>`FuelEfficiency_km/L` = Convert input `Fuel Efficiency` to km/L.
+                            <ul>
+                                <li>If `mpg (US)`: `mpg_us × (1.60934 / 3.78541)` km/L</li>
+                                <li>If `mpg (Imperial)`: `mpg_uk × (1.60934 / 4.54609)` km/L</li>
+                                <li>If `L/100km`: `100 / (L/100km)` km/L</li>
+                                <li>If `km/L`: `km/L`</li>
+                            </ul>
+                        </li>
+                        <li>`FuelPrice_per_L` = Convert input `Fuel Price` to currency per Liter.
+                            <ul>
+                                <li>If `per US Gallon`: `price_per_gallon_us / 3.78541`</li>
+                                <li>If `per Imperial Gallon`: `price_per_gallon_uk / 4.54609`</li>
+                                <li>If `per Liter`: `price_per_L`</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Calculate Total Fuel Needed:</strong>
+                    <br><strong style="font-size: 1.1em;">Total Fuel Needed (L) = Distance_km / FuelEfficiency_km/L</strong></li>
+                <li><strong>Calculate Total Fuel Cost:</strong>
+                    <br><strong style="font-size: 1.1em;">Total Fuel Cost = Total Fuel Needed (L) × FuelPrice_per_L</strong></li>
+                <li><strong>Calculate Cost per 100 km/miles:</strong>
+                    <br>Cost per 100 km = `Total Fuel Cost / (Distance_km / 100)`
+                    <br>Cost per 100 miles = `Total Fuel Cost / (Distance_km / 160.934)` (converts 100 miles to km)</li>
+            </ol>
+            <p>All monetary results are rounded to two decimal places, standard for currency calculations. Fuel volume is rounded to two decimal places for readability.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical Fuel Cost Examples</h2>
+            <p>Here are several real-world scenarios demonstrating how the Fuel Cost Calculator can be applied for various trips and vehicle types.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Distance</th>
+                            <th>Efficiency</th>
+                            <th>Fuel Price</th>
+                            <th>Total Fuel Needed</th>
+                            <th>Total Fuel Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Daily Commute (Metric)</strong></td>
+                            <td>50 km</td>
+                            <td>12 km/L</td>
+                            <td>$1.80/L</td>
+                            <td>4.17 L</td>
+                            <td>$7.50</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Road Trip (US Imperial)</strong></td>
+                            <td>300 miles</td>
+                            <td>30 mpg (US)</td>
+                            <td>$3.50/gal (US)</td>
+                            <td>10.00 US gal</td>
+                            <td>$35.00</td>
+                        </tr>
+                        <tr>
+                            <td><strong>European Trip (L/100km)</strong></td>
+                            <td>800 km</td>
+                            <td>7.5 L/100km</td>
+                            <td>€1.95/L</td>
+                            <td>60.00 L</td>
+                            <td>€117.00</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Heavy Vehicle (UK Imperial)</strong></td>
+                            <td>150 miles</td>
+                            <td>15 mpg (Imperial)</td>
+                            <td>£1.60/gal (UK)</td>
+                            <td>10.00 UK gal</td>
+                            <td>£16.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>*Note: Currency symbols are used for illustrative purposes. Results are rounded to two decimal places.</p>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. What is "fuel efficiency" and how is it measured?</h3>
+                <p>Fuel efficiency, also known as mileage, measures how far a vehicle can travel per unit of fuel. It's commonly expressed as kilometers per liter (km/L) in metric systems, miles per gallon (mpg) in imperial systems, or liters per 100 kilometers (L/100km) in European countries. A higher number for km/L or mpg means better efficiency, while a lower number for L/100km means better efficiency.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. What is the difference between US mpg and Imperial mpg?</h3>
+                <p>The **US gallon** is smaller (approx. 3.785 liters) than the **Imperial gallon** (approx. 4.546 liters). Therefore, an `mpg (US)` figure is numerically higher than an `mpg (Imperial)` figure for the same vehicle and fuel consumption. It's crucial to select the correct gallon type in the calculator to ensure accurate results.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. How can I get an accurate "Fuel Efficiency" value for my car?</h3>
+                <p>The most accurate way is to track it yourself: fill your tank, reset your trip odometer, drive as usual, and note the kilometers/miles driven until your next fill-up. At the next fill-up, note the liters/gallons of fuel added. Divide distance by fuel added to get km/L or mpg. Repeat this for several fill-ups to get an average. Your car's onboard computer may also provide an estimate.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. Why does my actual fuel cost sometimes differ from the calculator's estimate?</h3>
+                <p>The calculator provides a theoretical estimate. Actual costs can differ due to:
+                    <ul>
+                        <li><strong>Driving Conditions:</strong> Heavy traffic, aggressive driving, frequent braking, and acceleration reduce efficiency.</li>
+                        <li><strong>Vehicle Load:</strong> Carrying more passengers or cargo increases fuel consumption.</li>
+                        <li><strong>Weather:</strong> Cold weather reduces fuel efficiency, as does using air conditioning.</li>
+                        <li><strong>Tire Pressure:</strong> Underinflated tires can significantly reduce mileage.</li>
+                        <li><strong>Fuel Price Fluctuations:</strong> Prices at the pump can change daily or hourly.</li>
+                    </ul>
+                </p>
+            </div>
+             <div class="faq-item">
+                <h3>5. Can this calculator help me compare two different cars' fuel costs?</h3>
+                <p>Yes, absolutely! This is one of its primary uses. You can run the calculation once for Car A with its specific fuel efficiency, then again for Car B. This allows you to directly compare which vehicle would be cheaper to run over a given distance, which is very useful when considering a new vehicle purchase.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. What is "Cost per 100 km" and "Cost per 100 miles"?</h3>
+                <p>These metrics standardize your fuel cost for easier comparison. "Cost per 100 km" tells you how much it costs to travel 100 kilometers. "Cost per 100 miles" tells you the cost for 100 miles. These are particularly useful when comparing the efficiency of different trips or vehicles, giving you a clear financial benchmark regardless of trip length.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. Does the calculator support fuel types like Diesel or Electric?</h3>
+                <p>This calculator is designed for liquid fuels where efficiency is measured in distance per volume (e.g., km/L, mpg). While you can input diesel fuel prices and efficiencies, it does not directly support electricity cost calculations for electric vehicles, which would require different units and consumption metrics (e.g., kWh/100km).</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. What are some ways to improve fuel efficiency?</h3>
+                <p>Improving fuel efficiency can save you money and reduce your carbon footprint. Tips include:
+                    <ul>
+                        <li>Smooth acceleration and braking.</li>
+                        <li>Maintaining consistent speeds (using cruise control on highways).</li>
+                        <li>Keeping tires properly inflated.</li>
+                        <li>Regular vehicle maintenance (oil changes, air filters).</li>
+                        <li>Reducing excess weight in your vehicle.</li>
+                        <li>Limiting idling.</li>
+                    </ul>
+                </p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: The Environmental Impact of Fuel Consumption</h2>
+            <p>Beyond the immediate financial implications, calculating your fuel costs also implicitly highlights your environmental footprint. The consumption of gasoline or diesel directly correlates with the emission of greenhouse gases and other pollutants into the atmosphere. Understanding how much fuel your journey requires can be a powerful motivator for adopting more eco-friendly habits. Opting for a more fuel-efficient vehicle, carpooling, utilizing public transportation, or even planning routes to avoid heavy traffic can significantly reduce both your monetary cost and your environmental impact. Furthermore, as the world transitions towards sustainable energy, being aware of your traditional fuel consumption can guide decisions towards electric vehicles or other low-emission alternatives, contributing to a healthier planet. Use this calculator not just for your wallet, but as a step towards more conscious consumption.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+        <p class="disclaimer">
+            EveryCalc does not store or share any personal data.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const distanceInput = document.getElementById('distance');
+            const distanceUnitSelect = document.getElementById('distanceUnit');
+            const fuelEfficiencyInput = document.getElementById('fuelEfficiency');
+            const fuelEfficiencyUnitSelect = document.getElementById('fuelEfficiencyUnit');
+            const fuelPriceInput = document.getElementById('fuelPrice');
+            const fuelPriceUnitSelect = document.getElementById('fuelPriceUnit');
+
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const resultsSection = document.getElementById('results-section');
+
+            const distanceError = document.getElementById('distance-error');
+            const fuelEfficiencyError = document.getElementById('fuelEfficiency-error');
+            const fuelPriceError = document.getElementById('fuelPrice-error');
+
+            const totalFuelNeededDisplay = document.getElementById('total-fuel-needed-display');
+            const totalFuelCostDisplay = document.getElementById('total-fuel-cost-display');
+            const costPer100kmDisplay = document.getElementById('cost-per-100km-display');
+            const costPer100milesDisplay = document.getElementById('cost-per-100miles-display');
+
+            const currencyFormatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+
+            // Conversion factors to base units (km and Liters)
+            const KM_PER_MILE = 1.60934;
+            const LITERS_PER_US_GALLON = 3.78541;
+            const LITERS_PER_UK_GALLON = 4.54609;
+
+            const validateInput = (inputEl, errorEl, min = 0.01) => {
+                errorEl.style.display = 'none';
+                inputEl.style.borderColor = 'var(--color-border)';
+                const value = parseFloat(inputEl.value);
+
+                if (inputEl.value.trim() === '' || isNaN(value) || value < min) {
+                    errorEl.textContent = `Please enter a positive value.`;
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                return true;
+            };
+
+            const performCalculation = () => {
+                const distance = parseFloat(distanceInput.value);
+                const distanceUnit = distanceUnitSelect.value;
+                let fuelEfficiency = parseFloat(fuelEfficiencyInput.value);
+                const fuelEfficiencyUnit = fuelEfficiencyUnitSelect.value;
+                const fuelPrice = parseFloat(fuelPriceInput.value);
+                const fuelPriceUnit = fuelPriceUnitSelect.value;
+
+                // Step 1: Standardize Inputs to KM, KM/L, $/L
+                let distanceInKm;
+                if (distanceUnit === 'miles') {
+                    distanceInKm = distance * KM_PER_MILE;
+                } else { // km
+                    distanceInKm = distance;
+                }
+
+                let fuelEfficiencyInKmPerLiter;
+                if (fuelEfficiencyUnit === 'mpg_us') {
+                    fuelEfficiencyInKmPerLiter = fuelEfficiency * (KM_PER_MILE / LITERS_PER_US_GALLON);
+                } else if (fuelEfficiencyUnit === 'mpg_uk') {
+                    fuelEfficiencyInKmPerLiter = fuelEfficiency * (KM_PER_MILE / LITERS_PER_UK_GALLON);
+                } else if (fuelEfficiencyUnit === 'L/100km') {
+                    fuelEfficiencyInKmPerLiter = 100 / fuelEfficiency; // Invert for km/L
+                } else { // km/L
+                    fuelEfficiencyInKmPerLiter = fuelEfficiency;
+                }
+
+                let fuelPricePerLiter;
+                if (fuelPriceUnit === 'per_gallon_us') {
+                    fuelPricePerLiter = fuelPrice / LITERS_PER_US_GALLON;
+                } else if (fuelPriceUnit === 'per_gallon_uk') {
+                    fuelPricePerLiter = fuelPrice / LITERS_PER_UK_GALLON;
+                } else { // per_liter
+                    fuelPricePerLiter = fuelPrice;
+                }
+
+                // Ensure fuel efficiency is not zero or negative for division
+                if (fuelEfficiencyInKmPerLiter <= 0) {
+                     fuelEfficiencyError.textContent = 'Fuel efficiency must be positive.';
+                     fuelEfficiencyError.style.display = 'block';
+                     fuelEfficiencyInput.style.borderColor = 'var(--color-danger)';
+                     return false;
+                }
+
+                // Step 2: Calculate Total Fuel Needed
+                const totalFuelNeededLiters = distanceInKm / fuelEfficiencyInKmPerLiter;
+
+                // Step 3: Calculate Total Fuel Cost
+                const totalFuelCost = totalFuelNeededLiters * fuelPricePerLiter;
+
+                // Step 4: Calculate Cost per 100 km/miles
+                const costPer100km = (totalFuelCost / distanceInKm) * 100;
+                const costPer100miles = (totalFuelCost / distanceInKm) * KM_PER_MILE * 100;
+
+                totalFuelNeededDisplay.textContent = `${totalFuelNeededLiters.toFixed(2)} L`;
+                totalFuelCostDisplay.textContent = currencyFormatter.format(totalFuelCost);
+                costPer100kmDisplay.textContent = currencyFormatter.format(costPer100km);
+                costPer100milesDisplay.textContent = currencyFormatter.format(costPer100miles);
+
+                resultsSection.style.display = 'block';
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+                return true;
+            };
+
+            calculateBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                calculateBtn.textContent = 'Calculating...';
+                calculateBtn.disabled = true;
+
+                setTimeout(() => {
+                    let allValid = true;
+                    allValid = validateInput(distanceInput, distanceError) && allValid;
+                    allValid = validateInput(fuelEfficiencyInput, fuelEfficiencyError) && allValid;
+                    allValid = validateInput(fuelPriceInput, fuelPriceError) && allValid;
+
+                    if (allValid) {
+                        if (!performCalculation()) { // If calculation logic itself returns false (e.g., zero efficiency)
+                            resultsSection.style.display = 'none';
+                        }
+                    } else {
+                        resultsSection.style.display = 'none'; // Hide results if validation fails
+                    }
+                    
+                    calculateBtn.textContent = 'Calculate Fuel Cost';
+                    calculateBtn.disabled = false;
+                }, 500);
+            });
+
+            resetBtn.addEventListener('click', function() {
+                document.getElementById('fuel-cost-form').reset();
+                distanceInput.style.borderColor = 'var(--color-border)';
+                fuelEfficiencyInput.style.borderColor = 'var(--color-border)';
+                fuelPriceInput.style.borderColor = 'var(--color-border)';
+                distanceError.style.display = 'none';
+                fuelEfficiencyError.style.display = 'none';
+                fuelPriceError.style.display = 'none';
+                resultsSection.style.display = 'none';
+                
+                // Reset select options to initial defaults
+                distanceUnitSelect.value = 'km';
+                fuelEfficiencyUnitSelect.value = 'km/L';
+                fuelPriceUnitSelect.value = 'per_liter';
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const summaryText = `Fuel Cost Calculation Report by EveryCalc:\n` +
+                                  `----------------------------------------\n` +
+                                  `Total Distance: ${distanceInput.value} ${distanceUnitSelect.options[distanceUnitSelect.selectedIndex].text}\n` +
+                                  `Fuel Efficiency: ${fuelEfficiencyInput.value} ${fuelEfficiencyUnitSelect.options[fuelEfficiencyUnitSelect.selectedIndex].text}\n` +
+                                  `Fuel Price: ${fuelPriceInput.value} ${fuelPriceUnitSelect.options[fuelPriceUnitSelect.selectedIndex].text}\n` +
+                                  `----------------------------------------\n` +
+                                  `Total Fuel Needed: ${totalFuelNeededDisplay.textContent}\n` +
+                                  `Total Fuel Cost: ${totalFuelCostDisplay.textContent}\n` +
+                                  `Cost per 100 km: ${costPer100kmDisplay.textContent}\n` +
+                                  `Cost per 100 miles: ${costPer100milesDisplay.textContent}\n` +
+                                  `----------------------------------------\n` +
+                                  `Calculated at https://everycalc.site`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

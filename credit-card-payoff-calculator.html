@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Credit Card Payoff Calculator by EveryCalc – Free Online Calculator</title>
+    <meta name="description" content="Use the free Credit Card Payoff Calculator by EveryCalc for fast, accurate results. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/credit-card-payoff-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Credit Card Payoff Calculator by EveryCalc",
+      "applicationCategory": "CalculatorApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/credit-card-payoff-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex-grow: 1;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        header, footer {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 {
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); }
+        li { margin-bottom: 0.5rem; }
+
+        .subtitle {
+            font-size: var(--font-size-md);
+            color: var(--color-secondary);
+            margin: 0;
+        }
+
+        section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; gap: 1.5rem; }
+        
+        @media (min-width: 640px) {
+            .calculator-grid { grid-template-columns: repeat(2, 1fr); }
+            .grid-span-2 { grid-column: span 2; }
+        }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        .input-wrapper { position: relative; }
+
+        .input-wrapper span {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        .form-group input[name="apr"] { padding-right: 2.5rem; padding-left: 1rem; }
+        .input-wrapper span.suffix { left: auto; right: 1rem; }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; display: none; }
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s, color 0.2s, opacity 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .results-summary {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (min-width: 640px) {
+            .results-summary { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        .summary-card {
+            background-color: var(--color-bg);
+            padding: 1rem;
+            border-radius: 0.375rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .summary-card-label { font-weight: 500; color: var(--color-secondary); margin-bottom: 0.25rem; display: block; }
+        .summary-card-value { font-size: var(--font-size-lg); font-weight: 700; color: var(--color-primary); }
+        
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { max-height: 400px; overflow-y: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: right; border-bottom: 1px solid var(--color-border); }
+        th:first-child, td:first-child { text-align: left; }
+        th { font-weight: 600; background-color: var(--color-surface); position: sticky; top: 0; z-index: 1; }
+        tr:last-child td { border-bottom: none; }
+        
+        .faq-item { margin-bottom: 1.5rem; }
+        .faq-item h3 { margin-bottom: 0.5rem; }
+
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { max-height: none; overflow: visible; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>Credit Card Payoff Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Plan Your Path to Zero Debt</h2>
+            <p>The Credit Card Payoff Calculator by EveryCalc is a precision tool designed for anyone serious about becoming debt-free. It helps you visualize the finish line by calculating how long it will take to pay off your credit card balance based on your planned monthly payments. More importantly, it reveals the total amount of interest you'll pay over that time, providing a powerful incentive to accelerate your repayment. Whether you're creating a budget, comparing debt-reduction strategies, or simply need a clear picture of your financial timeline, this calculator delivers the essential data you need without complexity or clutter. We empower you with the clarity to make informed financial decisions and take control of your debt.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Enter Your Card Details</h2>
+            <form id="payoff-form" novalidate>
+                <div class="calculator-grid">
+                    <div class="form-group">
+                        <label for="balance">Current Card Balance</label>
+                        <div class="input-wrapper">
+                            <span>$</span>
+                            <input type="number" id="balance" name="balance" placeholder="e.g., 5000" required min="1">
+                        </div>
+                        <p class="error-message" id="balance-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="apr">Annual Percentage Rate (APR)</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="apr" name="apr" placeholder="e.g., 18.9" required min="0.1" step="0.01">
+                            <span class="suffix">%</span>
+                        </div>
+                        <p class="error-message" id="apr-error"></p>
+                    </div>
+                    
+                    <div class="form-group grid-span-2">
+                        <label for="payment">Fixed Monthly Payment</label>
+                         <div class="input-wrapper">
+                            <span>$</span>
+                            <input type="number" id="payment" name="payment" placeholder="e.g., 200" required min="1">
+                        </div>
+                        <p class="error-message" id="payment-error"></p>
+                    </div>
+
+                    <div class="button-group grid-span-2">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">Calculate Payoff Plan</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Your Payoff Summary</h2>
+            <div class="results-summary">
+                 <div class="summary-card">
+                    <span class="summary-card-label">Payoff Time</span>
+                    <span class="summary-card-value" id="payoff-time"></span>
+                </div>
+                 <div class="summary-card">
+                    <span class="summary-card-label">Total Interest Paid</span>
+                    <span class="summary-card-value" id="total-interest"></span>
+                </div>
+                 <div class="summary-card">
+                    <span class="summary-card-label">Total Payments</span>
+                    <span class="summary-card-value" id="total-payments"></span>
+                </div>
+                 <div class="summary-card">
+                    <span class="summary-card-label">Original Principal</span>
+                    <span class="summary-card-value" id="original-principal"></span>
+                </div>
+            </div>
+             <h3 id="schedule-heading">Amortization Schedule</h3>
+             <div class="table-container" aria-labelledby="schedule-heading">
+                <table id="amortization-table">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Payment</th>
+                            <th>Principal</th>
+                            <th>Interest</th>
+                            <th>Remaining Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be generated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Summary</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Plan</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the Calculator</h2>
+            <p>This tool is designed for simplicity and accuracy. To generate your payoff plan, you need three key pieces of information, which you can find on your most recent credit card statement:</p>
+            <ol>
+                <li><strong>Current Card Balance:</strong> Enter the total amount you currently owe on the card. This is your starting principal.</li>
+                <li><strong>Annual Percentage Rate (APR):</strong> This is the yearly interest rate charged on your balance. Enter it as a percentage (e.g., for 19.9%, enter 19.9).</li>
+                <li><strong>Fixed Monthly Payment:</strong> Input the total amount you plan to pay each month. For an effective payoff plan, this amount should be higher than your required minimum payment. Using a consistent, fixed payment is key to our calculation.</li>
+            </ol>
+            <p>After entering these values, click "Calculate Payoff Plan". The tool will instantly display your results, including how long it will take to be debt-free and the total interest you'll pay. For a detailed breakdown, review the amortization schedule, which shows how each payment reduces your balance month by month.</p>
+            <h3>Accuracy Tips</h3>
+            <p>Ensure your APR is accurate. If you have a promotional rate, use the APR that will apply after the promotional period ends for a long-term plan. The most common mistake is underestimating the monthly payment you can make. Review your budget to determine the highest sustainable payment you can afford to significantly shorten your payoff time and reduce interest charges.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formula & Methodology</h2>
+            <p>Our calculator uses a standard financial formula known as the loan amortization formula to determine the number of payments required to pay off a loan. The formula is solved for the number of periods (N), which in this case are months:</p>
+            <p><strong>N = -log(1 - (r * P) / A) / log(1 + r)</strong></p>
+            <p>Here’s a breakdown of each variable in the formula:</p>
+            <ul>
+                <li><strong>N:</strong> The total number of monthly payments needed to clear the balance.</li>
+                <li><strong>P (Principal):</strong> Your "Current Card Balance". This is the initial amount of the debt.</li>
+                <li><strong>A (Payment):</strong> Your "Fixed Monthly Payment". This is the fixed amount you pay each month.</li>
+                <li><strong>r (Monthly Rate):</strong> The "Annual Percentage Rate (APR)" converted into a monthly decimal. We calculate this by dividing your APR by 100 (to make it a decimal) and then by 12 (to get the monthly rate). For example, an 18% APR becomes a monthly rate of 0.015 (18 / 100 / 12).</li>
+            </ul>
+            <p>Once 'N' is calculated, we can determine the total interest paid by first calculating the total amount of payments (A * N) and then subtracting the original principal (P). Our amortization schedule is built by iteratively applying the monthly interest to the remaining balance and subtracting your payment month by month. This approach ensures a transparent and accurate projection of your debt-free journey.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical Payoff Scenarios</h2>
+            <p>The impact of your monthly payment on your payoff timeline and total interest is significant. Below are a few examples that illustrate how different approaches can affect your financial outcome.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Card Balance</th>
+                            <th>APR</th>
+                            <th>Monthly Payment</th>
+                            <th>Payoff Time</th>
+                            <th>Total Interest Paid</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Steady Paydown</strong></td>
+                            <td>$5,000</td>
+                            <td>19.9%</td>
+                            <td>$150</td>
+                            <td>4 years, 5 months</td>
+                            <td>$2,730.89</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Aggressive Paydown</strong></td>
+                            <td>$5,000</td>
+                            <td>19.9%</td>
+                            <td>$300</td>
+                            <td>1 year, 7 months</td>
+                            <td>$838.27</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Large Debt Reality</strong></td>
+                            <td>$15,000</td>
+                            <td>22.5%</td>
+                            <td>$400</td>
+                            <td>5 years, 4 months</td>
+                            <td>$10,381.56</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Minimum Payment Trap</strong></td>
+                            <td>$2,500</td>
+                            <td>21.0%</td>
+                            <td>$75</td>
+                            <td>4 years, 1 month</td>
+                            <td>$1,170.68</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. Why is paying more than the minimum so important?</h3>
+                <p>Minimum payments are often calculated as a small percentage of your balance plus interest. This means a large portion of your payment goes to interest, and very little goes to reducing the principal. By paying more than the minimum, you drastically increase the amount applied to the principal, which reduces the balance faster and saves you a significant amount of money on interest over time.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. Does this calculator work for variable APRs?</h3>
+                <p>This calculator assumes a fixed APR for the duration of the payoff period. If your APR is variable, your actual payoff time and interest paid may differ. You can use this tool to get a reliable estimate by using your current APR, but be aware that an increase in the rate will extend your payoff time if the payment remains the same.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. How can I pay off my credit card debt faster?</h3>
+                <p>There are two popular strategies: the Debt Snowball (paying off the smallest balances first for psychological wins) and the Debt Avalanche (paying off the highest-interest balances first to save the most money). Both methods involve making minimum payments on all debts and directing any extra money towards your target card. This calculator is perfect for modeling the Debt Avalanche method.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. What if I have a 0% introductory APR?</h3>
+                <p>This calculator is best used for interest-accruing balances. If you are in a 0% APR period, your entire payment (minus any fees) goes toward the principal. To plan for after the promotional period, you can use the calculator with the expected post-promotional APR to see how you should structure your payments then.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. Is my financial information saved?</h3>
+                <p>Absolutely not. User privacy is paramount at EveryCalc. All calculations are performed directly in your browser. No data you enter is ever sent to our servers, stored, or viewed by anyone. You can use this tool with complete anonymity and security.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. What if my payment amount is too low?</h3>
+                <p>The calculator will alert you if your fixed monthly payment is not enough to cover the interest accrued in the first month. In this situation, your balance would actually grow over time, not shrink. You must enter a payment amount that is higher than the initial monthly interest to make progress on paying down the debt.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. Does this account for late fees or other charges?</h3>
+                <p>No, this tool calculates payoff based solely on the balance, APR, and your payment. It does not account for potential future charges like late fees, annual fees, or other transaction fees. These would need to be factored into your balance separately if they occur.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. Can I see a month-by-month breakdown?</h3>
+                <p>Yes. After you calculate your results, a full amortization schedule appears. This table details every payment, showing how much goes toward principal versus interest and what your remaining balance is after each month until it reaches zero.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: Debt Payoff Strategies</h2>
+            <p>Beyond simply making payments, having a clear strategy can accelerate your journey to being debt-free. The two most common are the Debt Avalanche and Debt Snowball methods. The <strong>Debt Avalanche</strong> method, which this calculator is ideal for modeling, involves making minimum payments on all your debts but focusing all extra funds on the debt with the highest APR. This approach saves you the most money on interest over time. The <strong>Debt Snowball</strong> method involves paying off your smallest debts first, regardless of interest rate. While you may pay more in interest, the psychological boost of clearing individual debts can provide powerful motivation to keep going. The best strategy is the one you can stick with. Use this calculator to run scenarios for your highest-interest cards to see how the Debt Avalanche could work for you, and commit to a plan that fits your financial style.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('payoff-form');
+            const balanceInput = document.getElementById('balance');
+            const aprInput = document.getElementById('apr');
+            const paymentInput = document.getElementById('payment');
+
+            const balanceError = document.getElementById('balance-error');
+            const aprError = document.getElementById('apr-error');
+            const paymentError = document.getElementById('payment-error');
+
+            const resultsSection = document.getElementById('results-section');
+            const payoffTimeEl = document.getElementById('payoff-time');
+            const totalInterestEl = document.getElementById('total-interest');
+            const totalPaymentsEl = document.getElementById('total-payments');
+            const originalPrincipalEl = document.getElementById('original-principal');
+            const amortizationTableBody = document.querySelector('#amortization-table tbody');
+
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            
+            const currencyFormatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+
+            const validateInput = (input, errorEl, message, min = 0.01) => {
+                const value = parseFloat(input.value);
+                if (input.value === '' || isNaN(value) || value < min) {
+                    input.style.borderColor = 'var(--color-danger)';
+                    errorEl.textContent = message;
+                    errorEl.style.display = 'block';
+                    return false;
+                }
+                input.style.borderColor = 'var(--color-border)';
+                errorEl.style.display = 'none';
+                return true;
+            };
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const isBalanceValid = validateInput(balanceInput, balanceError, 'Enter a balance greater than 0.', 1);
+                const isAprValid = validateInput(aprInput, aprError, 'Enter an APR greater than 0.', 0.1);
+                const isPaymentValid = validateInput(paymentInput, paymentError, 'Enter a payment greater than 0.', 1);
+
+                if (!isBalanceValid || !isAprValid || !isPaymentValid) {
+                    return;
+                }
+
+                const balance = parseFloat(balanceInput.value);
+                const apr = parseFloat(aprInput.value);
+                const payment = parseFloat(paymentInput.value);
+                const monthlyRate = apr / 12 / 100;
+                const firstMonthInterest = balance * monthlyRate;
+                
+                paymentError.style.display = 'none';
+                paymentInput.style.borderColor = 'var(--color-border)';
+                if (payment <= firstMonthInterest) {
+                    paymentInput.style.borderColor = 'var(--color-danger)';
+                    paymentError.textContent = `Payment must be greater than first month's interest of ${currencyFormatter.format(firstMonthInterest)}.`;
+                    paymentError.style.display = 'block';
+                    return;
+                }
+                
+                calculateBtn.textContent = 'Calculating...';
+                calculateBtn.disabled = true;
+
+                setTimeout(() => {
+                    // Calculation Logic
+                    const months = -(Math.log(1 - (monthlyRate * balance) / payment) / Math.log(1 + monthlyRate));
+                    const totalPayments = payment * months;
+                    const totalInterest = totalPayments - balance;
+
+                    // Display Summary
+                    const years = Math.floor(months / 12);
+                    const remainingMonths = Math.round(months % 12);
+                    let timeText = '';
+                    if (years > 0) timeText += `${years} year${years > 1 ? 's' : ''}`;
+                    if (years > 0 && remainingMonths > 0) timeText += ', ';
+                    if (remainingMonths > 0) timeText += `${remainingMonths} month${remainingMonths > 1 ? 's' : ''}`;
+
+                    payoffTimeEl.textContent = timeText;
+                    totalInterestEl.textContent = currencyFormatter.format(totalInterest);
+                    totalPaymentsEl.textContent = currencyFormatter.format(totalPayments);
+                    originalPrincipalEl.textContent = currencyFormatter.format(balance);
+                    
+                    // Generate Amortization Schedule
+                    amortizationTableBody.innerHTML = ''; // Clear previous results
+                    let currentBalance = balance;
+                    for (let i = 1; i <= Math.ceil(months); i++) {
+                        const interestPaid = currentBalance * monthlyRate;
+                        let principalPaid = payment - interestPaid;
+                        
+                        if (currentBalance < payment) {
+                            principalPaid = currentBalance;
+                            currentBalance = 0;
+                        } else {
+                            currentBalance -= principalPaid;
+                        }
+
+                        const row = `<tr>
+                            <td>${i}</td>
+                            <td>${currencyFormatter.format(Math.min(payment, currentBalance + principalPaid + interestPaid))}</td>
+                            <td>${currencyFormatter.format(principalPaid)}</td>
+                            <td>${currencyFormatter.format(interestPaid)}</td>
+                            <td>${currencyFormatter.format(Math.max(0, currentBalance))}</td>
+                        </tr>`;
+                        amortizationTableBody.insertAdjacentHTML('beforeend', row);
+                    }
+
+                    resultsSection.style.display = 'block';
+                    resultsSection.scrollIntoView({ behavior: 'smooth' });
+                    
+                    calculateBtn.textContent = 'Calculate Payoff Plan';
+                    calculateBtn.disabled = false;
+                }, 500);
+            });
+
+            resetBtn.addEventListener('click', function() {
+                form.reset();
+                [balanceInput, aprInput, paymentInput].forEach(input => {
+                    input.style.borderColor = 'var(--color-border)';
+                });
+                [balanceError, aprError, paymentError].forEach(errorEl => {
+                    errorEl.style.display = 'none';
+                });
+                resultsSection.style.display = 'none';
+                amortizationTableBody.innerHTML = '';
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const summaryText = `Credit Card Payoff Summary by EveryCalc:\n` +
+                                  `--------------------------------------\n` +
+                                  `Card Balance: ${originalPrincipalEl.textContent}\n` +
+                                  `APR: ${aprInput.value}%\n` +
+                                  `Monthly Payment: ${currencyFormatter.format(parseFloat(paymentInput.value))}\n` +
+                                  `--------------------------------------\n` +
+                                  `Payoff Time: ${payoffTimeEl.textContent}\n` +
+                                  `Total Interest Paid: ${totalInterestEl.textContent}\n` +
+                                  `Total Payments: ${totalPaymentsEl.textContent}\n` +
+                                  `--------------------------------------\n` +
+                                  `Calculated at https://everycalc.site`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

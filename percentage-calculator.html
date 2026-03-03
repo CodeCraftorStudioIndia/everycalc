@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Percentage Calculator by EveryCalc – Free Online Calculator</title>
+    <meta name="description" content="Use the free Percentage Calculator by EveryCalc for fast, accurate results. Easily calculate percentages, percentage change, and more. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/percentage-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Percentage Calculator by EveryCalc",
+      "applicationCategory": "CalculatorApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/percentage-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main { flex-grow: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+        header, footer { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3, h4 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--color-primary); }
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        h4 { font-size: var(--font-size-base); }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); }
+        li { margin-bottom: 0.5rem; }
+        strong { font-weight: 600; color: var(--color-primary); }
+
+        .subtitle { font-size: var(--font-size-md); color: var(--color-secondary); font-weight: 400; margin: 0; }
+        section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-module {
+            background-color: var(--color-surface);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--color-border);
+            margin-bottom: 2rem;
+        }
+        .calculator-module:last-of-type { margin-bottom: 0; }
+
+        .calculator-grid { display: grid; align-items: center; gap: 1rem 1.5rem; }
+        @media (min-width: 640px) { .calculator-grid { grid-template-columns: repeat(5, 1fr); } }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { display: none; } /* Using placeholders for simplicity */
+        .form-group input {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+        
+        .grid-text { text-align: center; font-weight: 500; color: var(--color-secondary); font-size: var(--font-size-base); }
+        @media (min-width: 640px) {
+            .input-1 { grid-column: 1 / 3; }
+            .input-2 { grid-column: 4 / 6; }
+            .text-separator { grid-column: 3 / 4; }
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+        .btn {
+            padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-size: var(--font-size-base);
+            font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex;
+            align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: transparent; color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: var(--color-surface); }
+        
+        .result-display {
+            margin-top: 1.5rem;
+            padding: 1rem 1.5rem;
+            background-color: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            text-align: center;
+            display: none;
+        }
+        .result-text { font-size: var(--font-size-md); color: var(--color-secondary); }
+        .result-text .result-value { font-weight: 700; color: var(--color-primary); font-size: var(--font-size-lg); }
+        .result-text .result-value.positive { color: var(--color-success); }
+        .result-text .result-value.negative { color: var(--color-danger); }
+
+        .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+        
+        .faq-item { margin-bottom: 1.5rem; }
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .button-group { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator-module { border: 1px solid #ccc; background-color: transparent !important; }
+            .result-display { display: block !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>Percentage Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Your Essential Percentage Toolkit</h2>
+            <p>The Percentage Calculator by EveryCalc is a versatile, high-precision utility designed to handle all your percentage-based calculations with ease. Percentages are a fundamental part of our daily lives, from calculating discounts at a store to understanding financial reports and statistical data. This tool removes the potential for manual error and provides instant, accurate answers. We have consolidated the three most common percentage operations into a single, intuitive interface. Whether you are a student, a professional, or just managing your personal finances, this calculator offers the clarity and reliability you need, free from any distractions. Trust EveryCalc for a seamless and confident calculation experience.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Calculators</h2>
+
+            <!-- Module 1 -->
+            <div class="calculator-module" id="calc1-module">
+                <h4>1. What is X% of Y?</h4>
+                <form id="calc1-form" novalidate>
+                    <div class="calculator-grid">
+                        <div class="form-group input-1">
+                            <label for="c1-percent">Percentage</label>
+                            <input type="number" id="c1-percent" placeholder="What is..." aria-label="Percentage">
+                            <p class="error-message" id="c1-percent-error"></p>
+                        </div>
+                        <span class="grid-text text-separator">% of</span>
+                        <div class="form-group input-2">
+                            <label for="c1-base">Base Value</label>
+                            <input type="number" id="c1-base" placeholder="...this number?" aria-label="Base Value">
+                            <p class="error-message" id="c1-base-error"></p>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary">Calculate</button>
+                        <button type="button" class="btn btn-secondary btn-reset">Reset</button>
+                    </div>
+                    <div class="result-display" id="c1-result-display" aria-live="polite">
+                        <p class="result-text"><span id="c1-result-value" class="result-value"></span></p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Module 2 -->
+            <div class="calculator-module" id="calc2-module">
+                <h4>2. X is what percent of Y?</h4>
+                <form id="calc2-form" novalidate>
+                    <div class="calculator-grid">
+                        <div class="form-group input-1">
+                            <label for="c2-part">Part Value</label>
+                            <input type="number" id="c2-part" placeholder="This number..." aria-label="Part Value">
+                            <p class="error-message" id="c2-part-error"></p>
+                        </div>
+                        <span class="grid-text text-separator">is what % of</span>
+                        <div class="form-group input-2">
+                             <label for="c2-total">Total Value</label>
+                            <input type="number" id="c2-total" placeholder="...this number?" aria-label="Total Value">
+                             <p class="error-message" id="c2-total-error"></p>
+                        </div>
+                    </div>
+                     <div class="button-group">
+                        <button type="submit" class="btn btn-primary">Calculate</button>
+                        <button type="button" class="btn btn-secondary btn-reset">Reset</button>
+                    </div>
+                     <div class="result-display" id="c2-result-display" aria-live="polite">
+                        <p class="result-text"><span id="c2-result-value" class="result-value"></span></p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Module 3 -->
+            <div class="calculator-module" id="calc3-module">
+                <h4>3. What is the percentage change from X to Y?</h4>
+                 <form id="calc3-form" novalidate>
+                    <div class="calculator-grid">
+                        <div class="form-group input-1">
+                            <label for="c3-initial">Initial Value</label>
+                            <input type="number" id="c3-initial" placeholder="From this value..." aria-label="Initial Value">
+                            <p class="error-message" id="c3-initial-error"></p>
+                        </div>
+                        <span class="grid-text text-separator">to</span>
+                        <div class="form-group input-2">
+                            <label for="c3-final">Final Value</label>
+                            <input type="number" id="c3-final" placeholder="...to this value?" aria-label="Final Value">
+                            <p class="error-message" id="c3-final-error"></p>
+                        </div>
+                    </div>
+                     <div class="button-group">
+                        <button type="submit" class="btn btn-primary">Calculate</button>
+                        <button type="button" class="btn btn-secondary btn-reset">Reset</button>
+                    </div>
+                     <div class="result-display" id="c3-result-display" aria-live="polite">
+                        <p class="result-text"><span id="c3-result-value" class="result-value"></span></p>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use This Toolkit</h2>
+            <p>Our Percentage Calculator is divided into three distinct modules to handle the most common percentage-related tasks. Here's how to use each one:</p>
+            <ol>
+                <li><strong>What is X% of Y?:</strong> This is for finding a specific percentage of a number. For example, to calculate a 20% tip on a $50 bill, you would enter '20' in the first box and '50' in the second box. The calculator will give you the result, which is $10.</li>
+                <li><strong>X is what percent of Y?:</strong> Use this to express one number as a percentage of another. This is useful for tasks like grading. If a student scored 45 points out of a possible 60, you would enter '45' in the first box and '60' in the second. The result shows that the score is 75%.</li>
+                <li><strong>What is the percentage change from X to Y?:</strong> This module calculates the percentage increase or decrease between two numbers. For instance, if a stock price moved from $150 to $165, you would enter '150' in the first box and '165' in the second. The calculator will show a 10% increase. If the price dropped to $120, it would show a 20% decrease.</li>
+            </ol>
+            <p>For all modules, simply enter your numbers and click "Calculate". The "Reset" button will clear the inputs and results for that specific module, allowing you to start fresh.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formulas & Methodology</h2>
+            <p>We believe in complete transparency. Our calculators use the standard, universally accepted mathematical formulas for percentages. Here are the formulas powering each module:</p>
+            
+            <h3>1. Finding a Percentage of a Number (What is X% of Y?)</h3>
+            <p>To find the value of a percentage, we convert the percentage to a decimal and multiply it by the base number.</p>
+            <p><strong>Formula:</strong> <code>Result = (Percentage / 100) * Base Value</code></p>
+            
+            <h3>2. Finding the Percentage (X is what percent of Y?)</h3>
+            <p>To express a part as a percentage of a total, we divide the part by the total and then multiply by 100 to convert it to a percentage.</p>
+             <p><strong>Formula:</strong> <code>Percentage = (Part Value / Total Value) * 100</code></p>
+
+            <h3>3. Finding the Percentage Change</h3>
+            <p>To calculate the percentage change, we find the difference between the two numbers, divide that difference by the original number, and then multiply by 100.</p>
+            <p><strong>Formula:</strong> <code>Change % = ( (Final Value - Initial Value) / Initial Value ) * 100</code></p>
+            <p>A positive result from this formula indicates a percentage increase, while a negative result signifies a percentage decrease. Our calculator automatically interprets this for you.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical Examples</h2>
+            <p>Percentages are everywhere. This table shows a few common, real-world scenarios where each of our calculator modules can be applied.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Calculation Type</th>
+                            <th>Inputs</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Calculating a Sales Discount</strong><br>A shirt costing $40 is 25% off.</td>
+                            <td>What is X% of Y?</td>
+                            <td>X=25, Y=40</td>
+                            <td>$10 (This is the discount amount)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tracking a Project's Progress</strong><br>You have completed 8 of the 12 total tasks.</td>
+                            <td>X is what % of Y?</td>
+                            <td>X=8, Y=12</td>
+                            <td>66.67% (Project completion)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Measuring Website Traffic Growth</strong><br>Your site visitors increased from 5,000 to 7,000 last month.</td>
+                            <td>Percentage Change</td>
+                            <td>From=5000, To=7000</td>
+                            <td>40% Increase</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Stock Price Fluctuation</strong><br>A stock you own dropped from $200 to $175.</td>
+                            <td>Percentage Change</td>
+                            <td>From=200, To=175</td>
+                            <td>12.5% Decrease</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. How do you calculate a percentage increase?</h3>
+                <p>You use the percentage change formula. Subtract the original number from the new number, divide the result by the original number, and multiply by 100. Our third calculator does this for you automatically.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. Can a percentage be greater than 100?</h3>
+                <p>Yes. A percentage greater than 100 simply means a value that is more than the original whole. For example, 150% of 50 is 75. In percentage change, a 200% increase means the value has tripled (the original 100% plus a 200% increase).</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. What's the difference between percentage and percentage points?</h3>
+                <p>This is a crucial distinction. A "percentage" is a relative value. A "percentage point" is an absolute difference between two percentages. For example, if an interest rate goes from 4% to 5%, it has increased by one percentage point, but it's a 25% increase in the rate itself.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. How do I calculate percentages in reverse?</h3>
+                <p>This often involves algebra. For example, if you know a sale price of $80 is the result of a 20% discount, you are looking for the original price (X). The equation is `X - 0.20*X = 80`, which simplifies to `0.80*X = 80`, so X = $100.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. Why is the "Initial Value" so important in percentage change?</h3>
+                <p>The initial value is the base for the entire calculation. A change from 10 to 20 is a 100% increase. However, a change from 20 to 10 is a 50% decrease. The starting point matters fundamentally.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. Can I use this calculator for financial calculations like interest?</h3>
+                <p>For simple interest, yes. You can use the first module to find the interest for one period. However, for compound interest or complex loan calculations, it's better to use a dedicated financial calculator as they involve more complex formulas.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. Are there any numbers I shouldn't use?</h3>
+                <p>In the "X is what % of Y" and "Percentage Change" calculators, the second value (the 'base' or 'initial' value) cannot be zero, as division by zero is mathematically undefined. Our calculator will show an error if you attempt this.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. How can I quickly calculate a percentage in my head?</h3>
+                <p>Break it down. To find 15% of 80, first find 10% (which is easy: 8). Then find 5% (which is half of 10%: 4). Add them together: 8 + 4 = 12. This is a great mental math trick for tipping and shopping.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: The Context of Percentages</h2>
+            <p>While calculating a percentage is straightforward mathematics, interpreting it correctly depends heavily on context. A 50% increase sounds dramatic, but if it's an increase from 2 sales to 3 sales, the absolute impact is small. Conversely, a 0.5% increase in a country's GDP represents a massive amount of economic activity. Always consider the base value from which the percentage is calculated to understand the true scale of the change.</p>
+            <p>Another common pitfall is averaging percentages. If you get a 50% return on an investment in year one and a 10% loss in year two, your average annual return is not the simple average of (50 - 10) / 2 = 20%. The base of your investment changes. Correctly calculating this requires using a geometric mean, highlighting that percentages must always be tied to their context and calculated with the appropriate methodology.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const validateInput = (inputEl, errorEl) => {
+                errorEl.style.display = 'none';
+                inputEl.style.borderColor = 'var(--color-border)';
+                if (inputEl.value.trim() === '') {
+                    errorEl.textContent = 'Value cannot be empty.';
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                return true;
+            };
+
+            const setupCalculator = (formId, inputsConfig, calculateFn) => {
+                const form = document.getElementById(formId);
+                const resultDisplay = document.getElementById(formId.replace('-form', '-result-display'));
+                const resultValueEl = document.getElementById(formId.replace('-form', '-result-value'));
+
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    let allValid = true;
+                    
+                    const values = {};
+                    inputsConfig.forEach(config => {
+                        const inputEl = document.getElementById(config.id);
+                        const errorEl = document.getElementById(config.errorId);
+                        if (!validateInput(inputEl, errorEl)) {
+                            allValid = false;
+                        }
+                        values[config.key] = parseFloat(inputEl.value);
+                    });
+
+                    if (allValid) {
+                        const result = calculateFn(values);
+                        if(result.error) {
+                            const errorConfig = inputsConfig.find(c => c.key === result.errorField);
+                            const errorEl = document.getElementById(errorConfig.errorId);
+                            errorEl.textContent = result.error;
+                            errorEl.style.display = 'block';
+                            document.getElementById(errorConfig.id).style.borderColor = 'var(--color-danger)';
+                        } else {
+                            resultValueEl.innerHTML = result.html;
+                            resultValueEl.className = 'result-value';
+                            if (result.class) {
+                                resultValueEl.classList.add(result.class);
+                            }
+                            resultDisplay.style.display = 'block';
+                            resultDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
+                });
+
+                form.querySelector('.btn-reset').addEventListener('click', () => {
+                    form.reset();
+                    resultDisplay.style.display = 'none';
+                    inputsConfig.forEach(config => {
+                        document.getElementById(config.id).style.borderColor = 'var(--color-border)';
+                        document.getElementById(config.errorId).style.display = 'none';
+                    });
+                });
+            };
+
+            // Calculator 1: What is X% of Y?
+            setupCalculator('calc1-form', [
+                { id: 'c1-percent', errorId: 'c1-percent-error', key: 'percent' },
+                { id: 'c1-base', errorId: 'c1-base-error', key: 'base' }
+            ], (values) => {
+                const result = (values.percent / 100) * values.base;
+                return { html: `${values.percent}% of ${values.base} is <br><strong>${result.toLocaleString()}</strong>` };
+            });
+
+            // Calculator 2: X is what percent of Y?
+            setupCalculator('calc2-form', [
+                { id: 'c2-part', errorId: 'c2-part-error', key: 'part' },
+                { id: 'c2-total', errorId: 'c2-total-error', key: 'total' }
+            ], (values) => {
+                if (values.total === 0) {
+                    return { error: 'Total value cannot be zero.', errorField: 'total' };
+                }
+                const result = (values.part / values.total) * 100;
+                return { html: `${values.part.toLocaleString()} is <br><strong>${result.toFixed(2)}%</strong> of ${values.total.toLocaleString()}` };
+            });
+
+            // Calculator 3: Percentage Change
+            setupCalculator('calc3-form', [
+                { id: 'c3-initial', errorId: 'c3-initial-error', key: 'initial' },
+                { id: 'c3-final', errorId: 'c3-final-error', key: 'final' }
+            ], (values) => {
+                if (values.initial === 0) {
+                    return { error: 'Initial value cannot be zero.', errorField: 'initial' };
+                }
+                const change = ((values.final - values.initial) / values.initial) * 100;
+                const isIncrease = change >= 0;
+                const changeType = isIncrease ? 'Increase' : 'Decrease';
+                const changeClass = isIncrease ? 'positive' : 'negative';
+                return { 
+                    html: `A <strong>${Math.abs(change).toFixed(2)}%</strong> ${changeType}`,
+                    class: changeClass
+                };
+            });
+        });
+    </script>
+</body>
+</html>

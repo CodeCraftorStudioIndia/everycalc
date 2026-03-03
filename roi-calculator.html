@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ROI Calculator by EveryCalc – Free Online Calculator</title>
+    <meta name="description" content="Use the free ROI (Return on Investment) Calculator by EveryCalc for fast, accurate results. Measure the profitability of your investments with clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/roi-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "ROI Calculator by EveryCalc",
+      "applicationCategory": "CalculatorApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/roi-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex-grow: 1;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        header, footer {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); }
+        li { margin-bottom: 0.5rem; }
+
+        .subtitle {
+            font-size: var(--font-size-md);
+            color: var(--color-secondary);
+            font-weight: 400;
+            margin: 0;
+        }
+
+        section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        
+        @media (min-width: 640px) {
+            .calculator-grid { grid-template-columns: repeat(2, 1fr); }
+            .grid-span-2 { grid-column: span 2; }
+        }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .input-wrapper { position: relative; }
+        .input-wrapper span.prefix {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s, color 0.2s, opacity 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        @media (min-width: 640px) { .results-grid { grid-template-columns: repeat(2, 1fr); } }
+        
+        .result-card { text-align: left; padding: 1.5rem; background-color: var(--color-bg); border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        .result-card-label { font-weight: 500; color: var(--color-secondary); margin-bottom: 0.25rem; display: block; }
+        .result-card-value { font-size: var(--font-size-lg); font-weight: 700; color: var(--color-primary); }
+        .result-card-value.positive { color: var(--color-success); }
+        .result-card-value.negative { color: var(--color-danger); }
+        
+        .roi-bar-container { background-color: var(--color-border); border-radius: 8px; overflow: hidden; height: 16px; margin-top: 1rem; }
+        .roi-bar { height: 100%; border-radius: 8px; transition: width 0.5s ease-in-out; }
+        .roi-bar.positive { background-color: var(--color-success); }
+        .roi-bar.negative { background-color: var(--color-danger); }
+
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+        
+        .faq-item { margin-bottom: 1.5rem; }
+        .faq-item h3 { margin-bottom: 0.5rem; }
+
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            .roi-bar-container { display: none; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { overflow: visible; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>ROI Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Measure Investment Profitability</h2>
+            <p>The Return on Investment (ROI) Calculator by EveryCalc is an essential tool for investors, business owners, and marketers. It provides a simple yet powerful way to assess the efficiency and profitability of an investment. By comparing the net profit to the initial cost, ROI gives you a clear, standardized metric to evaluate past performance and project future returns. Whether you are analyzing a stock portfolio, a real estate purchase, or a marketing campaign, this calculator delivers the precise figures you need to make data-driven decisions. We've stripped away the noise to offer a clean, high-performance tool that helps you understand one thing: how hard your money is working for you.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Enter Your Investment Data</h2>
+            <form id="roi-form" novalidate>
+                <div class="calculator-grid">
+                    <div class="form-group">
+                        <label for="initial-investment">Initial Investment Cost</label>
+                        <div class="input-wrapper">
+                            <span class="prefix">$</span>
+                            <input type="number" id="initial-investment" name="initial-investment" placeholder="e.g., 10000" required min="0.01">
+                        </div>
+                        <p class="error-message" id="initial-investment-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="final-value">Final Value of Investment</label>
+                        <div class="input-wrapper">
+                            <span class="prefix">$</span>
+                            <input type="number" id="final-value" name="final-value" placeholder="e.g., 12500" required min="0">
+                        </div>
+                        <p class="error-message" id="final-value-error"></p>
+                    </div>
+                    <div class="button-group grid-span-2">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">Calculate ROI</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Your Investment Performance</h2>
+            <div class="results-grid">
+                 <div class="result-card grid-span-2">
+                    <span class="result-card-label">Return on Investment (ROI)</span>
+                    <span class="result-card-value" id="roi-percentage"></span>
+                    <div class="roi-bar-container">
+                        <div class="roi-bar" id="roi-bar-indicator"></div>
+                    </div>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">Net Profit</span>
+                    <span class="result-card-value" id="net-profit"></span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">Investment Cost</span>
+                    <span class="result-card-value" id="investment-cost"></span>
+                </div>
+            </div>
+            <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Results</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Results</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the ROI Calculator</h2>
+            <p>This calculator requires just two simple inputs to provide a comprehensive analysis of your return. Follow these steps for an accurate calculation:</p>
+            <ol>
+                <li><strong>Initial Investment Cost:</strong> In this field, enter the total cost associated with making the investment. This should be a comprehensive figure. For a stock purchase, include the share price plus any brokerage fees. For a business project, include all capital expenditures, operational costs, and marketing spend. It represents the total money "out".</li>
+                <li><strong>Final Value of Investment:</strong> Here, enter the total value or revenue generated from the investment when it was sold or at the time of measurement. For a stock, this is the sale price minus any fees. For a marketing campaign, this would be the gross profit generated by the sales attributed to the campaign. This represents the total money "in".</li>
+            </ol>
+            <p>Once you've entered both values, click "Calculate ROI". The tool will instantly provide the three key metrics: Net Profit (the absolute monetary gain or loss), the Investment Cost, and the ROI percentage, which expresses the profit as a percentage of the original cost. This percentage is the most effective way to compare the performance of different investments.</p>
+            <h3>Accuracy Tip</h3>
+            <p>The most common mistake is forgetting to include all associated costs in the "Initial Investment" field. Transaction fees, taxes, maintenance costs, and salaries can all be part of the true cost of an investment. A more inclusive cost figure will lead to a more realistic and accurate ROI calculation.</p>
+        </section>
+
+        <section class="formula">
+            <h2>The ROI Formula Explained</h2>
+            <p>Return on Investment is a universally recognized metric because of its simple and transparent formula. EveryCalc uses this standard formula to ensure your results are reliable and comparable.</p>
+            <p style="text-align: center; font-size: 1.2em; font-weight: 600; color: var(--color-primary);">ROI = ( (Final Value - Initial Investment) / Initial Investment ) × 100</p>
+            <p>Let's break down the components:</p>
+            <ul>
+                <li><strong>Final Value of Investment:</strong> This is the total amount received after the investment has run its course or is sold.</li>
+                <li><strong>Initial Investment Cost:</strong> This is the total amount of money and resources committed to the investment.</li>
+                <li><strong>(Final Value - Initial Investment):</strong> This part of the formula calculates the <strong>Net Profit</strong>. If the result is negative, it represents a net loss.</li>
+                <li><strong>( ... / Initial Investment ):</strong> The net profit is then divided by the original cost. This turns the absolute gain or loss into a ratio relative to the investment size.</li>
+                <li><strong>( ... × 100):</strong> Multiplying by 100 converts this ratio into a percentage, making it easy to understand and compare.</li>
+            </ul>
+            <p>For example, if you invest $1,000 and the final value is $1,200, your net profit is $200. The ROI is ($200 / $1,000) × 100, which equals 20%.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical ROI Scenarios</h2>
+            <p>To see how ROI works in different contexts, consider these real-world examples. Notice how the same ROI percentage can result from vastly different investment scales.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Initial Investment</th>
+                            <th>Final Value</th>
+                            <th>Net Profit</th>
+                            <th>ROI</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Stock Market Investment</strong></td>
+                            <td>$10,000</td>
+                            <td>$13,500</td>
+                            <td style="color: var(--color-success);">$3,500</td>
+                            <td style="color: var(--color-success);">35%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Real Estate Flip</strong></td>
+                            <td>$250,000 (Purchase + Reno)</td>
+                            <td>$312,500 (Sale Price)</td>
+                            <td style="color: var(--color-success);">$62,500</td>
+                            <td style="color: var(--color-success);">25%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Digital Marketing Campaign</strong></td>
+                            <td>$5,000 (Ad Spend)</td>
+                            <td>$22,000 (Profit from Sales)</td>
+                            <td style="color: var(--color-success);">$17,000</td>
+                            <td style="color: var(--color-success);">340%</td>
+                        </tr>
+                         <tr>
+                            <td><strong>New Equipment Purchase (Lost Efficiency)</strong></td>
+                            <td>$50,000</td>
+                            <td>$45,000 (Generated Value)</td>
+                            <td style="color: var(--color-danger);">- $5,000</td>
+                            <td style="color: var(--color-danger);">-10%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. What is considered a "good" ROI?</h3>
+                <p>A "good" ROI is highly relative and depends on the industry, investment type, and risk involved. For example, an annual ROI of 7-10% might be considered good for a low-risk stock market index fund, while a venture capital investment might target an ROI of several hundred percent to compensate for its high risk.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. What is the biggest limitation of the ROI formula?</h3>
+                <p>The standard ROI formula does not account for the passage of time. An ROI of 20% over one year is far better than an ROI of 20% over five years. To address this, analysts often use the "Annualized ROI" formula, which provides a yearly rate of return.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. Can ROI be negative?</h3>
+                <p>Yes. A negative ROI indicates that the investment resulted in a net loss. The final value of the investment was less than the initial cost. For example, an ROI of -15% means you lost 15% of your original investment capital.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. How is ROI different from other metrics like ROE or ROA?</h3>
+                <p>ROI is a general-purpose metric for a specific investment. Return on Equity (ROE) measures a company's profitability relative to its shareholders' equity, while Return on Assets (ROA) measures profitability relative to its total assets. ROE and ROA are used to analyze a company's overall financial health, not a single project.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. Should I include taxes in my ROI calculation?</h3>
+                <p>For the most accurate picture of your actual return, yes. You can calculate a pre-tax ROI and a post-tax ROI. To calculate post-tax ROI, you would reduce the "Final Value" by the amount of capital gains tax paid on the profit.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. How do I calculate ROI for an investment that hasn't been sold yet?</h3>
+                <p>You can calculate an unrealized ROI by using the current market value of the investment as the "Final Value". This will tell you what your ROI would be if you sold the asset today. This figure will fluctuate as the market value changes.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. Can I compare the ROI of different types of investments?</h3>
+                <p>Yes, that is one of the primary strengths of ROI. Because it is expressed as a percentage, it allows you to make an apples-to-apples comparison between investments of different types and sizes. For example, you can compare the ROI of a $1,000 stock purchase to the ROI of a $200,000 real estate investment.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. What if my Initial Investment is zero?</h3>
+                <p>Mathematically, if the initial investment cost is zero, the ROI is undefined because you cannot divide by zero. In a practical sense, an investment with no cost that generates a profit has an infinite ROI. This calculator requires an investment cost greater than zero to function.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: The Importance of Time and Risk</h2>
+            <p>While ROI is a fundamental metric, a sophisticated investor always considers it alongside two other factors: time and risk. As mentioned, a 50% ROI over one year is vastly superior to a 50% ROI over ten years. To account for this, you can calculate the <strong>Annualized ROI</strong>, which provides a more comparable geometric average annual return. The formula is: `[ (Final Value / Initial Value) ^ (1 / Years) ] - 1`. This gives you a rate you can better compare to other annual benchmarks.</p>
+            <p>Furthermore, not all ROIs are created equal because of risk. An investment in government bonds might yield a 4% ROI, while a startup investment could yield a 400% ROI or a -100% ROI (a total loss). When comparing potential investments, always weigh the potential ROI against the risk of losing your principal. A higher potential ROI almost always comes with higher risk.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('roi-form');
+            const initialInvestmentInput = document.getElementById('initial-investment');
+            const finalValueInput = document.getElementById('final-value');
+
+            const initialInvestmentError = document.getElementById('initial-investment-error');
+            const finalValueError = document.getElementById('final-value-error');
+
+            const resultsSection = document.getElementById('results-section');
+            const roiPercentageEl = document.getElementById('roi-percentage');
+            const netProfitEl = document.getElementById('net-profit');
+            const investmentCostEl = document.getElementById('investment-cost');
+            const roiBarIndicator = document.getElementById('roi-bar-indicator');
+
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            
+            const currencyFormatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+
+            const validateInput = (input, errorEl, message, min) => {
+                const value = parseFloat(input.value);
+                if (input.value.trim() === '' || isNaN(value) || value < min) {
+                    input.style.borderColor = 'var(--color-danger)';
+                    errorEl.textContent = message;
+                    errorEl.style.display = 'block';
+                    return false;
+                }
+                input.style.borderColor = 'var(--color-border)';
+                errorEl.style.display = 'none';
+                return true;
+            };
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const isInitialValid = validateInput(initialInvestmentInput, initialInvestmentError, 'Enter a cost > 0.', 0.01);
+                const isFinalValid = validateInput(finalValueInput, finalValueError, 'Enter a final value >= 0.', 0);
+
+                if (!isInitialValid || !isFinalValid) {
+                    return;
+                }
+                
+                calculateBtn.textContent = 'Calculating...';
+                calculateBtn.disabled = true;
+
+                setTimeout(() => {
+                    const initialCost = parseFloat(initialInvestmentInput.value);
+                    const finalValue = parseFloat(finalValueInput.value);
+
+                    const netProfit = finalValue - initialCost;
+                    const roi = (netProfit / initialCost) * 100;
+
+                    netProfitEl.textContent = currencyFormatter.format(netProfit);
+                    investmentCostEl.textContent = currencyFormatter.format(initialCost);
+                    roiPercentageEl.textContent = roi.toFixed(2) + '%';
+                    
+                    // Style results based on profit/loss
+                    [netProfitEl, roiPercentageEl].forEach(el => {
+                        el.classList.remove('positive', 'negative');
+                        if (netProfit > 0) {
+                            el.classList.add('positive');
+                        } else if (netProfit < 0) {
+                            el.classList.add('negative');
+                        }
+                    });
+                    
+                    // Update ROI bar
+                    roiBarIndicator.classList.remove('positive', 'negative');
+                    let barWidth = 0;
+                    if (roi > 0) {
+                        roiBarIndicator.classList.add('positive');
+                        barWidth = Math.min(roi, 100); // Cap bar at 100% for visual sanity
+                    } else {
+                         roiBarIndicator.classList.add('negative');
+                         barWidth = Math.min(Math.abs(roi), 100);
+                    }
+                    roiBarIndicator.style.width = barWidth + '%';
+
+
+                    resultsSection.style.display = 'block';
+                    resultsSection.scrollIntoView({ behavior: 'smooth' });
+                    
+                    calculateBtn.textContent = 'Calculate ROI';
+                    calculateBtn.disabled = false;
+                }, 500);
+            });
+
+            resetBtn.addEventListener('click', function() {
+                form.reset();
+                [initialInvestmentInput, finalValueInput].forEach(input => {
+                    input.style.borderColor = 'var(--color-border)';
+                });
+                [initialInvestmentError, finalValueError].forEach(errorEl => {
+                    errorEl.style.display = 'none';
+                });
+                resultsSection.style.display = 'none';
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const summaryText = `ROI Calculation by EveryCalc:\n` +
+                                  `---------------------------\n` +
+                                  `Initial Investment: ${investmentCostEl.textContent}\n` +
+                                  `Final Value: ${currencyFormatter.format(parseFloat(finalValueInput.value))}\n` +
+                                  `---------------------------\n` +
+                                  `Net Profit: ${netProfitEl.textContent}\n` +
+                                  `ROI: ${roiPercentageEl.textContent}\n` +
+                                  `---------------------------\n` +
+                                  `Calculated at https://everycalc.site`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

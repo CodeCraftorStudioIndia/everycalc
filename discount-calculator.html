@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Discount Calculator by EveryCalc – Free Online Calculator</title>
+    <meta name="description" content="Use the free Discount Calculator by EveryCalc for fast, accurate results to calculate savings and final prices. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/discount-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Discount Calculator by EveryCalc",
+      "applicationCategory": "FinancialApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/discount-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main { flex-grow: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+        header, footer { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--color-primary); }
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        li { margin-bottom: 0.5rem; }
+        strong { font-weight: 600; color: var(--color-primary); }
+
+        .subtitle { font-size: var(--font-size-md); color: var(--color-secondary); font-weight: 400; margin: 0; }
+        section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media (min-width: 640px) { .calculator-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .input-wrapper { position: relative; }
+        .input-wrapper span.prefix {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+        .input-wrapper span.suffix {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        
+        .form-group input[name="originalPrice"] { padding-left: 2.5rem; }
+        .form-group input[name="discountPercentage"] { padding-right: 2.5rem; }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; grid-column: span 2; }
+        .btn {
+            padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-size: var(--font-size-base);
+            font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex;
+            align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .result-card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        @media (min-width: 640px) { .result-card-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .result-card {
+            text-align: center; padding: 1.5rem; background-color: var(--color-bg);
+            border: 1px solid var(--color-border); border-radius: 0.375rem;
+        }
+
+        .result-card-label { font-weight: 500; color: var(--color-secondary); margin-bottom: 0.25rem; display: block; }
+        .result-card-value { font-size: var(--font-size-xl); font-weight: 700; color: var(--color-primary); }
+        .highlight-value { color: var(--color-success); }
+        .savings-note { font-size: var(--font-size-base); color: var(--color-secondary); margin-top: 0.5rem; }
+        
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { margin-top: 1.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+
+        .faq-item { margin-bottom: 1.5rem; }
+        
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        /* Print Styles */
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            .result-card { border: 1px solid #ccc; background-color: transparent !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { overflow: visible; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>Discount Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Calculate Your Savings Instantly</h2>
+            <p>The Discount Calculator by EveryCalc is an essential, production-grade tool designed to quickly and accurately determine your savings and the final price of an item after a discount. Whether you're shopping for clothes, electronics, or groceries, understanding the true cost and your actual savings is crucial for smart financial decisions. This calculator eliminates the guesswork and manual calculations, providing you with clear, reliable results in seconds. Built with a confident, minimal design and high-contrast elements, EveryCalc offers a distraction-free experience, adhering to modern web standards and accessibility guidelines. Trust EveryCalc for precise discount calculations every time.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Enter Price and Discount</h2>
+            <form id="discount-form" novalidate>
+                <div class="calculator-grid">
+                    <div class="form-group">
+                        <label for="originalPrice">Original Price</label>
+                        <div class="input-wrapper">
+                            <span class="prefix">$</span>
+                            <input type="number" id="originalPrice" name="originalPrice" placeholder="e.g., 100" required min="0.01">
+                        </div>
+                        <p class="error-message" id="originalPrice-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="discountPercentage">Discount Percentage</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="discountPercentage" name="discountPercentage" placeholder="e.g., 20" required min="0" max="100">
+                            <span class="suffix">%</span>
+                        </div>
+                        <p class="error-message" id="discountPercentage-error"></p>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">Calculate Discount</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Your Discount Details</h2>
+            <div class="result-card-grid">
+                 <div class="result-card">
+                    <span class="result-card-label">Original Price</span>
+                    <span class="result-card-value" id="original-price-display">$0.00</span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">Discount Amount</span>
+                    <span class="result-card-value highlight-value" id="discount-amount-display">$0.00</span>
+                </div>
+                 <div class="result-card" style="grid-column: span 2;">
+                    <span class="result-card-label">Final Price After Discount</span>
+                    <span class="result-card-value" id="final-price-display">$0.00</span>
+                    <p class="savings-note" id="savings-note-display"></p>
+                </div>
+            </div>
+             <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Results</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Summary</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the Discount Calculator</h2>
+            <p>Our Discount Calculator simplifies your shopping and budgeting. Follow these two straightforward steps to get your results:</p>
+            <ol>
+                <li><strong>Enter Original Price:</strong> Input the initial, pre-discount price of the item into the "Original Price" field. This should be a positive numerical value. The calculator will display results with a generic dollar ($) symbol, but it works with any currency.</li>
+                <li><strong>Enter Discount Percentage:</strong> Input the percentage of the discount (e.g., 10, 25, 50) into the "Discount Percentage" field. This should be a non-negative number, typically between 0 and 100.</li>
+            </ol>
+            <p>After entering both the original price and the discount percentage, click the "Calculate Discount" button. The results section will instantly display the original price, the calculated discount amount, and the final price you will pay. It also shows a note about your total savings. To perform a new calculation, simply click the "Reset" button to clear all fields.</p>
+            <h3>Accuracy Tips</h3>
+            <p>Ensure your original price is accurate, and the discount percentage reflects the true offer. If multiple discounts apply, you usually calculate them sequentially, not by adding percentages. For example, a 10% discount followed by another 10% discount is not 20% off the original price. This calculator processes a single discount. The calculator handles fractional percentages (e.g., 7.5%) accurately.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formula & Methodology</h2>
+            <p>The Discount Calculator uses standard mathematical formulas to ensure accurate calculations of both the discount amount and the final price. Understanding these simple formulas provides transparency and confidence in the results.</p>
+            
+            <h3>1. Calculating the Discount Amount</h3>
+            <p>The discount amount is the portion of the original price that is reduced. It is calculated by multiplying the original price by the discount percentage (expressed as a decimal).</p>
+            <p style="text-align: center; font-size: 1.2em; font-weight: 600; color: var(--color-primary);">Discount Amount = Original Price × (Discount Percentage / 100)</p>
+
+            <h3>2. Calculating the Final Price</h3>
+            <p>The final price is what you pay after the discount has been applied. It is calculated by subtracting the discount amount from the original price.</p>
+            <p style="text-align: center; font-size: 1.2em; font-weight: 600; color: var(--color-primary);">Final Price = Original Price - Discount Amount</p>
+            <p>Alternatively, you can calculate the final price directly:</p>
+            <p style="text-align: center; font-size: 1.2em; font-weight: 600; color: var(--color-primary);">Final Price = Original Price × (1 - (Discount Percentage / 100))</p>
+            <p>Our calculator applies these formulas directly, using the provided original price and discount percentage. All monetary results are rounded to two decimal places, which is standard for currency calculations, while percentages are handled with higher precision before the final display.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical Discount Calculation Examples</h2>
+            <p>Here are several real-world scenarios demonstrating how the Discount Calculator can be applied to everyday shopping and financial planning.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Original Price</th>
+                            <th>Discount (%)</th>
+                            <th>Discount Amount</th>
+                            <th>Final Price</th>
+                            <th>You Save</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Electronics Sale</strong></td>
+                            <td>$1,200.00</td>
+                            <td>15%</td>
+                            <td>$180.00</td>
+                            <td>$1,020.00</td>
+                            <td>$180.00</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Clothing Clearance</strong></td>
+                            <td>$65.00</td>
+                            <td>30%</td>
+                            <td>$19.50</td>
+                            <td>$45.50</td>
+                            <td>$19.50</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bulk Purchase Discount</strong></td>
+                            <td>$250.00</td>
+                            <td>7.5%</td>
+                            <td>$18.75</td>
+                            <td>$231.25</td>
+                            <td>$18.75</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Holiday Special Offer</strong></td>
+                            <td>$499.99</td>
+                            <td>25%</td>
+                            <td>$125.00</td>
+                            <td>$374.99</td>
+                            <td>$125.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>*Note: All amounts are displayed in US Dollars ($) and rounded to two decimal places. Savings note will reflect the calculated discount amount.</p>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. What if there are multiple discounts (e.g., "10% off, then another 5% off")?</h3>
+                <p>This calculator processes a single discount. For multiple discounts, you must apply them sequentially. Calculate the first discount, get the new price, then apply the second discount to *that new price*. Do not simply add the percentages together, as this will lead to an incorrect (usually higher) discount amount than intended.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. How does this calculator handle sales tax?</h3>
+                <p>This calculator computes discounts on the original price. It does not factor in sales tax. Sales tax is typically applied *after* any discounts have been taken. To get the final price including tax, you would use the "Final Price After Discount" from this calculator and then apply the sales tax percentage to that amount.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. Can I use this calculator for markups instead of discounts?</h3>
+                <p>No, this calculator is specifically for discounts (price reductions). A markup is a price increase. While the math is related, the formulas are different. For markups, you would typically add a percentage to the cost to determine the selling price. EveryCalc offers other tools for such calculations.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. What is the maximum discount percentage I can enter?</h3>
+                <p>You can enter any percentage from 0% up to 100%. A 0% discount means no change in price, while a 100% discount means the item is free (final price is zero). Entering values outside this practical range (e.g., negative or above 100) will result in an error or illogical output.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. How many decimal places does the calculator use for currency?</h3>
+                <p>All currency-related results (Original Price, Discount Amount, Final Price) are rounded to two decimal places, which is the standard precision for monetary values. Internal calculations maintain higher precision before final rounding for display.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. What is the difference between a percentage discount and a fixed amount discount?</h3>
+                <p>A **percentage discount** (like 20% off) reduces the price by a proportion of the original cost. A **fixed amount discount** (like "$10 off") reduces the price by a set dollar amount regardless of the original price. This calculator handles percentage-based discounts only.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. Can I calculate the original price if I know the discounted price and percentage?</h3>
+                <p>This calculator is designed to find the discounted price from the original. To find the original price from a discounted price, you would use a different formula: `Original Price = Final Price / (1 - (Discount Percentage / 100))`. EveryCalc may offer a reverse discount calculator for this purpose.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. How can I quickly estimate discounts in my head?</h3>
+                <p>For simple percentages, break it down. For 10% off, move the decimal one place left. For 20% off, find 10% and double it. For 50% off, halve the price. For 25% off, halve it twice. This helps for quick mental math while shopping.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: The Psychology of Discounts</h2>
+            <p>Discounts are not just about saving money; they tap into deep psychological triggers that influence consumer behavior. The perception of a good deal can be a powerful motivator. Retailers often use **anchoring** (showing the high original price next to the discounted price) to make the discount seem more significant. **Urgency tactics** (limited-time offers) create a fear of missing out. Understanding these psychological strategies can empower consumers to make more rational purchasing decisions, distinguishing between a genuine need and a perceived bargain. A discount calculator helps you objectively quantify the savings, allowing you to focus on the actual financial benefit rather than succumbing to promotional hype. Always ask yourself: "Do I need this item, and is this truly a good price *for me*?" before making a purchase, even with a steep discount.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+        <p class="disclaimer">
+            EveryCalc does not store or share any personal data.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const originalPriceInput = document.getElementById('originalPrice');
+            const discountPercentageInput = document.getElementById('discountPercentage');
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const resultsSection = document.getElementById('results-section');
+
+            const originalPriceError = document.getElementById('originalPrice-error');
+            const discountPercentageError = document.getElementById('discountPercentage-error');
+
+            const originalPriceDisplay = document.getElementById('original-price-display');
+            const discountAmountDisplay = document.getElementById('discount-amount-display');
+            const finalPriceDisplay = document.getElementById('final-price-display');
+            const savingsNoteDisplay = document.getElementById('savings-note-display');
+
+            const currencyFormatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+
+            const validateInput = (inputEl, errorEl, min = 0.01, max = Infinity, isPercentage = false) => {
+                errorEl.style.display = 'none';
+                inputEl.style.borderColor = 'var(--color-border)';
+                const value = parseFloat(inputEl.value);
+
+                if (inputEl.value.trim() === '' || isNaN(value)) {
+                    errorEl.textContent = `Please enter a valid number for ${inputEl.labels[0].textContent.replace(':', '')}.`;
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                if (value < min || value > max) {
+                    if (isPercentage) {
+                        errorEl.textContent = `Discount percentage must be between ${min}% and ${max}%.`;
+                    } else {
+                        errorEl.textContent = `Price must be greater than ${min}.`;
+                    }
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                return true;
+            };
+
+            const performCalculation = () => {
+                const originalPrice = parseFloat(originalPriceInput.value);
+                const discountPercentage = parseFloat(discountPercentageInput.value);
+
+                const discountAmount = originalPrice * (discountPercentage / 100);
+                const finalPrice = originalPrice - discountAmount;
+
+                originalPriceDisplay.textContent = currencyFormatter.format(originalPrice);
+                discountAmountDisplay.textContent = currencyFormatter.format(discountAmount);
+                finalPriceDisplay.textContent = currencyFormatter.format(finalPrice);
+                
+                savingsNoteDisplay.textContent = `You save ${currencyFormatter.format(discountAmount)} (${discountPercentage.toFixed(2)}%).`;
+
+                resultsSection.style.display = 'block';
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            calculateBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                calculateBtn.textContent = 'Calculating...';
+                calculateBtn.disabled = true;
+
+                setTimeout(() => {
+                    let allValid = true;
+                    allValid = validateInput(originalPriceInput, originalPriceError, 0.01, Infinity, false) && allValid;
+                    allValid = validateInput(discountPercentageInput, discountPercentageError, 0, 100, true) && allValid;
+
+                    if (allValid) {
+                        performCalculation();
+                    } else {
+                        resultsSection.style.display = 'none'; // Hide results if validation fails
+                    }
+                    
+                    calculateBtn.textContent = 'Calculate Discount';
+                    calculateBtn.disabled = false;
+                }, 500);
+            });
+
+            resetBtn.addEventListener('click', function() {
+                document.getElementById('discount-form').reset();
+                originalPriceInput.style.borderColor = 'var(--color-border)';
+                discountPercentageInput.style.borderColor = 'var(--color-border)';
+                originalPriceError.style.display = 'none';
+                discountPercentageError.style.display = 'none';
+                resultsSection.style.display = 'none';
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const summaryText = `Discount Calculation Report by EveryCalc:\n` +
+                                  `----------------------------------------\n` +
+                                  `Original Price: ${originalPriceDisplay.textContent}\n` +
+                                  `Discount Percentage: ${discountPercentageInput.value}%\n` +
+                                  `Discount Amount: ${discountAmountDisplay.textContent}\n` +
+                                  `Final Price: ${finalPriceDisplay.textContent}\n` +
+                                  `Savings: ${savingsNoteDisplay.textContent}\n` +
+                                  `----------------------------------------\n` +
+                                  `Calculated at https://everycalc.site`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

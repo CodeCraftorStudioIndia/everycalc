@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Salary Calculator by EveryCalc – Free Online Converter</title>
+    <meta name="description" content="Use the free Salary Calculator by EveryCalc to convert salaries between hourly, daily, weekly, monthly, and annual periods. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/salary-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Salary Calculator by EveryCalc",
+      "applicationCategory": "FinancialApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/salary-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main { flex-grow: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+        header, footer { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--color-primary); }
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        li { margin-bottom: 0.5rem; }
+        strong { font-weight: 600; color: var(--color-primary); }
+
+        .subtitle { font-size: var(--font-size-md); color: var(--color-secondary); font-weight: 400; margin: 0; }
+        section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: end; }
+        @media (min-width: 640px) { .calculator-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .input-wrapper { position: relative; }
+        .input-wrapper span.prefix {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        
+        .form-group input[name="amount"] { padding-left: 2.5rem; }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; grid-column: span 3; }
+        .btn {
+            padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-size: var(--font-size-base);
+            font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex;
+            align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .result-card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        @media (min-width: 640px) { .result-card-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .result-card {
+            text-align: center; padding: 1.5rem; background-color: var(--color-bg);
+            border: 1px solid var(--color-border); border-radius: 0.375rem;
+        }
+
+        .result-card-label { font-weight: 500; color: var(--color-secondary); margin-bottom: 0.25rem; display: block; }
+        .result-card-value { font-size: var(--font-size-xl); font-weight: 700; color: var(--color-action); }
+        
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { margin-top: 1.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+
+        .faq-item { margin-bottom: 1.5rem; }
+        
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        /* Print Styles */
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            .result-card { border: 1px solid #ccc; background-color: transparent !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { overflow: visible; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>Salary Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Convert Your Salary Across All Pay Periods</h2>
+            <p>The Salary Calculator by EveryCalc is an indispensable, production-grade tool designed to effortlessly convert your income between various pay periods: hourly, daily, weekly, bi-weekly, monthly, and annually. Whether you're comparing job offers, planning your budget, negotiating a raise, or simply want to understand your earnings in different timeframes, this calculator provides instant and accurate results. It eliminates the guesswork and complex manual calculations, empowering you with clear financial insights. Built with a confident, minimal design and high-contrast elements, EveryCalc offers a distraction-free experience, adhering to modern web standards and accessibility guidelines. Trust EveryCalc for reliable salary conversions every time.</p>
+            <p><strong>Note:</strong> All calculations are based on standard assumptions for working hours/days and do not account for taxes, deductions, or overtime unless explicitly stated in your inputs.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Enter Your Salary Details</h2>
+            <form id="salary-form" novalidate>
+                <div class="calculator-grid">
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <div class="input-wrapper">
+                            <span class="prefix">$</span>
+                            <input type="number" id="amount" name="amount" placeholder="e.g., 50000" required min="0.01">
+                        </div>
+                        <p class="error-message" id="amount-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="from-period">From Period</label>
+                        <select id="from-period" name="from-period" aria-describedby="from-period-error">
+                            <option value="hourly">Hourly</option>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="bi-weekly">Bi-Weekly</option>
+                            <option value="monthly" selected>Monthly</option>
+                            <option value="annually">Annually</option>
+                        </select>
+                        <p class="error-message" id="from-period-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="to-period">To Period</label>
+                        <select id="to-period" name="to-period" aria-describedby="to-period-error">
+                            <option value="hourly">Hourly</option>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="bi-weekly">Bi-Weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="annually" selected>Annually</option>
+                        </select>
+                        <p class="error-message" id="to-period-error"></p>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">Convert Salary</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Salary Conversion Result</h2>
+            <div class="result-card-grid">
+                 <div class="result-card">
+                    <span class="result-card-label" id="original-period-label">Original Monthly Amount</span>
+                    <span class="result-card-value" id="original-amount-display">$0.00</span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label" id="converted-period-label">Converted Annual Amount</span>
+                    <span class="result-card-value" id="converted-amount-display">$0.00</span>
+                </div>
+            </div>
+             <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Results</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Summary</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the Salary Calculator</h2>
+            <p>Our Salary Calculator is designed for quick and accurate conversions between different pay periods. Follow these simple steps:</p>
+            <ol>
+                <li><strong>Enter Amount:</strong> Input your salary figure into the "Amount" field. This should be a positive numerical value. The calculator will display results with a generic dollar ($) symbol, but it works with any currency.</li>
+                <li><strong>Select "From Period":</strong> Choose the current pay frequency of your entered amount from the "From Period" dropdown list. Options include hourly, daily, weekly, bi-weekly (every two weeks), monthly, and annually.</li>
+                <li><strong>Select "To Period":</strong> Select the desired pay frequency you wish to convert your salary to from the "To Period" dropdown list.</li>
+            </ol>
+            <p>Once you've entered the amount and selected both conversion periods, click the "Convert Salary" button. The results section will instantly display your original salary and the converted equivalent for the target period. The "Reset" button clears all fields for a new calculation.</p>
+            <h3>Accuracy Tips & Assumptions</h3>
+            <p>This calculator relies on standard working assumptions: <strong>40 hours per week</strong>, <strong>5 working days per week</strong>, and <strong>52 weeks per year</strong> (equating to 260 working days per year or 26 bi-weekly periods per year, and 12 months per year). These are industry-standard for full-time employment. Be mindful that your specific employment contract might have different terms (e.g., fewer working hours per week), which would affect actual earnings. The calculator does not factor in taxes, deductions, benefits, or overtime, providing a gross salary conversion. For the most accurate personal financial planning, consult your pay stubs or an HR representative.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formula & Methodology</h2>
+            <p>The Salary Calculator uses a standardized methodology to convert between various pay periods, ensuring consistency and accuracy. All conversions are performed by first converting the input salary to its **Annual Equivalent**, and then converting from the Annual Equivalent to the desired "To Period". This two-step process simplifies the underlying logic and minimizes potential rounding errors.</p>
+            
+            <h3>Standard Working Assumptions:</h3>
+            <ul>
+                <li><strong>Working Hours per Week:</strong> 40 hours</li>
+                <li><strong>Working Days per Week:</strong> 5 days</li>
+                <li><strong>Weeks per Year:</strong> 52 weeks</li>
+                <li><strong>Months per Year:</strong> 12 months</li>
+                <li><strong>Bi-Weekly Periods per Year:</strong> 26 periods (52 weeks / 2)</li>
+                <li><strong>Working Days per Year:</strong> 260 days (52 weeks * 5 days)</li>
+            </ul>
+
+            <h3>Conversion Factors to Annual Salary:</h3>
+            <p>Based on the above assumptions, here's how each period is converted to an annual salary:</p>
+            <ul>
+                <li><strong>Hourly:</strong> Annual = Hourly Rate × 40 × 52</li>
+                <li><strong>Daily:</strong> Annual = Daily Rate × 5 × 52</li>
+                <li><strong>Weekly:</strong> Annual = Weekly Rate × 52</li>
+                <li><strong>Bi-Weekly:</strong> Annual = Bi-Weekly Rate × 26</li>
+                <li><strong>Monthly:</strong> Annual = Monthly Rate × 12</li>
+                <li><strong>Annually:</strong> Annual = Annual Rate (no conversion needed)</li>
+            </ul>
+
+            <h3>The Two-Step Conversion Process:</h3>
+            <ol>
+                <li><strong>Convert from "From Period" to Annual Salary:</strong> The input `Amount` is multiplied by its corresponding factor to get its annual equivalent.
+                    <br><code>Annual_Salary = Amount × Factor_to_Annual</code></li>
+                <li><strong>Convert from Annual Salary to "To Period":</strong> The `Annual_Salary` is then divided by the factor that converts the "To Period" into an annual figure.
+                    <br><code>Converted_Amount = Annual_Salary / Factor_from_Annual_to_ToPeriod</code></li>
+            </ol>
+            <p>For example, to convert a $5,000 monthly salary to an hourly rate:</p>
+            <ul>
+                <li>Step 1: Convert $5,000 monthly to annual: <code>$5,000 × 12 = $60,000 (Annual Salary)</code></li>
+                <li>Step 2: Convert $60,000 annual to hourly: <code>$60,000 / (40 hours/week × 52 weeks/year) = $60,000 / 2080 hours = $28.85 per hour</code></li>
+            </ul>
+            <p>All results are rounded to two decimal places, which is standard for currency calculations.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical Salary Conversion Examples</h2>
+            <p>These examples illustrate how conversions are performed between different pay periods using standard working assumptions.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Amount</th>
+                            <th>From Period</th>
+                            <th>To Period</th>
+                            <th>Converted Amount (Approx.)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Job Offer Comparison</strong></td>
+                            <td>$25</td>
+                            <td>Hourly</td>
+                            <td>Annually</td>
+                            <td>$52,000.00</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Budgeting Monthly from Weekly</strong></td>
+                            <td>$800</td>
+                            <td>Weekly</td>
+                            <td>Monthly</td>
+                            <td>$3,466.67</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Understanding Bi-Weekly Pay</strong></td>
+                            <td>$70,000</td>
+                            <td>Annually</td>
+                            <td>Bi-Weekly</td>
+                            <td>$2,692.31</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Daily Wage to Hourly</strong></td>
+                            <td>$150</td>
+                            <td>Daily</td>
+                            <td>Hourly</td>
+                            <td>$18.75</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>*Note: All amounts are displayed in US Dollars ($) and rounded to two decimal places based on the defined conversion factors.</p>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. What assumptions does this calculator make about working hours?</h3>
+                <p>This calculator assumes a standard full-time work schedule: 40 hours per week, 5 working days per week, and 52 weeks per year. These assumptions are used to derive daily, weekly, and monthly equivalents from an annual salary, or vice versa.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. Does this calculator account for taxes or deductions?</h3>
+                <p>No, this Salary Calculator provides gross salary conversions only. It does not factor in federal, state, or local taxes, social security contributions, health insurance premiums, retirement plan contributions, or any other deductions. For net pay calculations, you would need a dedicated payroll calculator.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. What is the difference between weekly and bi-weekly pay?</h3>
+                <p>Weekly pay means you get paid once every week, resulting in 52 paychecks per year. Bi-weekly pay means you get paid every two weeks, resulting in 26 paychecks per year. Both are common pay frequencies, and this calculator handles conversions for both.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. Why does my monthly pay sometimes vary if I'm paid bi-weekly?</h3>
+                <p>If you're paid bi-weekly, you receive 26 paychecks a year. Since there are 12 months, some months will have two paychecks, while others will have three. This means your monthly gross income can fluctuate if you calculate it by simply multiplying a bi-weekly paycheck by two. This calculator provides an *average* monthly equivalent for consistent budgeting.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. Can I use this calculator for part-time work?</h3>
+                <p>Yes, you can. If you work part-time (e.g., 20 hours/week), you would first calculate your equivalent hourly rate based on your actual hours, then use that hourly rate in the calculator to convert to other periods. Just remember that the underlying assumptions (like 40 hours/week for converting from annual to hourly) are standard and might need mental adjustment for highly custom schedules.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. What is "gross" vs. "net" salary?</h3>
+                <p>**Gross salary** is your total earnings before any taxes or deductions are taken out. **Net salary** (or take-home pay) is the amount you actually receive after all taxes and deductions. This calculator deals exclusively with gross salary.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. How accurate are these conversions?</h3>
+                <p>The conversions are mathematically accurate based on the standard assumptions of working hours and periods (40 hours/week, 52 weeks/year, etc.). Any discrepancy with your actual pay might be due to these assumptions differing from your specific employment contract (e.g., salaried roles might not strictly adhere to 40 hours/week for hourly breakdown) or factors like overtime and bonuses not included in your base pay.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. Can I convert a yearly salary to a daily rate for a project?</h3>
+                <p>Yes. If you input your annual salary and convert it to "Daily," the calculator will provide an average daily rate based on 260 working days per year. This is a common way to estimate project costs or compare contract rates.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: Beyond the Numbers – Total Compensation</h2>
+            <p>While understanding your gross salary across different pay periods is fundamental, it's only one component of your **total compensation package**. A comprehensive view of your earnings should also consider benefits, which can significantly add to your overall financial well-being. These often include health insurance (medical, dental, vision), retirement plans (401k, pension), paid time off (vacation, sick leave, holidays), bonuses, stock options, and other perks like tuition reimbursement, gym memberships, or transportation subsidies. When comparing job offers or evaluating your current role, always look beyond the base salary and quantify the value of these benefits. A position with a slightly lower base salary but superior benefits might offer greater long-term financial security and value. Use this calculator to nail down the base salary conversions, then layer on the value of your benefits for a true picture of your total earning power.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+        <p class="disclaimer">
+            EveryCalc does not store or share any personal data.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const amountInput = document.getElementById('amount');
+            const fromPeriodSelect = document.getElementById('from-period');
+            const toPeriodSelect = document.getElementById('to-period');
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const resultsSection = document.getElementById('results-section');
+
+            const amountError = document.getElementById('amount-error');
+
+            const originalAmountDisplay = document.getElementById('original-amount-display');
+            const convertedAmountDisplay = document.getElementById('converted-amount-display');
+            const originalPeriodLabel = document.getElementById('original-period-label');
+            const convertedPeriodLabel = document.getElementById('converted-period-label');
+
+            const currencyFormatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+
+            // Standard assumptions
+            const hoursPerWeek = 40;
+            const daysPerWeek = 5;
+            const weeksPerYear = 52;
+            const monthsPerYear = 12;
+            const biWeeklyPerYear = 26; // 52 weeks / 2
+
+            // Conversion factors to get to ANNUAL salary
+            const annualConversionFactors = {
+                'hourly': hoursPerWeek * weeksPerYear, // 2080
+                'daily': daysPerWeek * weeksPerYear,   // 260
+                'weekly': weeksPerYear,                // 52
+                'bi-weekly': biWeeklyPerYear,          // 26
+                'monthly': monthsPerYear,              // 12
+                'annually': 1
+            };
+
+            const periodLabels = {
+                'hourly': 'Hourly Amount',
+                'daily': 'Daily Amount',
+                'weekly': 'Weekly Amount',
+                'bi-weekly': 'Bi-Weekly Amount',
+                'monthly': 'Monthly Amount',
+                'annually': 'Annual Amount'
+            };
+
+            const validateInput = (inputEl, errorEl, min = 0.01) => {
+                errorEl.style.display = 'none';
+                inputEl.style.borderColor = 'var(--color-border)';
+                const value = parseFloat(inputEl.value);
+
+                if (inputEl.value.trim() === '' || isNaN(value) || value < min) {
+                    errorEl.textContent = 'Please enter a positive amount.';
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                return true;
+            };
+
+            const performConversion = () => {
+                const amount = parseFloat(amountInput.value);
+                const fromPeriod = fromPeriodSelect.value;
+                const toPeriod = toPeriodSelect.value;
+
+                // Step 1: Convert original amount to annual salary
+                const annualSalary = amount * annualConversionFactors[fromPeriod];
+
+                // Step 2: Convert annual salary to the target period
+                const convertedAmount = annualSalary / annualConversionFactors[toPeriod];
+
+                originalAmountDisplay.textContent = currencyFormatter.format(amount);
+                convertedAmountDisplay.textContent = currencyFormatter.format(convertedAmount);
+                
+                originalPeriodLabel.textContent = periodLabels[fromPeriod];
+                convertedPeriodLabel.textContent = periodLabels[toPeriod];
+            };
+
+            calculateBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                calculateBtn.textContent = 'Calculating...';
+                calculateBtn.disabled = true;
+
+                setTimeout(() => {
+                    let allValid = true;
+                    allValid = validateInput(amountInput, amountError) && allValid;
+
+                    if (allValid) {
+                        performConversion();
+                        resultsSection.style.display = 'block';
+                        resultsSection.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        resultsSection.style.display = 'none'; // Hide results if validation fails
+                    }
+                    
+                    calculateBtn.textContent = 'Convert Salary';
+                    calculateBtn.disabled = false;
+                }, 500);
+            });
+
+            resetBtn.addEventListener('click', function() {
+                document.getElementById('salary-form').reset();
+                amountInput.style.borderColor = 'var(--color-border)';
+                amountError.style.display = 'none';
+                fromPeriodSelect.style.borderColor = 'var(--color-border)';
+                toPeriodSelect.style.borderColor = 'var(--color-border)';
+                resultsSection.style.display = 'none';
+                
+                // Reset select options to initial defaults
+                fromPeriodSelect.value = 'monthly';
+                toPeriodSelect.value = 'annually';
+
+                originalPeriodLabel.textContent = periodLabels['monthly'];
+                convertedPeriodLabel.textContent = periodLabels['annually'];
+            });
+
+            // Update labels dynamically on select change
+            fromPeriodSelect.addEventListener('change', () => {
+                originalPeriodLabel.textContent = periodLabels[fromPeriodSelect.value];
+            });
+            toPeriodSelect.addEventListener('change', () => {
+                convertedPeriodLabel.textContent = periodLabels[toPeriodSelect.value];
+            });
+
+
+            copyBtn.addEventListener('click', function() {
+                const summaryText = `Salary Conversion Report by EveryCalc:\n` +
+                                  `----------------------------------------\n` +
+                                  `${originalPeriodLabel.textContent}: ${originalAmountDisplay.textContent}\n` +
+                                  `${convertedPeriodLabel.textContent}: ${convertedAmountDisplay.textContent}\n` +
+                                  `----------------------------------------\n` +
+                                  `Calculated at https://everycalc.site`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

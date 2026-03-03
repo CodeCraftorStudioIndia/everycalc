@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Interest Calculator by EveryCalc – Free Online Calculator</title>
+    <meta name="description" content="Use the free Simple Interest Calculator by EveryCalc for fast, accurate results. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/simple-interest-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Simple Interest Calculator by EveryCalc",
+      "applicationCategory": "CalculatorApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/simple-interest-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex-grow: 1;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        header, footer {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img {
+            width: 48px;
+            height: 48px;
+        }
+        
+        header .header-text {
+            text-align: left;
+        }
+
+        h1, h2, h3 {
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .subtitle {
+            font-size: var(--font-size-md);
+            color: var(--color-secondary);
+            margin: 0;
+        }
+
+        section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .calculator-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        @media (min-width: 640px) {
+            .calculator-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-span-2 {
+                grid-column: span 2;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--color-primary);
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper span {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        .form-group input[name="interestRate"] {
+            padding-right: 2.5rem;
+            padding-left: 1rem;
+        }
+
+        .input-wrapper span.suffix {
+            left: auto;
+            right: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .error-message {
+            color: var(--color-danger);
+            font-size: var(--font-size-sm);
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-primary {
+            background-color: var(--color-accent);
+            color: var(--color-bg);
+        }
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background-color: var(--color-surface);
+            color: var(--color-primary);
+            border: 1px solid var(--color-border);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e5e7eb;
+        }
+        
+        .results {
+            background-color: var(--color-surface);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            display: none;
+        }
+        
+        .results h2 {
+            margin-top: 0;
+            border-bottom: 2px solid var(--color-border);
+            padding-bottom: 1rem;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 500;
+            color: var(--color-secondary);
+        }
+
+        .result-value {
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+        
+        .result-actions {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+        
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        th {
+            font-weight: 600;
+            background-color: var(--color-surface);
+        }
+        
+        .faq-item {
+            margin-bottom: 1.5rem;
+        }
+        
+        .faq-item h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--color-border);
+            color: var(--color-secondary);
+        }
+        
+        footer nav {
+            margin: 1rem 0;
+        }
+        
+        footer nav a {
+            margin: 0 0.75rem;
+        }
+        
+        .disclaimer {
+            font-size: var(--font-size-sm);
+            max-width: 600px;
+            margin: 1rem auto 0;
+        }
+        
+        @media print {
+            body {
+                color: #000;
+                background-color: #fff;
+            }
+            header, footer, .button-group, .result-actions {
+                display: none;
+            }
+            main, section {
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 0 2rem 0 !important;
+            }
+            .calculator, .results {
+                padding: 0 !important;
+                background-color: transparent !important;
+            }
+            .results {
+                display: block !important;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                page-break-after: avoid;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>Simple Interest Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Calculate Simple Interest Instantly</h2>
+            <p>Welcome to the Simple Interest Calculator by EveryCalc, a professional-grade tool designed for clarity and precision. Whether you're a student learning about finance, an investor projecting earnings, or a borrower understanding loan costs, this calculator provides the straightforward answers you need. It strips away the clutter, focusing solely on delivering fast, accurate simple interest calculations without any distractions. Our commitment is to provide a reliable utility that you can trust for both simple and critical financial estimations. This tool is built to be accessible, high-performing, and easy to use, ensuring you get from question to answer in the shortest time possible.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Enter Your Financial Details</h2>
+            <form id="interest-form" novalidate>
+                <div class="calculator-grid">
+                    <div class="form-group">
+                        <label for="principal">Principal Amount</label>
+                        <div class="input-wrapper">
+                            <span>$</span>
+                            <input type="number" id="principal" name="principal" placeholder="e.g., 1000" required min="0.01">
+                        </div>
+                        <p class="error-message" id="principal-error">Please enter a valid principal amount.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="interestRate">Annual Interest Rate</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="interestRate" name="interestRate" placeholder="e.g., 5" required min="0">
+                            <span class="suffix">%</span>
+                        </div>
+                        <p class="error-message" id="rate-error">Please enter a valid interest rate.</p>
+                    </div>
+                    
+                    <div class="form-group grid-span-2">
+                        <label for="timePeriod">Time Period (in years)</label>
+                        <input type="number" id="timePeriod" name="timePeriod" placeholder="e.g., 2" required min="0.01" style="padding-left: 1rem;">
+                        <p class="error-message" id="time-error">Please enter a valid time period.</p>
+                    </div>
+
+                    <div class="button-group grid-span-2">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-1 5h2v6h-2V7zm0 8h2v2h-2v-2z"/></svg>
+                            Calculate
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L20.5 10a5 5 0 0 0-7.85 2.85"/><path d="M20.49 15a9 9 0 0 1-14.85 3.36L3.5 14a5 5 0 0 0 7.85-2.85"/></svg>
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Your Results</h2>
+            <div class="result-item">
+                <span class="result-label">Total Interest</span>
+                <span class="result-value" id="total-interest">$0.00</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Total Amount (Principal + Interest)</span>
+                <span class="result-value" id="total-amount">$0.00</span>
+            </div>
+            <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    Copy Results
+                </button>
+                 <button type="button" class="btn btn-secondary" onclick="window.print()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    Print
+                </button>
+            </div>
+        </section>
+        
+        <section class="education">
+            <h2>How to Use the Simple Interest Calculator</h2>
+            <p>Using this tool is designed to be intuitive. Follow these simple steps to get an accurate calculation of simple interest. Start by entering the initial amount of your loan or investment into the "Principal Amount" field. Next, input the "Annual Interest Rate" as a percentage. For example, if the rate is 5%, you should enter '5'. Finally, provide the "Time Period" in years. The calculator accepts decimals, so for a period of 18 months, you can enter '1.5'. Once all fields are filled, click the "Calculate" button. The results will immediately appear below, showing both the total interest accrued and the total amount (principal plus interest). If you need to start over, the "Reset" button will clear all fields for a new calculation.</p>
+            <h3>Tips for Accuracy</h3>
+            <p>Ensure that the interest rate and time period use the same time unit. Our calculator assumes an annual interest rate and a time period in years. If your loan or investment has a monthly rate, you must convert it to an annual rate (multiply by 12) before entering it. Similarly, if the duration is in months, convert it to years (divide by 12). Avoid using commas or currency symbols in the input fields; the calculator only processes numerical values. Double-checking these details will prevent common mistakes and ensure your results are correct and reliable for your financial planning.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Understanding the Formula & Methodology</h2>
+            <p>The calculation of simple interest is based on a straightforward and widely used formula. Transparency is a core value at EveryCalc, and we believe users should understand the mechanics behind our tools. The formula for simple interest is:</p>
+            <p><strong>Interest = Principal × Rate × Time</strong></p>
+            <p>Here’s a breakdown of each component:</p>
+            <ul>
+                <li><strong>Principal (P):</strong> This is the initial amount of money that is being invested or borrowed. In our calculator, this is the "Principal Amount".</li>
+                <li><strong>Rate (R):</strong> This is the annual interest rate. The rate is expressed as a percentage but is converted to a decimal for the calculation (e.g., 5% becomes 0.05).</li>
+                <li><strong>Time (T):</strong> This is the duration for which the money is borrowed or invested, measured in years.</li>
+            </ul>
+            <p>The total amount to be repaid or that an investment will grow to is calculated by adding the interest to the principal:</p>
+            <p><strong>Total Amount (A) = Principal + Interest</strong></p>
+            <p>This calculator strictly adheres to this formula to ensure every calculation is accurate and transparent. It does not account for compounding, where interest is earned on previously earned interest. Simple interest is always calculated based on the original principal amount.</p>
+        </section>
+
+        <section class="examples">
+            <h2>Practical Examples</h2>
+            <p>To help you better understand how simple interest works in the real world, here are a few practical scenarios:</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Principal</th>
+                            <th>Rate</th>
+                            <th>Time</th>
+                            <th>Total Interest</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Personal Loan</strong></td>
+                            <td>$5,000</td>
+                            <td>7.5%</td>
+                            <td>3 years</td>
+                            <td>$1,125.00</td>
+                            <td>$6,125.00</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Savings Bond</strong></td>
+                            <td>$1,000</td>
+                            <td>2.0%</td>
+                            <td>10 years</td>
+                            <td>$200.00</td>
+                            <td>$1,200.00</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Short-Term Business Loan</strong></td>
+                            <td>$20,000</td>
+                            <td>10%</td>
+                            <td>0.5 years (6 months)</td>
+                            <td>$1,000.00</td>
+                            <td>$21,000.00</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Car Loan</strong></td>
+                            <td>$15,000</td>
+                            <td>4.5%</td>
+                            <td>5 years</td>
+                            <td>$3,375.00</td>
+                            <td>$18,375.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. What is the difference between simple and compound interest?</h3>
+                <p>Simple interest is calculated only on the original principal amount. In contrast, compound interest is calculated on the principal amount and also on the accumulated interest of previous periods. Essentially, you earn "interest on interest" with compounding, which leads to higher growth over time.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. When is simple interest typically used?</h3>
+                <p>Simple interest is most commonly used for short-term loans or investments. For example, car loans, personal loans, and short-term promissory notes often use simple interest. It's less common for long-term investments like retirement savings, where compound interest is standard.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. Can I use this calculator for periods shorter than a year?</h3>
+                <p>Yes. To calculate interest for a period shorter than a year, you need to express the time as a fraction of a year. For example, for 6 months, you would enter 0.5 in the "Time Period" field. For 3 months, you would enter 0.25.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. Is this calculator compliant with financial regulations?</h3>
+                <p>This calculator performs standard simple interest calculations for informational purposes. While the underlying formula is universal, you should always consult a financial professional for advice related to specific financial products or decisions, which may be subject to local regulations and additional fees.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. Does this tool store any of my personal data?</h3>
+                <p>No. EveryCalc is committed to user privacy. This tool operates entirely within your browser. None of the financial information you enter is sent to our servers or stored in any way. You can use it with complete confidence in your data's security.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. How does the "Copy Results" button work?</h3>
+                <p>The "Copy Results" button allows you to easily save your calculation. When clicked, it copies a summary of the principal, rate, time, total interest, and total amount to your device's clipboard. You can then paste this information into a document, spreadsheet, or email.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. What if my interest rate changes over time?</h3>
+                <p>This calculator is designed for a fixed interest rate over the entire period. If you have a variable rate loan, you would need to perform separate calculations for each period with a different rate and sum the interest amounts for a total estimate.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. Why is my calculated interest different from my bank's statement?</h3>
+                <p>Discrepancies can arise for several reasons. Banks may use compound interest instead of simple interest. They might also use a different day-count convention for calculations (e.g., 360 days vs. 365 days a year) or include additional fees in their total figures. This calculator provides a pure simple interest calculation.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('interest-form');
+            const principalInput = document.getElementById('principal');
+            const rateInput = document.getElementById('interestRate');
+            const timeInput = document.getElementById('timePeriod');
+            
+            const principalError = document.getElementById('principal-error');
+            const rateError = document.getElementById('rate-error');
+            const timeError = document.getElementById('time-error');
+
+            const resultsSection = document.getElementById('results-section');
+            const totalInterestEl = document.getElementById('total-interest');
+            const totalAmountEl = document.getElementById('total-amount');
+
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            
+            const validateInput = (input, errorEl, message) => {
+                const value = parseFloat(input.value);
+                if (isNaN(value) || value <= 0) {
+                    input.style.borderColor = 'var(--color-danger)';
+                    errorEl.textContent = message;
+                    errorEl.style.display = 'block';
+                    return false;
+                }
+                input.style.borderColor = 'var(--color-border)';
+                errorEl.style.display = 'none';
+                return true;
+            };
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const isPrincipalValid = validateInput(principalInput, principalError, 'Please enter a principal greater than 0.');
+                const isRateValid = validateInput(rateInput, rateError, 'Please enter an interest rate greater than 0.');
+                const isTimeValid = validateInput(timeInput, timeError, 'Please enter a time period greater than 0.');
+
+                if (isPrincipalValid && isRateValid && isTimeValid) {
+                    calculateBtn.textContent = 'Calculating...';
+                    calculateBtn.disabled = true;
+
+                    setTimeout(() => {
+                        const principal = parseFloat(principalInput.value);
+                        const rate = parseFloat(rateInput.value) / 100;
+                        const time = parseFloat(timeInput.value);
+
+                        const interest = principal * rate * time;
+                        const totalAmount = principal + interest;
+                        
+                        const currencyFormatter = new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                        });
+
+                        totalInterestEl.textContent = currencyFormatter.format(interest);
+                        totalAmountEl.textContent = currencyFormatter.format(totalAmount);
+
+                        resultsSection.style.display = 'block';
+                        resultsSection.scrollIntoView({ behavior: 'smooth' });
+
+                        calculateBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm-1 5h2v6h-2V7zm0 8h2v2h-2v-2z"/></svg> Calculate';
+                        calculateBtn.disabled = false;
+                    }, 500);
+                }
+            });
+
+            resetBtn.addEventListener('click', function() {
+                form.reset();
+                principalInput.style.borderColor = 'var(--color-border)';
+                rateInput.style.borderColor = 'var(--color-border)';
+                timeInput.style.borderColor = 'var(--color-border)';
+
+                principalError.style.display = 'none';
+                rateError.style.display = 'none';
+                timeError.style.display = 'none';
+
+                resultsSection.style.display = 'none';
+            });
+            
+            copyBtn.addEventListener('click', function() {
+                const resultsText = `Simple Interest Calculation by EveryCalc:\n` +
+                                  `--------------------------------------\n` +
+                                  `Principal: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(principalInput.value)}\n` +
+                                  `Annual Rate: ${rateInput.value}%\n` +
+                                  `Time Period: ${timeInput.value} years\n` +
+                                  `--------------------------------------\n` +
+                                  `Total Interest: ${totalInterestEl.textContent}\n` +
+                                  `Total Amount: ${totalAmountEl.textContent}\n` +
+                                  `--------------------------------------\n` +
+                                  `Calculated at https://everycalc.site`;
+                
+                navigator.clipboard.writeText(resultsText).then(() => {
+                    const originalText = copyBtn.innerHTML;
+                    copyBtn.innerHTML = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy results: ', err);
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>```

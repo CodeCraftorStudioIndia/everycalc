@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Random Number Generator by EveryCalc – Free Online Tool</title>
+    <meta name="description" content="Use the free Random Number Generator by EveryCalc to generate random numbers within a specified range. Ideal for statistics, gaming, and more. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/random-number-generator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Random Number Generator by EveryCalc",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/random-number-generator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main { flex-grow: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+        header, footer { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--color-primary); }
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        li { margin-bottom: 0.5rem; }
+        strong { font-weight: 600; color: var(--color-primary); }
+
+        .subtitle { font-size: var(--font-size-md); color: var(--color-secondary); font-weight: 400; margin: 0; }
+        section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: end; }
+        @media (min-width: 640px) { .calculator-grid { grid-template-columns: repeat(2, 1fr); } }
+        .grid-span-2 { grid-column: span 2; }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .form-group input[type="number"] {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; grid-column: span 2; }
+        .btn {
+            padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-size: var(--font-size-base);
+            font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex;
+            align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .result-group { margin-bottom: 1.5rem; }
+        .result-group h3 { margin-bottom: 0.75rem; color: var(--color-action); font-size: var(--font-size-lg); }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--color-border);
+        }
+        .result-item:last-child { border-bottom: none; }
+
+        .result-label { font-weight: 500; color: var(--color-primary); }
+        .result-value { font-size: var(--font-size-base); font-weight: 600; color: var(--color-primary); }
+        .main-result-value { font-size: var(--font-size-xl); font-weight: 700; color: var(--color-success); } /* Highlight for generated numbers */
+
+        .random-display {
+            margin-top: 1rem;
+            padding: 1rem 1.5rem;
+            background-color: var(--color-bg);
+            border: 2px solid var(--color-accent);
+            border-radius: 0.5rem;
+            text-align: center;
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            color: var(--color-primary);
+            word-wrap: break-word; /* Allow long numbers to wrap */
+        }
+        .random-display.loading {
+            opacity: 0.6;
+            font-style: italic;
+        }
+
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { margin-top: 1.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+
+        .faq-item { margin-bottom: 1.5rem; }
+        
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        /* Print Styles */
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            .result-group { border: none !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { overflow: visible; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>Random Number Generator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Generate Random Numbers Instantly</h2>
+            <p>The Random Number Generator by EveryCalc is a robust, production-grade tool designed for generating random numbers within a user-defined range. Whether you're a statistician needing random samples, a developer testing algorithms, a game master creating random events, or simply someone looking for a random number for a decision, this calculator provides a reliable solution. It ensures high-quality randomness and offers clear, actionable results. Built with a confident, minimal design and high-contrast elements, EveryCalc provides a distraction-free experience, adhering to modern web standards and accessibility guidelines. Trust EveryCalc for all your random number generation needs.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Define Your Parameters</h2>
+            <form id="rng-form" novalidate>
+                <div class="calculator-grid">
+                    <div class="form-group">
+                        <label for="minNumber">Minimum Value</label>
+                        <input type="number" id="minNumber" name="minNumber" placeholder="e.g., 1" required min="-1000000" max="1000000">
+                        <p class="error-message" id="minNumber-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="maxNumber">Maximum Value</label>
+                        <input type="number" id="maxNumber" name="maxNumber" placeholder="e.g., 100" required min="-1000000" max="1000000">
+                        <p class="error-message" id="maxNumber-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity">Number of Random Numbers</label>
+                        <input type="number" id="quantity" name="quantity" placeholder="e.g., 5" required min="1" max="100">
+                        <p class="error-message" id="quantity-error"></p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Number Type</label>
+                        <div class="radio-group">
+                            <div>
+                                <input type="radio" id="type-integer" name="numberType" value="integer" checked>
+                                <label for="type-integer">Integer</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="type-float" name="numberType" value="float">
+                                <label for="type-float">Float (Decimal)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="decimalPlaces">Decimal Places (for Float)</label>
+                        <input type="number" id="decimalPlaces" name="decimalPlaces" placeholder="e.g., 2" min="0" max="10" value="2" disabled>
+                        <p class="error-message" id="decimalPlaces-error"></p>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary" id="generate-btn">Generate Numbers</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Generated Random Numbers</h2>
+            <div class="result-group">
+                <div class="random-display" id="random-numbers-display"></div>
+            </div>
+            <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Results</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Summary</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the Random Number Generator</h2>
+            <p>Our Random Number Generator is designed for simplicity and flexibility. Follow these steps to generate the numbers you need:</p>
+            <ol>
+                <li><strong>Minimum and Maximum Values:</strong> Define the range for your random numbers by entering the lowest possible number in the "Minimum Value" field and the highest possible number in the "Maximum Value" field. These values can be positive or negative integers or decimals.</li>
+                <li><strong>Quantity:</strong> Specify how many random numbers you wish to generate by entering a value in the "Number of Random Numbers" field. You can generate anywhere from 1 to 100 numbers at a time.</li>
+                <li><strong>Number Type:</strong> Choose whether you want to generate **Integers** (whole numbers) or **Floats** (numbers with decimal places).</li>
+                <li><strong>Decimal Places (for Floats):</strong> If you select "Float," specify the number of decimal places you want in your generated numbers. This defaults to 2 but can be adjusted.</li>
+            </ol>
+            <p>After setting your parameters, click the "Generate Numbers" button. The generated numbers will appear in the results section below, clearly listed. You can copy them easily using the "Copy Results" button. The "Reset" button clears all fields and results, allowing you to start fresh.</p>
+            <h3>Accuracy & Randomness</h3>
+            <p>The numbers generated are pseudo-random, meaning they are produced by a deterministic algorithm but are designed to appear random for most practical purposes. The quality of randomness depends on the underlying JavaScript `Math.random()` implementation in your browser, which is generally sufficient for most applications but may not meet the stringent requirements of cryptographic security. For security-sensitive applications, always use dedicated cryptographic random number generators.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formula & Methodology: Pseudo-Random Number Generation</h2>
+            <p>The core of this calculator relies on JavaScript's built-in `Math.random()` function for generating pseudo-random numbers. This function returns a floating-point number between 0 (inclusive) and 1 (exclusive). To generate numbers within a specified range and type (integer or float), several steps are taken:</p>
+            
+            <h3>1. Generating a Random Float within a Range:</h3>
+            <p>To get a random float between `min` and `max` (exclusive of `max`):</p>
+            <p style="text-align: center; font-size: 1.2em; font-weight: 600; color: var(--color-primary);">Random Float = Math.random() * (max - min) + min</p>
+            <p>If the generated number needs to be rounded to a specific number of decimal places (e.g., `decimalPlaces`), the result is multiplied by 10<sup>`decimalPlaces`</sup>, rounded, and then divided back.</p>
+
+            <h3>2. Generating a Random Integer within a Range:</h3>
+            <p>To get a random integer between `min` and `max` (inclusive of both):</p>
+            <p style="text-align: center; font-size: 1.2em; font-weight: 600; color: var(--color-primary);">Random Integer = Math.floor(Math.random() * (max - min + 1)) + min</p>
+            <p>This formula first calculates the range of possible integers (`max - min + 1`), multiplies `Math.random()` (which is between 0 and <1) by this range to get a value between 0 and <(range). `Math.floor()` then truncates the decimal, and adding `min` shifts the result to the desired range.</p>
+
+            <h3>Input Validation:</h3>
+            <p>The calculator enforces strict validation on inputs:
+                <ul>
+                    <li>Minimum and Maximum values must be valid numbers.</li>
+                    <li>The minimum value cannot be greater than the maximum value.</li>
+                    <li>The number of generated numbers must be a positive integer.</li>
+                    <li>If generating floats, decimal places must be a non-negative integer.</li>
+                </ul>
+            If any validation fails, an inline error message is displayed to guide the user.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical Random Number Generation Examples</h2>
+            <p>Here are a few scenarios illustrating the use of this calculator:</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Inputs</th>
+                            <th>Output Type</th>
+                            <th>Generated Numbers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Lottery Number</strong></td>
+                            <td>Min: 1, Max: 50, Qty: 6</td>
+                            <td>Integer</td>
+                            <td>[42, 11, 3, 38, 19, 47] (Example)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dice Roll Simulation</strong></td>
+                            <td>Min: 1, Max: 6, Qty: 10</td>
+                            <td>Integer</td>
+                            <td>[4, 1, 6, 3, 2, 5, 1, 6, 4, 3] (Example)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Random Sample for Study</strong></td>
+                            <td>Min: 100, Max: 200, Qty: 5</td>
+                            <td>Float (2 Decimals)</td>
+                            <td>[134.56, 187.12, 105.98, 155.32, 198.01] (Example)</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Password Character Pool</strong></td>
+                            <td>Min: 0, Max: 93, Qty: 16 (Assuming all ASCII chars)</td>
+                            <td>Integer</td>
+                            <td>[72, 38, 91, 15, 5, 88, 23, 77, 41, 93, 10, 67, 33, 82, 15, 55] (Example)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>*Note: Generated numbers will differ on each run due to their random nature.</p>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. What is a pseudo-random number generator (PRNG)?</h3>
+                <p>A PRNG is an algorithm that produces sequences of numbers that appear random but are actually deterministic. They start with an initial value called a "seed." The sequence is predictable if the seed is known. For most common applications like simulations, games, and general data generation, PRNGs are sufficient. They are not suitable for cryptographic security.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. How is the "randomness" ensured?</h3>
+                <p>The quality of randomness depends on the algorithm used by `Math.random()` in your browser and the seeding mechanism. While generally good for common uses, true randomness (as used in cryptography) often relies on physical processes like atmospheric noise or radioactive decay. This calculator uses the browser's standard PRNG.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. Can I generate random characters or strings?</h3>
+                <p>This calculator is specifically for generating random *numbers* (integers or floats) within a numerical range. For random strings or passwords, you would need a specialized password generator that uses character sets and different algorithms.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. What happens if I set the Minimum Value higher than the Maximum Value?</h3>
+                <p>The calculator will detect this input error and display a message prompting you to ensure the Minimum Value is not greater than the Maximum Value. The calculation cannot proceed with invalid range parameters.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. Are the generated numbers truly random?</h3>
+                <p>The numbers are pseudo-random, meaning they are generated by an algorithm that aims to mimic true randomness. For most applications like gaming, statistical sampling, or decision-making, this level of randomness is perfectly adequate. However, for security-sensitive applications like generating encryption keys, a cryptographically secure pseudo-random number generator (CSPRNG) is required.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. Can I generate duplicate numbers?</h3>
+                <p>Yes, the numbers generated are based on a pseudo-random number algorithm. It is possible, though increasingly unlikely for larger ranges and quantities, to generate duplicate numbers within a single batch. If you require unique numbers, you would need to employ a different algorithm that specifically avoids repetition.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. What is "entropy" in the context of password strength, and is it used here?</h3>
+                <p>Entropy is a measure of randomness or unpredictability, usually expressed in bits. While this calculator uses `Math.random()` for number generation, it does not calculate entropy for passwords. Entropy is a key factor in password security, indicating how difficult a password would be to guess. A higher entropy score generally means a stronger password.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. What are the limits on the number of random numbers I can generate?</h3>
+                <p>For performance and usability reasons, the calculator limits the quantity of random numbers you can generate in a single operation to a maximum of 100. This helps prevent excessively long outputs and potential browser slowdowns.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: Applications of Randomness</h2>
+            <p>Random number generation is fundamental to many fields beyond simple decision-making. In **statistics and data science**, random sampling is used to select representative subsets of a population for surveys and experiments, enabling reliable analysis of large datasets. In **computer science and gaming**, PRNGs are used for everything from shuffling decks of cards in a virtual game to simulating complex systems and generating cryptographic keys (though for crypto, CSPRNGs are essential). In **scientific research**, randomness is used in Monte Carlo simulations to model complex phenomena and estimate probabilities. In **creative arts**, random generation can provide inspiration for music, art, or writing. Understanding how random numbers are generated and their limitations is key to applying them effectively and appropriately across these diverse disciplines.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+        <p class="disclaimer">
+            EveryCalc does not store or share any personal data.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const minNumberInput = document.getElementById('minNumber');
+            const maxNumberInput = document.getElementById('maxNumber');
+            const quantityInput = document.getElementById('quantity');
+            const numberTypeRadio = document.querySelectorAll('input[name="numberType"]');
+            const decimalPlacesInput = document.getElementById('decimalPlaces');
+
+            const generateBtn = document.getElementById('generate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const resultsSection = document.getElementById('results-section');
+
+            const minNumberError = document.getElementById('minNumber-error');
+            const maxNumberError = document.getElementById('maxNumber-error');
+            const quantityError = document.getElementById('quantity-error');
+            const decimalPlacesError = document.getElementById('decimalPlaces-error');
+
+            const randomNumbersDisplay = document.getElementById('random-numbers-display');
+            
+            // Initially hide decimal places input if integer is selected
+            document.getElementById('type-integer').addEventListener('change', () => {
+                decimalPlacesInput.disabled = true;
+                decimalPlacesInput.value = '0'; // Reset to 0 for integer
+            });
+            document.getElementById('type-float').addEventListener('change', () => {
+                decimalPlacesInput.disabled = false;
+            });
+
+            const validateInput = (inputEl, errorEl, min = -Infinity, max = Infinity) => {
+                errorEl.style.display = 'none';
+                inputEl.style.borderColor = 'var(--color-border)';
+                const value = parseFloat(inputEl.value);
+
+                if (inputEl.value.trim() === '' || isNaN(value)) {
+                    errorEl.textContent = 'Please enter a valid number.';
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                if (value < min || value > max) {
+                    errorEl.textContent = `Value must be between ${min} and ${max}.`;
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                return true;
+            };
+
+            const generateRandomNumbers = () => {
+                const min = parseFloat(minNumberInput.value);
+                const max = parseFloat(maxNumberInput.value);
+                const count = parseInt(quantityInput.value);
+                const type = document.querySelector('input[name="numberType"]:checked').value;
+                const decimalPlaces = parseInt(decimalPlacesInput.value);
+
+                const generatedNumbers = [];
+                let invalidInput = false;
+
+                // Basic range validation
+                if (min > max) {
+                    minNumberError.textContent = 'Minimum value cannot be greater than maximum value.';
+                    minNumberError.style.display = 'block';
+                    minNumberInput.style.borderColor = 'var(--color-danger)';
+                    maxNumberError.textContent = 'Maximum value cannot be less than minimum value.';
+                    maxNumberError.style.display = 'block';
+                    maxNumberInput.style.borderColor = 'var(--color-danger)';
+                    invalidInput = true;
+                }
+
+                if (!invalidInput) {
+                    for (let i = 0; i < count; i++) {
+                        let randomNumber;
+                        if (type === 'integer') {
+                            // Generate integer between min (inclusive) and max (inclusive)
+                            randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+                        } else { // float
+                            // Generate float between min (inclusive) and max (exclusive)
+                            randomNumber = Math.random() * (max - min) + min;
+                            // Round to specified decimal places
+                            if (!isNaN(decimalPlaces) && decimalPlaces >= 0) {
+                                randomNumber = parseFloat(randomNumber.toFixed(decimalPlaces));
+                            }
+                        }
+                        generatedNumbers.push(randomNumber);
+                    }
+                }
+                return { numbers: generatedNumbers, isValid: !invalidInput };
+            };
+
+            generateBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                generateBtn.textContent = 'Generating...';
+                generateBtn.disabled = true;
+
+                setTimeout(() => {
+                    let allValid = true;
+                    allValid = validateInput(minNumberInput, minNumberError, -1000000, 1000000) && allValid;
+                    allValid = validateInput(maxNumberInput, maxNumberError, -1000000, 1000000) && allValid;
+                    allValid = validateInput(quantityInput, quantityError, 1, 100) && allValid;
+                    if (type === 'float') {
+                        allValid = validateInput(decimalPlacesInput, decimalPlacesError, 0, 10) && allValid;
+                    }
+                    
+                    if (allValid) {
+                        const { numbers, isValid } = generateRandomNumbers();
+                        if (isValid && numbers.length > 0) {
+                            randomNumbersDisplay.textContent = numbers.join(', ');
+                            resultsSection.style.display = 'block';
+                            resultsSection.scrollIntoView({ behavior: 'smooth' });
+                        } else if (!isValid) {
+                            resultsSection.style.display = 'none';
+                        }
+                    } else {
+                        resultsSection.style.display = 'none';
+                    }
+                    
+                    generateBtn.textContent = 'Generate Numbers';
+                    generateBtn.disabled = false;
+                }, 500);
+            });
+
+            resetBtn.addEventListener('click', function() {
+                document.getElementById('rng-form').reset();
+                
+                // Reset specific input borders and error messages
+                minNumberInput.style.borderColor = 'var(--color-border)';
+                maxNumberInput.style.borderColor = 'var(--color-border)';
+                quantityInput.style.borderColor = 'var(--color-border)';
+                decimalPlacesInput.style.borderColor = 'var(--color-border)';
+                
+                document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+                resultsSection.style.display = 'none';
+
+                // Reset disabled state and value for decimal places
+                document.getElementById('type-integer').checked = true;
+                document.getElementById('type-float').checked = false;
+                decimalPlacesInput.disabled = true;
+                decimalPlacesInput.value = '2'; 
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const summaryText = `Random Number Generation Report by EveryCalc:\n` +
+                                  `---------------------------------------------\n` +
+                                  `Range: ${minNumberInput.value} to ${maxNumberInput.value}\n` +
+                                  `Quantity: ${quantityInput.value}\n` +
+                                  `Number Type: ${document.querySelector('input[name="numberType"]:checked').labels[0].textContent.trim()}\n` +
+                                  `Decimal Places: ${decimalPlacesInput.disabled ? 'N/A' : decimalPlacesInput.value}\n` +
+                                  `----------------------------------------\n` +
+                                  `Generated Numbers:\n${randomNumbersDisplay.textContent}\n` +
+                                  `----------------------------------------\n` +
+                                  `Generated at https://everycalc.site`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

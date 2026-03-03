@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- SEO Meta Tags -->
+    <title>Privacy Policy - EveryCalc</title>
+    <meta name="description" content="EveryCalc Privacy Policy. Transparency about how we handle data, cookies, and advertising. Your privacy is our priority.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.everycalc.com/privacy-policy">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <!-- Structured Data (Schema.org) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Privacy Policy",
+      "url": "https://www.everycalc.com/privacy-policy",
+      "description": "Privacy Policy for EveryCalc website.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "EveryCalc",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.everycalc.com/logo.png"
+        }
+      }
+    }
+    </script>
+
+    <style>
+        /* 
+         * ------------------------------------------------------------------
+         * CORE VARIABLES & RESET
+         * ------------------------------------------------------------------
+         */
+        :root {
+            /* Branding Palette - Matching Homepage */
+            --color-primary: #0f172a;       /* Slate 900 */
+            --color-text-main: #334155;     /* Slate 700 */
+            --color-text-muted: #64748b;    /* Slate 500 */
+            --color-accent: #2563eb;        /* Royal Blue */
+            --color-accent-hover: #1d4ed8;
+            --color-bg-body: #f8fafc;       /* Slate 50 */
+            --color-bg-card: #ffffff;
+            --color-border: #e2e8f0;        /* Slate 200 */
+
+            /* Typography & Spacing */
+            --font-main: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --container-width: 800px; /* Narrower for reading comfort */
+            --radius-md: 8px;
+            --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-bg-body);
+            color: var(--color-text-main);
+            line-height: 1.7; /* Increased for readability */
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: var(--color-accent);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--color-accent-hover);
+            text-decoration: underline;
+        }
+
+        /* 
+         * ------------------------------------------------------------------
+         * LAYOUT UTILITIES
+         * ------------------------------------------------------------------
+         */
+        .container {
+            width: 100%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* 
+         * ------------------------------------------------------------------
+         * HEADER
+         * ------------------------------------------------------------------
+         */
+        .site-header {
+            background: var(--color-bg-card);
+            border-bottom: 1px solid var(--color-border);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--color-primary);
+        }
+
+        .brand img {
+            height: 32px;
+            width: auto;
+        }
+
+        .nav-link {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* 
+         * ------------------------------------------------------------------
+         * CONTENT TYPOGRAPHY
+         * ------------------------------------------------------------------
+         */
+        .policy-content {
+            background: var(--color-bg-card);
+            margin: 3rem auto;
+            padding: 3rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        h1 {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .last-updated {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        h2 {
+            font-size: clamp(1.25rem, 3vw, 1.5rem);
+            color: var(--color-primary);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            color: var(--color-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        p, li {
+            font-size: 1rem;
+            color: var(--color-text-main);
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* 
+         * ------------------------------------------------------------------
+         * FOOTER
+         * ------------------------------------------------------------------
+         */
+        .site-footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--color-border);
+            background: #fff;
+        }
+
+        .footer-links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--color-text-muted);
+        }
+
+        .footer-links a:hover {
+            color: var(--color-accent);
+        }
+
+        /* 
+         * ------------------------------------------------------------------
+         * ANIMATION & RESPONSIVENESS
+         * ------------------------------------------------------------------
+         */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .policy-content {
+                padding: 1.5rem;
+                margin: 1.5rem auto;
+                border: none;
+                background: transparent;
+                box-shadow: none;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-content">
+            <a href="/" class="brand">
+                <img src="logo.png" alt="EveryCalc Logo" width="32" height="32">
+                <span>EveryCalc</span>
+            </a>
+            <a href="/" class="nav-link">&larr; Back to Home</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <article class="policy-content fade-in">
+            <h1>Privacy Policy</h1>
+            <span class="last-updated">Last Updated: February 01, 2026</span>
+
+            <h2>Introduction</h2>
+            <p>At EveryCalc, reachable from www.everycalc.com, the privacy of our visitors is one of our main priorities. We believe that simple tools should remain simple—you shouldn't have to trade your personal data just to calculate a mortgage payment or convert a unit of measurement.</p>
+            <p>This Privacy Policy document contains types of information that is collected and recorded by EveryCalc and how we use it. We have written this in plain English to be as transparent as possible.</p>
+            <p>If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.</p>
+
+            <h2>Information We Collect</h2>
+            <p>EveryCalc is designed primarily as a client-side utility tool. This means that for the vast majority of our calculators, the math happens directly in your browser. <strong>We do not ask for, nor do we store, your personal financial data, health metrics, or mathematical queries on our servers.</strong></p>
+            <p>However, like all web technologies, some data is processed to keep the site running and to support our free services:</p>
+            <ul>
+                <li><strong>Voluntary Communication:</strong> If you contact us directly via email, we may receive your name, email address, and the contents of the message you send us.</li>
+                <li><strong>Automated Data:</strong> We may collect non-personal information about your device, such as browser type, screen size, and operating system, to ensure our calculators display correctly on your screen.</li>
+            </ul>
+
+            <h2>How We Use Your Information</h2>
+            <p>We use the limited information we collect in the following ways:</p>
+            <ul>
+                <li>To provide, operate, and maintain our website.</li>
+                <li>To improve, personalize, and expand our website's functionality.</li>
+                <li>To understand and analyze how you use our website (e.g., seeing which calculators are most popular so we can build more of them).</li>
+                <li>To detect and prevent fraud or security issues.</li>
+            </ul>
+
+            <h2>Log Files</h2>
+            <p>EveryCalc follows a standard procedure of using log files. These files log visitors when they visit websites. All hosting companies do this as a part of hosting services' analytics. The information collected by log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks.</p>
+            <p>These are not linked to any information that is personally identifiable. The purpose of the information is for analyzing trends, administering the site, tracking users' movement on the website, and gathering demographic information.</p>
+
+            <h2>Cookies and Web Beacons</h2>
+            <p>Like any other website, EveryCalc uses "cookies". These are small text files stored on your device. We use them to store information including visitors' preferences (like Light/Dark mode in the future) and the pages on the website that the visitor accessed or visited.</p>
+            <p>The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.</p>
+
+            <h2>Google DoubleClick DART Cookie</h2>
+            <p>Google is one of a third-party vendor on our site. It also uses cookies, known as DART cookies, to serve ads to our site visitors based upon their visit to www.everycalc.com and other sites on the internet.</p>
+            <p>However, visitors may choose to decline the use of DART cookies by visiting the Google ad and content network Privacy Policy at the following URL: <a href="https://policies.google.com/technologies/ads" target="_blank" rel="nofollow noopener">https://policies.google.com/technologies/ads</a></p>
+
+            <h2>Advertising Partners Privacy Policies</h2>
+            <p>You may consult this list to find the Privacy Policy for each of the advertising partners of EveryCalc.</p>
+            <p>Third-party ad servers or ad networks use technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on EveryCalc, which are sent directly to users' browsers. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.</p>
+            <p>Note that EveryCalc has no access to or control over these cookies that are used by third-party advertisers.</p>
+
+            <h2>Third Party Privacy Policies</h2>
+            <p>EveryCalc's Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options.</p>
+            <p>You can choose to disable cookies through your individual browser options. To know more detailed information about cookie management with specific web browsers, it can be found at the browsers' respective websites.</p>
+
+            <h2>Data Protection Rights (GDPR & CCPA)</h2>
+            <p>We would like to make sure you are fully aware of all of your data protection rights. We respect the regulations set forth by GDPR (General Data Protection Regulation) and CCPA (California Consumer Privacy Act).</p>
+            <p>Every user is entitled to the following:</p>
+            <ul>
+                <li><strong>The right to access:</strong> You have the right to request copies of your personal data.</li>
+                <li><strong>The right to rectification:</strong> You have the right to request that we correct any information you believe is inaccurate.</li>
+                <li><strong>The right to erasure:</strong> You have the right to request that we erase your personal data, under certain conditions.</li>
+                <li><strong>The right to object to processing:</strong> You have the right to object to our processing of your personal data, under certain conditions.</li>
+            </ul>
+            <p>If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please contact us.</p>
+
+            <h2>Children’s Information</h2>
+            <p>Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity.</p>
+            <p>EveryCalc does not knowingly collect any Personal Identifiable Information from children under the age of 13. If you think that your child provided this kind of information on our website, we strongly encourage you to contact us immediately and we will do our best efforts to promptly remove such information from our records.</p>
+
+            <h2>Online Privacy Policy Only</h2>
+            <p>This Privacy Policy applies only to our online activities and is valid for visitors to our website with regards to the information that they shared and/or collect in EveryCalc. This policy is not applicable to any information collected offline or via channels other than this website.</p>
+
+            <h2>Consent</h2>
+            <p>By using our website, you hereby consent to our Privacy Policy and agree to its Terms and Conditions.</p>
+
+            <h2>Updates to This Policy</h2>
+            <p>We may update our Privacy Policy from time to time. Thus, we advise you to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately, after they are posted on this page.</p>
+
+            <h2>Contact Information</h2>
+            <p>If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us.</p>
+            <p><strong>Email:</strong> contact@everycalc.com</p>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; <script>document.write(new Date().getFullYear())</script> EveryCalc. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="/index.html">Home</a>
+                <a href="/privacy.html">Privacy Policy</a>
+                <a href="/terms.html">Terms & Conditions</a>
+                <a href="/disclaimer.html">Disclaimer</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

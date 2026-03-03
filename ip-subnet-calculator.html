@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IP Subnet Calculator by EveryCalc – Free Online Tool</title>
+    <meta name="description" content="Use the free IP Subnet Calculator by EveryCalc for fast, accurate results to determine network address, broadcast, host range, and more. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/ip-subnet-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "IP Subnet Calculator by EveryCalc",
+      "applicationCategory": "CalculatorApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/ip-subnet-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main { flex-grow: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+        header, footer { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--color-primary); }
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        li { margin-bottom: 0.5rem; }
+        strong { font-weight: 600; color: var(--color-primary); }
+
+        .subtitle { font-size: var(--font-size-md); color: var(--color-secondary); font-weight: 400; margin: 0; }
+        section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media (min-width: 640px) { .calculator-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .input-cidr-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .input-cidr-group input[type="text"] {
+            flex-grow: 1;
+        }
+        .input-cidr-group input[type="number"] {
+            width: 80px; /* Fixed width for CIDR */
+            text-align: center;
+        }
+
+        .form-group input {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; grid-column: span 2; }
+        .btn {
+            padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-size: var(--font-size-base);
+            font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex;
+            align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .result-group { margin-bottom: 1.5rem; }
+        .result-group h3 { margin-bottom: 0.75rem; color: var(--color-action); font-size: var(--font-size-lg); }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--color-border);
+        }
+        .result-item:last-child { border-bottom: none; }
+
+        .result-label { font-weight: 500; color: var(--color-primary); }
+        .result-value { font-size: var(--font-size-base); font-weight: 600; color: var(--color-primary); }
+        
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { margin-top: 1.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+
+        .faq-item { margin-bottom: 1.5rem; }
+        
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        /* Print Styles */
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            .result-group { border: none !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { overflow: visible; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>IP Subnet Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Effortless IP Subnetting for Network Planning</h2>
+            <p>The IP Subnet Calculator by EveryCalc is an essential, production-grade tool designed for network administrators, IT students, and anyone needing to efficiently plan and manage IPv4 networks. Subnetting is crucial for optimizing network performance, enhancing security, and conserving IP addresses. Our calculator simplifies the complex binary math involved, providing instant and accurate details for any given IP address and CIDR (Classless Inter-Domain Routing) mask. This includes the Network Address, Broadcast Address, Usable Host Range, Number of Usable Hosts, Subnet Mask in dotted decimal, and the Wildcard Mask. Built with a confident, minimal design and high-contrast elements, EveryCalc offers a distraction-free experience, adhering to modern web standards and accessibility guidelines. Trust EveryCalc for reliable network calculations every time.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Enter IP Address and CIDR Mask</h2>
+            <form id="subnet-form" novalidate>
+                <div class="calculator-grid">
+                    <div class="form-group grid-span-2">
+                        <label for="ipAddress">IP Address</label>
+                        <input type="text" id="ipAddress" name="ipAddress" placeholder="e.g., 192.168.1.10" required pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$">
+                        <p class="error-message" id="ipAddress-error">Please enter a valid IPv4 address (e.g., 192.168.1.10).</p>
+                    </div>
+
+                    <div class="form-group grid-span-2">
+                        <label for="cidrMask">CIDR Mask (/)</label>
+                        <input type="number" id="cidrMask" name="cidrMask" placeholder="e.g., 24" required min="0" max="32">
+                        <p class="error-message" id="cidrMask-error">Please enter a valid CIDR mask (0-32).</p>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">Calculate Subnet</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Subnet Details</h2>
+            
+            <div class="result-group">
+                <h3>Network Information</h3>
+                <div class="result-item">
+                    <span class="result-label">IP Address:</span>
+                    <span class="result-value" id="result-ip-address"></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Subnet Mask:</span>
+                    <span class="result-value" id="result-subnet-mask"></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">CIDR:</span>
+                    <span class="result-value" id="result-cidr"></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Network Address:</span>
+                    <span class="result-value" id="result-network-address"></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Broadcast Address:</span>
+                    <span class="result-value" id="result-broadcast-address"></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Usable Host Range:</span>
+                    <span class="result-value" id="result-host-range"></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Number of Usable Hosts:</span>
+                    <span class="result-value" id="result-usable-hosts"></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Wildcard Mask:</span>
+                    <span class="result-value" id="result-wildcard-mask"></span>
+                </div>
+            </div>
+
+            <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Results</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Summary</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the IP Subnet Calculator</h2>
+            <p>Our IP Subnet Calculator is designed for network professionals and students who need quick and accurate subnetting information. Follow these simple steps:</p>
+            <ol>
+                <li><strong>IP Address:</strong> Enter the IPv4 address you wish to subnet. This should be in standard dotted-decimal format (e.g., <code>192.168.1.100</code>). Ensure each octet is between 0 and 255.</li>
+                <li><strong>CIDR Mask (/):</strong> Enter the CIDR (Classless Inter-Domain Routing) mask value. This is a number between 0 and 32 (e.g., <code>24</code> for a <code>255.255.255.0</code> subnet mask).</li>
+            </ol>
+            <p>Once both the IP address and the CIDR mask are entered, click the "Calculate Subnet" button. The results section will instantly display a comprehensive breakdown of your subnet, including the network address, broadcast address, usable host range, number of usable hosts, subnet mask, and wildcard mask. The "Reset" button clears all fields for a new calculation.</p>
+            <h3>Accuracy Tips</h3>
+            <p>Double-check the format of your IP address; an invalid octet (e.g., <code>192.168.1.256</code>) or an incomplete address will cause an error. Ensure your CIDR mask is within the valid range of 0 to 32. Using an incorrect CIDR value is the most common mistake in subnetting. Remember that some CIDR values (like /31 and /32) have special implications for usable hosts.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formula & Methodology</h2>
+            <p>The IP Subnet Calculator performs complex bitwise operations to derive accurate subnet information from your input. It adheres to the principles of IPv4 Classless Inter-Domain Routing (CIDR).</p>
+
+            <h3>Key Concepts:</h3>
+            <ul>
+                <li><strong>IPv4 Address:</strong> A 32-bit number, typically represented in four octets (8-bit segments) separated by dots (e.g., <code>192.168.1.10</code>). Each octet can range from 0 to 255.</li>
+                <li><strong>CIDR Mask:</strong> A number from 0 to 32 that indicates the number of network bits. The remaining bits are host bits. For example, <code>/24</code> means the first 24 bits are for the network, and the last 8 bits are for hosts.</li>
+                <li><strong>Subnet Mask:</strong> A 32-bit number, usually represented in dotted-decimal format, where all network bits are '1' and all host bits are '0'. For <code>/24</code>, this is <code>255.255.255.0</code>.</li>
+                <li><strong>Wildcard Mask:</strong> The inverse of the subnet mask. All network bits are '0' and all host bits are '1'. For <code>/24</code>, this is <code>0.0.0.255</code>. It's often used in access control lists (ACLs).</li>
+            </ul>
+            
+            <h3>Calculation Steps:</h3>
+            <ol>
+                <li><strong>IP Address to Binary:</strong> The input IPv4 address is converted into its 32-bit binary representation.</li>
+                <li><strong>Subnet Mask Generation:</strong> The CIDR mask (N) is used to create the 32-bit binary subnet mask: N ones followed by (32-N) zeros. This is then converted to dotted-decimal format.</li>
+                <li><strong>Network Address:</strong> This is found by performing a bitwise **AND** operation between the IP address (in binary) and the subnet mask (in binary). All host bits are set to '0'.</li>
+                <li><strong>Broadcast Address:</strong> This is found by performing a bitwise **OR** operation between the IP address (in binary) and the wildcard mask (in binary). All host bits are set to '1'. Alternatively, it's the network address with all host bits set to '1'.</li>
+                <li><strong>Usable Host Range:</strong> The first usable host is one greater than the Network Address. The last usable host is one less than the Broadcast Address.</li>
+                <li><strong>Number of Usable Hosts:</strong> Calculated as <code>2<sup>(32 - CIDR)</sup> - 2</code>. The '-2' accounts for the Network Address and Broadcast Address, which cannot be assigned to hosts. For <code>/31</code> and <code>/32</code> masks, the number of usable hosts is 0.</li>
+            </ol>
+            <p>All results are presented in standard dotted-decimal notation for clarity and ease of use.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical Subnetting Examples</h2>
+            <p>Here are several real-world scenarios demonstrating how the IP Subnet Calculator provides critical network information for different configurations.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>IP Address</th>
+                            <th>CIDR</th>
+                            <th>Network Address</th>
+                            <th>Broadcast Address</th>
+                            <th>Usable Hosts</th>
+                            <th>Host Range</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Small Office Network</strong></td>
+                            <td>192.168.10.50</td>
+                            <td>/24</td>
+                            <td>192.168.10.0</td>
+                            <td>192.168.10.255</td>
+                            <td>254</td>
+                            <td>192.168.10.1 - 192.168.10.254</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Medium Department LAN</strong></td>
+                            <td>172.16.0.129</td>
+                            <td>/26</td>
+                            <td>172.16.0.128</td>
+                            <td>172.16.0.191</td>
+                            <td>62</td>
+                            <td>172.16.0.129 - 172.16.0.190</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Point-to-Point Link</strong></td>
+                            <td>10.0.0.1</td>
+                            <td>/30</td>
+                            <td>10.0.0.0</td>
+                            <td>10.0.0.3</td>
+                            <td>2</td>
+                            <td>10.0.0.1 - 10.0.0.2</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Large Subnet</strong></td>
+                            <td>10.0.50.75</td>
+                            <td>/16</td>
+                            <td>10.0.0.0</td>
+                            <td>10.0.255.255</td>
+                            <td>65534</td>
+                            <td>10.0.0.1 - 10.0.255.254</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>*Note: IP addresses are for illustrative purposes and may represent private or public address space.</p>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. What is IP subnetting and why is it important?</h3>
+                <p>IP subnetting is the process of dividing a larger network into smaller, more manageable sub-networks. It's important for several reasons: it improves network performance by reducing broadcast traffic, enhances security by isolating segments, conserves IP addresses, and simplifies network administration.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. What is the difference between a Network Address and a Broadcast Address?</h3>
+                <p>The **Network Address** (or Network ID) is the first address in a subnet, with all host bits set to '0'. It identifies the entire network and cannot be assigned to an individual host. The **Broadcast Address** is the last address in a subnet, with all host bits set to '1'. Packets sent to this address are delivered to all hosts on that specific subnet. It also cannot be assigned to a host.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. What is CIDR and how does it relate to subnetting?</h3>
+                <p>CIDR (Classless Inter-Domain Routing) is a method of allocating IP addresses and IP routing. It supersedes the old class-based system (Class A, B, C). CIDR uses a variable-length subnet mask represented by a slash followed by a number (e.g., <code>/24</code>), indicating the number of bits used for the network portion of the address. It allows for more flexible and efficient use of IP address space.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. What is a Wildcard Mask and what is it used for?</h3>
+                <p>A Wildcard Mask is the inverse of a subnet mask. It's used primarily in Cisco routers' Access Control Lists (ACLs) to specify a range of IP addresses. Where a '0' in a wildcard mask means "match this bit exactly," and a '1' means "don't care about this bit." It's derived by subtracting the subnet mask from <code>255.255.255.255</code>.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. Why is the "Number of Usable Hosts" sometimes 0?</h3>
+                <p>For CIDR masks of <code>/31</code> and <code>/32</code>, the number of usable hosts is 0. A <code>/32</code> mask assigns the entire 32-bit address to the network, leaving no host bits, which means it identifies a single IP address (e.g., for a loopback interface). A <code>/31</code> mask creates a network with only two addresses, which are used for the network address and broadcast address, leaving no addresses for usable hosts. These are typically used for point-to-point links.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. Can I use this calculator for IPv6?</h3>
+                <p>No, this calculator is specifically designed for **IPv4** addresses, which are 32-bit. IPv6 addresses are 128-bit and have a different structure and subnetting rules. You would need a dedicated IPv6 subnet calculator for those calculations.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. What is VLSM (Variable Length Subnet Masking)?</h3>
+                <p>VLSM is a technique that allows network administrators to divide an IP address space into subnets of different sizes, rather than using a single, uniform subnet mask across the entire network. This helps to conserve IP addresses and utilize network space more efficiently. Our calculator can be used to perform individual subnet calculations that contribute to a larger VLSM scheme.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. What are some common subnet masks?</h3>
+                <p>Some common subnet masks include:
+                    <ul>
+                        <li><code>255.255.255.0</code> (<code>/24</code>) - 254 usable hosts.</li>
+                        <li><code>255.255.255.128</code> (<code>/25</code>) - 126 usable hosts.</li>
+                        <li><code>255.255.255.192</code> (<code>/26</code>) - 62 usable hosts.</li>
+                        <li><code>255.255.255.224</code> (<code>/27</code>) - 30 usable hosts.</li>
+                        <li><code>255.255.255.240</code> (<code>/28</code>) - 14 usable hosts.</li>
+                        <li><code>255.255.255.248</code> (<code>/29</code>) - 6 usable hosts.</li>
+                        <li><code>255.255.255.252</code> (<code>/30</code>) - 2 usable hosts.</li>
+                    </ul>
+                </p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: Subnetting Best Practices and Security</h2>
+            <p>Effective subnetting is more than just dividing IP addresses; it's a foundational element of robust network architecture and security. A key best practice is to always **document your subnetting scheme** thoroughly. This includes network addresses, broadcast addresses, usable host ranges, and assigned devices. Good documentation prevents IP conflicts and aids in troubleshooting. From a security perspective, subnetting can be used to implement **network segmentation**. By placing different departments, server types, or device categories on separate subnets, you can implement stricter access control policies (using firewalls and ACLs) between segments. This limits the lateral movement of threats within your network. While this calculator is for IPv4, the principles of segmentation and efficient address management remain relevant as networks transition towards IPv6, emphasizing the timeless value of understanding network topology and addressing schemes.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+        <p class="disclaimer">
+            EveryCalc does not store or share any personal data.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ipAddressInput = document.getElementById('ipAddress');
+            const cidrMaskInput = document.getElementById('cidrMask');
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const resultsSection = document.getElementById('results-section');
+
+            const ipAddressError = document.getElementById('ipAddress-error');
+            const cidrMaskError = document.getElementById('cidrMask-error');
+
+            const resultIpAddress = document.getElementById('result-ip-address');
+            const resultSubnetMask = document.getElementById('result-subnet-mask');
+            const resultCidr = document.getElementById('result-cidr');
+            const resultNetworkAddress = document.getElementById('result-network-address');
+            const resultBroadcastAddress = document.getElementById('result-broadcast-address');
+            const resultHostRange = document.getElementById('result-host-range');
+            const resultUsableHosts = document.getElementById('result-usable-hosts');
+            const resultWildcardMask = document.getElementById('result-wildcard-mask');
+
+            const validateInput = (inputEl, errorEl, pattern = null, min = -Infinity, max = Infinity) => {
+                errorEl.style.display = 'none';
+                inputEl.style.borderColor = 'var(--color-border)';
+
+                if (inputEl.value.trim() === '') {
+                    errorEl.textContent = 'This field cannot be empty.';
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+
+                if (pattern && !new RegExp(pattern).test(inputEl.value)) {
+                    // Specific error message set in HTML for IP address pattern
+                    if (inputEl.id === 'ipAddress') {
+                        errorEl.textContent = 'Please enter a valid IPv4 address (e.g., 192.168.1.10).';
+                    }
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+
+                const value = parseFloat(inputEl.value);
+                if (isNaN(value) || value < min || value > max) {
+                    if (inputEl.id === 'cidrMask') {
+                        errorEl.textContent = `CIDR mask must be between ${min} and ${max}.`;
+                    }
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                return true;
+            };
+
+            // Helper function to convert dotted decimal IP to 32-bit integer
+            const ipToInt = (ip) => {
+                return ip.split('.').reduce((acc, octet) => (acc << 8) + parseInt(octet, 10), 0) >>> 0; // >>> 0 converts to unsigned 32-bit
+            };
+
+            // Helper function to convert 32-bit integer to dotted decimal IP
+            const intToIp = (int) => {
+                return `${(int >>> 24) & 0xFF}.${(int >>> 16) & 0xFF}.${(int >>> 8) & 0xFF}.${int & 0xFF}`;
+            };
+
+            const calculateSubnet = () => {
+                const ipAddress = ipAddressInput.value;
+                const cidrMask = parseInt(cidrMaskInput.value, 10);
+
+                const ipAddressInt = ipToInt(ipAddress);
+
+                // Calculate subnet mask (32-bit integer)
+                const subnetMaskInt = ((1 << cidrMask) - 1) << (32 - cidrMask) >>> 0;
+                const subnetMaskDotted = intToIp(subnetMaskInt);
+
+                // Calculate wildcard mask (32-bit integer)
+                const wildcardMaskInt = ~subnetMaskInt >>> 0;
+                const wildcardMaskDotted = intToIp(wildcardMaskInt);
+
+                // Calculate network address
+                const networkAddressInt = (ipAddressInt & subnetMaskInt) >>> 0;
+                const networkAddressDotted = intToIp(networkAddressInt);
+
+                // Calculate broadcast address
+                const broadcastAddressInt = (networkAddressInt | wildcardMaskInt) >>> 0;
+                const broadcastAddressDotted = intToIp(broadcastAddressInt);
+
+                // Calculate usable host range
+                let firstUsableHost = 'N/A';
+                let lastUsableHost = 'N/A';
+                let usableHosts = 0;
+
+                const numberOfHostBits = 32 - cidrMask;
+                const totalAddresses = Math.pow(2, numberOfHostBits);
+
+                if (cidrMask < 31) { // For /31 and /32, usable hosts are 0
+                    firstUsableHost = intToIp(networkAddressInt + 1);
+                    lastUsableHost = intToIp(broadcastAddressInt - 1);
+                    usableHosts = totalAddresses - 2;
+                } else if (cidrMask === 31) { // Point-to-point link
+                    usableHosts = 0; // Network + Broadcast only
+                    firstUsableHost = 'N/A (P2P)';
+                    lastUsableHost = 'N/A (P2P)';
+                } else if (cidrMask === 32) { // Single host
+                    usableHosts = 0; // Only the host itself
+                    firstUsableHost = 'N/A (Single Host)';
+                    lastUsableHost = 'N/A (Single Host)';
+                }
+
+                resultIpAddress.textContent = ipAddress;
+                resultSubnetMask.textContent = subnetMaskDotted;
+                resultCidr.textContent = `/${cidrMask}`;
+                resultNetworkAddress.textContent = networkAddressDotted;
+                resultBroadcastAddress.textContent = broadcastAddressDotted;
+                resultHostRange.textContent = `${firstUsableHost} - ${lastUsableHost}`;
+                resultUsableHosts.textContent = usableHosts.toLocaleString();
+                resultWildcardMask.textContent = wildcardMaskDotted;
+
+                resultsSection.style.display = 'block';
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            calculateBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                calculateBtn.textContent = 'Calculating...';
+                calculateBtn.disabled = true;
+
+                setTimeout(() => {
+                    let allValid = true;
+                    // Validate IP address using its pattern from HTML
+                    allValid = validateInput(ipAddressInput, ipAddressError, ipAddressInput.pattern) && allValid;
+                    // Validate CIDR mask
+                    allValid = validateInput(cidrMaskInput, cidrMaskError, null, 0, 32) && allValid;
+
+                    if (allValid) {
+                        calculateSubnet();
+                    } else {
+                        resultsSection.style.display = 'none'; // Hide results if validation fails
+                    }
+                    
+                    calculateBtn.textContent = 'Calculate Subnet';
+                    calculateBtn.disabled = false;
+                }, 500);
+            });
+
+            resetBtn.addEventListener('click', function() {
+                document.getElementById('subnet-form').reset();
+                ipAddressInput.style.borderColor = 'var(--color-border)';
+                cidrMaskInput.style.borderColor = 'var(--color-border)';
+                ipAddressError.style.display = 'none';
+                cidrMaskError.style.display = 'none';
+                resultsSection.style.display = 'none';
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const summaryText = `IP Subnet Details by EveryCalc:\n` +
+                                  `----------------------------------------\n` +
+                                  `IP Address: ${resultIpAddress.textContent}\n` +
+                                  `Subnet Mask: ${resultSubnetMask.textContent}\n` +
+                                  `CIDR: ${resultCidr.textContent}\n` +
+                                  `Network Address: ${resultNetworkAddress.textContent}\n` +
+                                  `Broadcast Address: ${resultBroadcastAddress.textContent}\n` +
+                                  `Usable Host Range: ${resultHostRange.textContent}\n` +
+                                  `Number of Usable Hosts: ${resultUsableHosts.textContent}\n` +
+                                  `Wildcard Mask: ${resultWildcardMask.textContent}\n` +
+                                  `----------------------------------------\n` +
+                                  `Calculated at https://everycalc.site`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Date Difference Calculator by EveryCalc – Free Online Calculator</title>
+    <meta name="description" content="Use the free Date Difference Calculator by EveryCalc to find the exact duration between any two dates and times. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/date-difference-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Date Difference Calculator by EveryCalc",
+      "applicationCategory": "CalculatorApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/date-difference-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main { flex-grow: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+        header, footer { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--color-primary); }
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        li { margin-bottom: 0.5rem; }
+        strong { font-weight: 600; color: var(--color-primary); }
+
+        .subtitle { font-size: var(--font-size-md); color: var(--color-secondary); font-weight: 400; margin: 0; }
+        section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media (min-width: 640px) { .calculator-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .form-group input[type="date"],
+        .form-group input[type="time"] {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+        .btn {
+            padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-size: var(--font-size-base);
+            font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex;
+            align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .result-group { margin-bottom: 1.5rem; }
+        .result-group h3 { margin-bottom: 0.75rem; color: var(--color-action); font-size: var(--font-size-lg); }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--color-border);
+        }
+        .result-item:last-child { border-bottom: none; }
+
+        .result-label { font-weight: 500; color: var(--color-primary); }
+        .result-value { font-size: var(--font-size-base); font-weight: 600; color: var(--color-primary); }
+        .exact-duration-value { font-size: var(--font-size-xl); font-weight: 700; color: var(--color-action); }
+
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { margin-top: 1.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+
+        .faq-item { margin-bottom: 1.5rem; }
+        
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        /* Print Styles */
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            .result-group { border: none !important; } /* Remove border for print */
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { overflow: visible; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>Date Difference Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Precisely Calculate Time Between Two Dates</h2>
+            <p>The Date Difference Calculator by EveryCalc is your essential tool for accurately measuring the duration between any two specified dates. Whether you're planning project timelines, calculating age, tracking event durations, or needing precise time spans for legal or financial purposes, this calculator provides meticulous results down to the second. It expertly navigates the complexities of leap years and varying month lengths, ensuring every calculation is perfectly aligned with the calendar. With its confident, minimal design and robust functionality, EveryCalc delivers the precise time differences you need, free from any distractions, enabling efficient and error-free temporal analysis.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Enter Your Dates</h2>
+            <form id="date-difference-form" novalidate>
+                <div class="calculator-grid">
+                    <div class="form-group">
+                        <label for="start-date">Start Date</label>
+                        <input type="date" id="start-date" name="start-date" required aria-describedby="start-date-error">
+                        <p class="error-message" id="start-date-error">Please enter a valid start date.</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="start-time">Start Time (Optional)</label>
+                        <input type="time" id="start-time" name="start-time" aria-describedby="start-time-error">
+                        <p class="error-message" id="start-time-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="end-date">End Date</label>
+                        <input type="date" id="end-date" name="end-date" required aria-describedby="end-date-error">
+                        <p class="error-message" id="end-date-error">Please enter a valid end date.</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="end-time">End Time (Optional)</label>
+                        <input type="time" id="end-time" name="end-time" aria-describedby="end-time-error">
+                        <p class="error-message" id="end-time-error"></p>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">Calculate Difference</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Calculated Duration</h2>
+            
+            <div class="result-group">
+                <h3>Exact Calendar Duration</h3>
+                <div class="result-item">
+                    <span class="exact-duration-value" id="exact-duration-output">0 Years, 0 Months, 0 Days, 0 Hours, 0 Minutes, 0 Seconds</span>
+                </div>
+            </div>
+
+            <div class="result-group">
+                <h3>Total Duration in Various Units</h3>
+                <div class="result-item">
+                    <span class="result-label">Total Days:</span>
+                    <span class="result-value" id="total-days-output">0</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Weeks:</span>
+                    <span class="result-value" id="total-weeks-output">0</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Hours:</span>
+                    <span class="result-value" id="total-hours-output">0</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Minutes:</span>
+                    <span class="result-value" id="total-minutes-output">0</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Seconds:</span>
+                    <span class="result-value" id="total-seconds-output">0</span>
+                </div>
+            </div>
+
+            <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Results</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Report</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the Date Difference Calculator</h2>
+            <p>Using the EveryCalc Date Difference Calculator is designed to be intuitive and precise. Simply provide two sets of date and optional time inputs:</p>
+            <ol>
+                <li><strong>Start Date and Start Time:</strong>
+                    <p>Enter the initial date for your calculation. This could be a project start date, a birth date, or the beginning of any period you wish to measure. You can optionally specify a precise **Start Time**; if left blank, it defaults to 00:00 (midnight) on the selected date.</p>
+                </li>
+                <li><strong>End Date and End Time:</strong>
+                    <p>Input the final date for your calculation. This could be a deadline, today's date, or the end of a specific event. Similar to the start time, an optional **End Time** can be provided, defaulting to 00:00 if not specified. For a meaningful positive duration, ensure this date is chronologically after or the same as the start date.</p>
+                </li>
+            </ol>
+            <p>Once both dates (and times, if applicable) are entered, click the "Calculate Difference" button. The results section will then instantly populate with the exact calendar duration (in years, months, days, hours, minutes, and seconds) and total elapsed time broken down into various single units. The "Reset" button clears all fields for a fresh calculation.</p>
+            <h3>Accuracy Tips</h3>
+            <p>For the most accurate results, especially when dealing with durations that span across multiple days, ensure both the date and time fields are populated. The calculator automatically adjusts for nuances like leap years and the varying number of days in each month, so you don't need to account for these manually. Double-check that your "End Date" is not before your "Start Date" to ensure logical, positive results.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formula & Methodology</h2>
+            <p>The EveryCalc Date Difference Calculator relies on JavaScript's native `Date` object, which provides robust and accurate handling of calendar and time computations. This approach inherently accounts for complex calendar rules, including leap years and the irregular number of days in months, without requiring manual adjustments.</p>
+            
+            <h3>1. Total Duration in Milliseconds</h3>
+            <p>The foundation of all duration calculations is the difference in milliseconds between the two dates. Each `Date` object has a `getTime()` method that returns the number of milliseconds since the Unix Epoch (January 1, 1970, 00:00:00 UTC). Subtracting the start date's milliseconds from the end date's milliseconds yields the total duration in milliseconds.</p>
+            <p style="text-align: center; font-size: var(--font-size-md); font-weight: 600; color: var(--color-primary);">Total Milliseconds = EndDate.getTime() - StartDate.getTime()</p>
+            <p>From this total, other units are derived using standard conversion factors:</p>
+            <ul>
+                <li><strong>Total Seconds:</strong> <code>Total Milliseconds / 1000</code></li>
+                <li><strong>Total Minutes:</strong> <code>Total Seconds / 60</code></li>
+                <li><strong>Total Hours:</strong> <code>Total Minutes / 60</code></li>
+                <li><strong>Total Days:</strong> <code>Total Hours / 24</code></li>
+                <li><strong>Total Weeks:</strong> <code>Total Days / 7</code></li>
+            </ul>
+            
+            <h3>2. Exact Calendar Duration (Years, Months, Days, Hours, Minutes, Seconds)</h3>
+            <p>Calculating the exact calendar duration is more complex than simply dividing total milliseconds, as it needs to align with human understanding of calendar units. Our methodology iteratively calculates each component:</p>
+            <ol>
+                <li>Start with the raw difference in seconds, minutes, hours, days, months, and years.</li>
+                <li>Normalize from smallest to largest unit: If seconds are negative, borrow from minutes; if minutes are negative, borrow from hours, and so on.</li>
+                <li>For days, if negative, we decrement the month and add the number of days in the *previous* month. This step correctly accounts for months with 28, 30, or 31 days.</li>
+                <li>Finally, if months become negative, we decrement the year and add 12 months.</li>
+            </ol>
+            <p>This careful, step-by-step normalization ensures that the "Exact Calendar Duration" is accurate and intuitively reflects the time span as it progresses through the calendar.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical Date Difference Examples</h2>
+            <p>Understanding date differences is critical in various contexts. Here are a few practical scenarios:</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Start Date/Time</th>
+                            <th>End Date/Time</th>
+                            <th>Exact Duration Output</th>
+                            <th>Total Days (Approx.)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Project Timeline</strong></td>
+                            <td>2026-01-15 09:00:00</td>
+                            <td>2026-07-20 17:30:00</td>
+                            <td>0Y, 6M, 5D, 8H, 30M, 0S</td>
+                            <td>186.35 days</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Child's Age at Event</strong></td>
+                            <td>2020-03-10 00:00:00</td>
+                            <td>2026-02-04 11:40:00</td>
+                            <td>5Y, 10M, 25D, 11H, 40M, 0S</td>
+                            <td>2157.49 days</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lease Period</strong></td>
+                            <td>2025-11-01 00:00:00</td>
+                            <td>2026-10-31 00:00:00</td>
+                            <td>0Y, 11M, 30D, 0H, 0M, 0S</td>
+                            <td>364 days</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Task Execution Time</strong></td>
+                            <td>2026-02-04 10:00:00</td>
+                            <td>2026-02-04 14:15:30</td>
+                            <td>0Y, 0M, 0D, 4H, 15M, 30S</td>
+                            <td>0.18 days</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>*Note: "Total Days (Approx.)" here provides a single numerical representation of the duration for quick reference.</p>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. How does the calculator handle leap years and different month lengths?</h3>
+                <p>The calculator uses JavaScript's built-in `Date` object, which automatically and accurately handles all calendar complexities. This includes leap years (adding an extra day to February every four years) and the varying number of days in each month (30 or 31, except February). You do not need to make any manual adjustments for these details.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. What if my End Date/Time is before my Start Date/Time?</h3>
+                <p>If the End Date/Time is chronologically before the Start Date/Time, the calculator will display an error message. The tool is designed to calculate a positive duration, representing time that has elapsed. For calculations requiring a "negative" difference, you would simply swap the start and end dates.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. Is the calculation affected by time zones?</h3>
+                <p>All calculations are performed based on your device's local time zone settings. If you share results with someone in a different time zone, the absolute start/end points might be interpreted differently, but the *calculated duration* (e.g., "3 days, 5 hours") remains consistent, assuming both users input the same numerical dates and times.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. Why are "Total Months" and "Total Years" not displayed for total units?</h3>
+                <p>Months and years have inconsistent lengths (e.g., 28 to 31 days for months, 365 or 366 days for years). Presenting "Total Months" or "Total Years" by simply dividing the total days would be an approximation that could be misleading. The "Exact Calendar Duration" provides the precise, calendar-aware breakdown into years, months, and days, which is generally more useful for human interpretation.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. What is the difference between "Exact Calendar Duration" and "Total Days/Hours/Minutes/Seconds"?</h3>
+                <p>The "Exact Calendar Duration" provides a human-friendly breakdown that aligns with how we typically measure time (e.g., "1 year, 3 months, 5 days"). "Total Days/Hours/Minutes/Seconds" gives the absolute count of that single unit, derived directly from the total milliseconds, providing a raw, unsegmented duration.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. Can I use this for legal or financial date calculations?</h3>
+                <p>While this calculator is highly accurate for general informational purposes, specific legal or financial calculations may have unique rules (e.g., counting business days only, specific day-count conventions for interest). Always consult with a legal or financial professional for critical applications that require adherence to particular standards.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. How far back or forward can the calculator go?</h3>
+                <p>JavaScript's `Date` object can handle dates over a very wide range, typically about 100 million days before or after January 1, 1970 UTC. For practical purposes, this covers thousands of years, making it suitable for almost any date difference calculation you might need.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. Are the optional time fields necessary for accuracy?</h3>
+                <p>If the time of day is irrelevant to your calculation, you can leave the optional time fields blank, and the calculator will assume midnight (00:00:00). However, if you need precision down to hours, minutes, or seconds, or if the period spans less than a day, providing the time is crucial for obtaining an accurate duration.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: Applications of Precise Date Difference</h2>
+            <p>Beyond personal curiosities, the ability to calculate precise date differences has profound applications in various fields. In **project management**, knowing the exact days between milestones helps in critical path analysis and resource allocation. For **legal professionals**, calculating the exact duration between contract dates, filing deadlines, or age for legal eligibility is paramount. In **finance**, interest accrual often depends on the exact number of days between payments. Furthermore, in **medical research**, calculating patient ages or treatment durations precisely can impact study outcomes. The granular detail provided by a robust date difference calculator transforms ambiguous timeframes into concrete, actionable data points, critical for decision-making across numerous disciplines. This seemingly simple tool is, in essence, a gateway to advanced chronological analysis.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+        <p class="disclaimer">
+            EveryCalc does not store or share any personal data.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const startDateInput = document.getElementById('start-date');
+            const startTimeInput = document.getElementById('start-time');
+            const endDateInput = document.getElementById('end-date');
+            const endTimeInput = document.getElementById('end-time');
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const resultsSection = document.getElementById('results-section');
+
+            const exactDurationOutput = document.getElementById('exact-duration-output');
+            const totalDaysOutput = document.getElementById('total-days-output');
+            const totalWeeksOutput = document.getElementById('total-weeks-output');
+            const totalHoursOutput = document.getElementById('total-hours-output');
+            const totalMinutesOutput = document.getElementById('total-minutes-output');
+            const totalSecondsOutput = document.getElementById('total-seconds-output');
+
+            const startDateError = document.getElementById('start-date-error');
+            const startTimeError = document.getElementById('start-time-error');
+            const endDateError = document.getElementById('end-date-error');
+            const endTimeError = document.getElementById('end-time-error');
+
+            // Default dates to today
+            const today = new Date();
+            startDateInput.valueAsDate = today;
+            endDateInput.valueAsDate = today;
+            startTimeInput.value = today.toTimeString().slice(0, 5);
+            endTimeInput.value = today.toTimeString().slice(0, 5);
+
+            const validateDateInput = (inputEl, errorEl) => {
+                const dateVal = new Date(inputEl.value);
+                const isValid = !isNaN(dateVal.getTime());
+                errorEl.style.display = 'none';
+                inputEl.style.borderColor = 'var(--color-border)';
+
+                if (inputEl.hasAttribute('required') && inputEl.value.trim() === '') {
+                    errorEl.textContent = `Please enter a valid date.`;
+                    errorEl.style.display = 'block';
+                inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                if (!isValid) {
+                    errorEl.textContent = `Please enter a valid date.`;
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                return true;
+            };
+
+            const validateTimeInput = (inputEl, errorEl) => {
+                errorEl.style.display = 'none';
+                inputEl.style.borderColor = 'var(--color-border)';
+                // Time inputs are optional for this calculator, so only validate if filled
+                if (inputEl.value.trim() !== '') {
+                    // Simple regex to check HH:MM format
+                    const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+                    if (!timeRegex.test(inputEl.value)) {
+                        errorEl.textContent = `Please enter a valid time (HH:MM).`;
+                        errorEl.style.display = 'block';
+                        inputEl.style.borderColor = 'var(--color-danger)';
+                        return false;
+                    }
+                }
+                return true;
+            };
+
+
+            const calculateDifference = () => {
+                const startDateTimeStr = `${startDateInput.value}T${startTimeInput.value || '00:00'}:00`;
+                const endDateTimeStr = `${endDateInput.value}T${endTimeInput.value || '00:00'}:00`;
+                
+                const startDate = new Date(startDateTimeStr);
+                const endDate = new Date(endDateTimeStr);
+
+                if (endDate < startDate) {
+                    endDateError.textContent = 'End date cannot be before start date.';
+                    endDateError.style.display = 'block';
+                    endDateInput.style.borderColor = 'var(--color-danger)';
+                    return;
+                }
+
+                // --- Exact Calendar Duration (Years, Months, Days, Hours, Minutes, Seconds) ---
+                let years = endDate.getFullYear() - startDate.getFullYear();
+                let months = endDate.getMonth() - startDate.getMonth();
+                let days = endDate.getDate() - startDate.getDate();
+                let hours = endDate.getHours() - startDate.getHours();
+                let minutes = endDate.getMinutes() - startDate.getMinutes();
+                let seconds = endDate.getSeconds() - startDate.getSeconds();
+
+                // Normalize from smallest unit to largest
+                if (seconds < 0) { seconds += 60; minutes--; }
+                if (minutes < 0) { minutes += 60; hours--; }
+                if (hours < 0) { hours += 24; days--; }
+
+                // Handle days and months
+                while (days < 0) {
+                    months--;
+                    // Get days in the month *before* the current 'endDate' month
+                    // This creates a date for the 0th day of the current month, which rolls back to the last day of the previous month.
+                    const daysInPrevMonth = new Date(endDate.getFullYear(), endDate.getMonth() + (months + 1), 0).getDate();
+                    days += daysInPrevMonth;
+                }
+                if (months < 0) { months += 12; years--; }
+
+                exactDurationOutput.textContent = 
+                    `${years}Y, ${months}M, ${days}D, ${hours}H, ${minutes}M, ${seconds}S`;
+
+                // --- Total Duration in Various Units ---
+                const diffMilliseconds = endDate.getTime() - startDate.getTime();
+                const totalSeconds = diffMilliseconds / 1000;
+                const totalMinutes = totalSeconds / 60;
+                const totalHours = totalMinutes / 60;
+                const totalDays = totalHours / 24;
+                const totalWeeks = totalDays / 7;
+
+                totalSecondsOutput.textContent = Math.floor(totalSeconds).toLocaleString();
+                totalMinutesOutput.textContent = Math.floor(totalMinutes).toLocaleString();
+                totalHoursOutput.textContent = Math.floor(totalHours).toLocaleString();
+                totalDaysOutput.textContent = Math.floor(totalDays).toLocaleString();
+                totalWeeksOutput.textContent = Math.floor(totalWeeks).toLocaleString();
+
+                resultsSection.style.display = 'block';
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            calculateBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                calculateBtn.textContent = 'Calculating...';
+                calculateBtn.disabled = true;
+
+                // Reset specific errors before re-validation
+                endDateError.style.display = 'none'; 
+                endDateInput.style.borderColor = 'var(--color-border)';
+
+                let allValid = true;
+                allValid = validateDateInput(startDateInput, startDateError) && allValid;
+                allValid = validateTimeInput(startTimeInput, startTimeError) && allValid;
+                allValid = validateDateInput(endDateInput, endDateError) && allValid;
+                allValid = validateTimeInput(endTimeInput, endTimeError) && allValid;
+
+                if (allValid) {
+                    calculateDifference();
+                } else {
+                    resultsSection.style.display = 'none'; // Hide results if validation fails
+                }
+                
+                setTimeout(() => {
+                    calculateBtn.textContent = 'Calculate Difference';
+                    calculateBtn.disabled = false;
+                }, 500); // Small delay for feedback
+            });
+
+            resetBtn.addEventListener('click', function() {
+                document.getElementById('date-difference-form').reset();
+                startDateInput.valueAsDate = today;
+                endDateInput.valueAsDate = today;
+                startTimeInput.value = today.toTimeString().slice(0, 5);
+                endTimeInput.value = today.toTimeString().slice(0, 5);
+
+                // Clear all error messages and styles
+                document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('input').forEach(input => input.style.borderColor = 'var(--color-border)');
+                
+                resultsSection.style.display = 'none';
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const summaryText = `Date Difference Report by EveryCalc:\n` +
+                                  `----------------------------------------\n` +
+                                  `Start Date: ${startDateInput.value}\n` +
+                                  `Start Time: ${startTimeInput.value || '00:00'}\n` +
+                                  `End Date: ${endDateInput.value}\n` +
+                                  `End Time: ${endTimeInput.value || '00:00'}\n` +
+                                  `----------------------------------------\n` +
+                                  `Exact Duration: ${exactDurationOutput.textContent}\n` +
+                                  `Total Days: ${totalDaysOutput.textContent}\n` +
+                                  `Total Weeks: ${totalWeeksOutput.textContent}\n` +
+                                  `Total Hours: ${totalHoursOutput.textContent}\n` +
+                                  `Total Minutes: ${totalMinutesOutput.textContent}\n` +
+                                  `Total Seconds: ${totalSecondsOutput.textContent}\n` +
+                                  `----------------------------------------\n` +
+                                  `Calculated at https://everycalc.site`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RD Calculator by EveryCalc – Free Online Calculator</title>
+    <meta name="description" content="Use the free RD (Recurring Deposit) Calculator by EveryCalc for fast, accurate maturity and interest calculations. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/rd-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "RD Calculator by EveryCalc",
+      "applicationCategory": "CalculatorApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/rd-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex-grow: 1;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        header, footer {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); }
+        li { margin-bottom: 0.5rem; }
+
+        .subtitle {
+            font-size: var(--font-size-md);
+            color: var(--color-secondary);
+            font-weight: 400;
+            margin: 0;
+        }
+
+        section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        
+        @media (min-width: 640px) {
+            .calculator-grid { grid-template-columns: repeat(3, 1fr); }
+            .grid-span-3 { grid-column: span 3; }
+        }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .input-wrapper { position: relative; }
+        .input-wrapper span.prefix {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+         .input-wrapper span.suffix {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        
+        .form-group input[name="investment"] { padding-left: 2.5rem; }
+        .form-group input[name="interestRate"] { padding-right: 2.5rem; }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s, color 0.2s, opacity 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        @media (min-width: 640px) { .results-grid { grid-template-columns: repeat(3, 1fr); } }
+        
+        .result-card { text-align: center; padding: 1rem; background-color: var(--color-bg); border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        .result-card-label { font-weight: 500; color: var(--color-secondary); margin-bottom: 0.25rem; display: block; }
+        .result-card-value { font-size: var(--font-size-lg); font-weight: 700; color: var(--color-primary); }
+        
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+        
+        .faq-item { margin-bottom: 1.5rem; }
+        .faq-item h3 { margin-bottom: 0.5rem; }
+
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { overflow: visible; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>RD Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Plan Your Systematic Savings</h2>
+            <p>The Recurring Deposit (RD) Calculator by EveryCalc is a professional tool designed to help you forecast the returns on your systematic savings. A Recurring Deposit is an investment vehicle that allows you to deposit a fixed amount every month, earning a guaranteed interest rate. It's an ideal choice for individuals aiming to build a corpus for short-term to medium-term goals through disciplined saving. This calculator provides a clear and accurate projection of your investment's maturity value, empowering you to plan effectively for your financial objectives. With a focus on performance and clarity, EveryCalc delivers the numbers you need to make confident saving decisions.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Enter Your RD Details</h2>
+            <form id="rd-form" novalidate>
+                <div class="calculator-grid">
+                    <div class="form-group">
+                        <label for="investment">Monthly Investment</label>
+                        <div class="input-wrapper">
+                            <span class="prefix">₹</span>
+                            <input type="number" id="investment" name="investment" placeholder="e.g., 5000" required min="1">
+                        </div>
+                        <p class="error-message" id="investment-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="interestRate">Annual Interest Rate</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="interestRate" name="interestRate" placeholder="e.g., 7.1" required min="0.1" step="0.01">
+                            <span class="suffix">%</span>
+                        </div>
+                        <p class="error-message" id="rate-error"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="tenure">Tenure (in years)</label>
+                        <input type="number" id="tenure" name="tenure" placeholder="e.g., 5" required min="0.1" step="0.1">
+                        <p class="error-message" id="tenure-error"></p>
+                    </div>
+                    <div class="button-group grid-span-3">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">Calculate Returns</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Your RD Maturity Summary</h2>
+            <div class="results-grid">
+                 <div class="result-card">
+                    <span class="result-card-label">Total Investment</span>
+                    <span class="result-card-value" id="total-investment"></span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">Interest Earned</span>
+                    <span class="result-card-value" id="total-interest"></span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">Maturity Value</span>
+                    <span class="result-card-value" id="maturity-value"></span>
+                </div>
+            </div>
+            <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Summary</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Summary</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the RD Calculator</h2>
+            <p>Our Recurring Deposit calculator is designed for simplicity. To determine the future value of your monthly investments, please provide the following three details:</p>
+            <ol>
+                <li><strong>Monthly Investment:</strong> This is the fixed amount you intend to deposit into your RD account every single month.</li>
+                <li><strong>Annual Interest Rate (%):</strong> Enter the yearly rate of interest your bank is offering for the RD. Input this as a percentage, for example, '6.8' for 6.8%.</li>
+                <li><strong>Tenure (in years):</strong> Specify the total duration for which you will be making the monthly deposits. You can enter fractional values; for example, a tenure of 30 months should be entered as '2.5' years.</li>
+            </ol>
+            <p>After you have entered all the information, click the "Calculate Returns" button. The tool will instantly compute and display your results in a clear, easy-to-understand format. You will see the total amount you invested over the tenure, the total interest your money has earned, and the final maturity value—the lump sum you will receive at the end of the term. The reset button can be used to clear all fields for a new calculation.</p>
+            <h3>Accuracy Tip</h3>
+            <p>The calculation assumes that you make your monthly deposits on the same day without fail. Missing or delaying a payment can attract a penalty from the bank and would alter the final maturity amount. For this calculator, assume disciplined, on-time payments for an accurate projection.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formula & Methodology</h2>
+            <p>A Recurring Deposit involves a series of investments, and the interest is typically compounded quarterly in India. The calculation is more complex than a simple compound interest formula. Our calculator uses the following standard formula to determine the maturity value (A):</p>
+            <p style="text-align: center; font-size: 1.2em; font-weight: 600; color: var(--color-primary);">A = P × [ (1+r)<sup>n</sup> - 1 ] / ( 1 - (1+r)<sup>(-1/3)</sup> )</p>
+            <p>This formula may look complex, so let's break down its components for full transparency:</p>
+            <ul>
+                <li><strong>A</strong> is the final <strong>Maturity Amount</strong>.</li>
+                <li><strong>P</strong> is the <strong>Monthly Investment</strong> amount.</li>
+                <li><strong>n</strong> is the <strong>Number of Quarters</strong> in the tenure (Tenure in years × 4).</li>
+                <li><strong>r</strong> is the <strong>Quarterly Interest Rate</strong> in decimal form (Annual Rate / 4 / 100).</li>
+            </ul>
+            <p>This formula accurately accounts for the fact that each of your monthly investments is held for a different period, and it correctly applies the quarterly compounding to the growing balance. The Total Interest Earned is then derived by subtracting the total principal invested (Monthly Investment × Tenure in months) from the final maturity amount A. This method ensures that the projections are aligned with how financial institutions actually compute RD returns.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical RD Scenarios</h2>
+            <p>To illustrate how disciplined monthly savings can grow over time, here are a few real-world examples. These scenarios demonstrate the effect of varying investment amounts and tenures on the final maturity value.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Monthly Investment</th>
+                            <th>Rate (p.a.)</th>
+                            <th>Tenure</th>
+                            <th>Maturity Value</th>
+                            <th>Interest Earned</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Short-Term Goal (e.g., Vacation)</strong></td>
+                            <td>₹5,000</td>
+                            <td>6.5%</td>
+                            <td>2 years</td>
+                            <td>₹1,28,495</td>
+                            <td>₹8,495</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Medium-Term Goal (e.g., Car Down Payment)</strong></td>
+                            <td>₹10,000</td>
+                            <td>7.0%</td>
+                            <td>5 years</td>
+                            <td>₹7,17,354</td>
+                            <td>₹1,17,354</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Long-Term Disciplined Saving</strong></td>
+                            <td>₹15,000</td>
+                            <td>7.2%</td>
+                            <td>10 years</td>
+                            <td>₹26,45,200</td>
+                            <td>₹8,45,200</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Starting Small</strong></td>
+                            <td>₹2,000</td>
+                            <td>6.8%</td>
+                            <td>3 years</td>
+                            <td>₹79,933</td>
+                            <td>₹7,933</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size: var(--font-size-sm); color: var(--color-secondary); margin-top: 1rem;">*All scenarios assume a fixed interest rate and quarterly compounding for the entire tenure.</p>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. What is the main difference between an RD and a Fixed Deposit (FD)?</h3>
+                <p>The primary difference is the investment method. In an FD, you invest a single lump-sum amount at the beginning for a fixed tenure. In an RD, you invest a fixed amount every month for the entire tenure. RDs are for disciplined saving, while FDs are for investing a one-time surplus.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. Is the interest earned from an RD taxable?</h3>
+                <p>Yes, just like with FDs, the interest earned from a Recurring Deposit is taxable according to your income tax slab. If your total interest income from deposits with a bank exceeds the TDS threshold (e.g., ₹40,000 for individuals), the bank will deduct Tax at Source.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. What happens if I miss a monthly RD payment?</h3>
+                <p>Banks charge a small penalty for missed or delayed RD installments. The penalty amount is usually specified at the time of opening the account. If you miss several consecutive payments, the bank may have the right to close the RD account prematurely.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. Can I withdraw my RD before it matures?</h3>
+                <p>Yes, premature withdrawal of an RD is possible, but it typically incurs a penalty. The bank will likely apply a lower interest rate than the one originally agreed upon. Some RDs, especially those opened for tax-saving purposes, may have a lock-in period during which withdrawal is not permitted.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. Can I get a loan against my RD?</h3>
+                <p>Yes, most banks offer the facility of a loan or overdraft against the balance in your RD account. You can typically get a loan of up to 90-95% of the RD's value. The interest charged on the loan is usually slightly higher than the interest you earn on the deposit.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. Is the interest rate on an RD fixed?</h3>
+                <p>Yes, the interest rate is fixed at the time you open the RD account and remains constant throughout the entire tenure. It does not change even if the bank revises its interest rates for new deposits later on.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. Can I deposit more than my fixed monthly amount?</h3>
+                <p>No, a standard RD requires a fixed installment amount each month. You cannot change this amount or deposit more. If you have extra funds, you could consider opening a separate FD or a flexible RD account if your bank offers one.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. How is the tenure for an RD decided?</h3>
+                <p>Banks offer RDs for a wide range of tenures, typically starting from 6 months up to a maximum of 10 years. You choose the tenure that aligns with your financial goal when you open the account.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: Integrating RDs into Your Financial Plan</h2>
+            <p>Recurring Deposits are a powerful tool for goal-based saving due to their simplicity and disciplined nature. They are most effective for short to medium-term goals where capital preservation is more important than high returns. For example, you can start an RD to save for a down payment on a car, a wedding, a vacation, or to build an emergency fund. The "forced saving" aspect helps instill financial discipline. While RDs offer lower returns than market-linked instruments like mutual fund SIPs, they are virtually risk-free, providing guaranteed returns. A balanced financial portfolio often includes both low-risk instruments like RDs for non-negotiable goals and higher-risk instruments for long-term wealth creation.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('rd-form');
+            const investmentInput = document.getElementById('investment');
+            const rateInput = document.getElementById('interestRate');
+            const tenureInput = document.getElementById('tenure');
+
+            const investmentError = document.getElementById('investment-error');
+            const rateError = document.getElementById('rate-error');
+            const tenureError = document.getElementById('tenure-error');
+
+            const resultsSection = document.getElementById('results-section');
+            const totalInvestmentEl = document.getElementById('total-investment');
+            const totalInterestEl = document.getElementById('total-interest');
+            const maturityValueEl = document.getElementById('maturity-value');
+
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            
+            const currencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+
+            const validateInput = (input, errorEl, message, min = 0.01) => {
+                const value = parseFloat(input.value);
+                if (input.value.trim() === '' || isNaN(value) || value < min) {
+                    input.style.borderColor = 'var(--color-danger)';
+                    errorEl.textContent = message;
+                    errorEl.style.display = 'block';
+                    return false;
+                }
+                input.style.borderColor = 'var(--color-border)';
+                errorEl.style.display = 'none';
+                return true;
+            };
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const isInvestmentValid = validateInput(investmentInput, investmentError, 'Enter an amount > 0.', 1);
+                const isRateValid = validateInput(rateInput, rateError, 'Enter a rate > 0.', 0.1);
+                const isTenureValid = validateInput(tenureInput, tenureError, 'Enter a tenure > 0.', 0.1);
+
+                if (!isInvestmentValid || !isRateValid || !isTenureValid) {
+                    return;
+                }
+                
+                calculateBtn.textContent = 'Calculating...';
+                calculateBtn.disabled = true;
+
+                setTimeout(() => {
+                    const P = parseFloat(investmentInput.value); // Monthly payment
+                    const r_annual = parseFloat(rateInput.value); // Annual rate
+                    const t = parseFloat(tenureInput.value); // Tenure in years
+
+                    const n_quarters = t * 4; // Number of quarters
+                    const r_quarterly = (r_annual / 100) / 4; // Quarterly rate as a decimal
+
+                    // The standard formula for RD with quarterly compounding
+                    const numerator = Math.pow(1 + r_quarterly, n_quarters) - 1;
+                    const denominator = 1 - Math.pow(1 + r_quarterly, -1/3);
+                    const maturityAmount = P * (numerator / denominator);
+                    
+                    const totalInvested = P * t * 12;
+                    const totalInterest = maturityAmount - totalInvested;
+
+                    totalInvestmentEl.textContent = currencyFormatter.format(totalInvested);
+                    totalInterestEl.textContent = currencyFormatter.format(totalInterest);
+                    maturityValueEl.textContent = currencyFormatter.format(maturityAmount);
+
+                    resultsSection.style.display = 'block';
+                    resultsSection.scrollIntoView({ behavior: 'smooth' });
+                    
+                    calculateBtn.textContent = 'Calculate Returns';
+                    calculateBtn.disabled = false;
+                }, 500);
+            });
+
+            resetBtn.addEventListener('click', function() {
+                form.reset();
+                [investmentInput, rateInput, tenureInput].forEach(input => {
+                    input.style.borderColor = 'var(--color-border)';
+                });
+                [investmentError, rateError, tenureError].forEach(errorEl => {
+                    errorEl.style.display = 'none';
+                });
+                resultsSection.style.display = 'none';
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const summaryText = `RD Maturity Summary by EveryCalc:\n` +
+                                  `---------------------------\n` +
+                                  `Monthly Investment: ${currencyFormatter.format(parseFloat(investmentInput.value))}\n` +
+                                  `Interest Rate: ${rateInput.value}%\n` +
+                                  `Tenure: ${tenureInput.value} years\n` +
+                                  `---------------------------\n` +
+                                  `Total Investment: ${totalInvestmentEl.textContent}\n` +
+                                  `Interest Earned: ${totalInterestEl.textContent}\n` +
+                                  `Maturity Value: ${maturityValueEl.textContent}\n` +
+                                  `---------------------------\n` +
+                                  `Calculated at https://everycalc.site`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

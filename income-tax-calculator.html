@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Income Tax Calculator by EveryCalc – Free Online Calculator</title>
+    <meta name="description" content="Use the free Income Tax Calculator by EveryCalc for fast, accurate estimates of your tax liability under Old and New Regimes (FY 2023-24, India). Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/income-tax-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Income Tax Calculator by EveryCalc",
+      "applicationCategory": "FinancialApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/income-tax-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main { flex-grow: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+        header, footer { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--color-primary); }
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        li { margin-bottom: 0.5rem; }
+        strong { font-weight: 600; color: var(--color-primary); }
+
+        .subtitle { font-size: var(--font-size-md); color: var(--color-secondary); font-weight: 400; margin: 0; }
+        section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media (min-width: 640px) { .calculator-grid { grid-template-columns: repeat(2, 1fr); } }
+        .grid-span-2 { grid-column: span 2; }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .input-wrapper { position: relative; }
+        .input-wrapper span.prefix {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+        .input-wrapper span.suffix {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        
+        .form-group input[name="annualIncome"],
+        .form-group input[name="totalDeductions"] { padding-left: 2.5rem; }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .radio-group { display: flex; gap: 1rem; margin-top: 0.5rem; }
+        .radio-group label {
+            padding: 0.75rem 1rem; border: 1px solid var(--color-border); border-radius: 0.375rem;
+            text-align: center; cursor: pointer; transition: all 0.2s;
+            background-color: var(--color-surface); font-weight: 400; margin-bottom: 0;
+            flex: 1;
+        }
+        .radio-group input[type="radio"] { display: none; }
+        .radio-group input[type="radio"]:checked + label {
+            background-color: var(--color-accent); color: var(--color-bg); border-color: var(--color-accent);
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .checkbox-group input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            display: inline-block;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.25rem;
+            background-color: var(--color-bg);
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .checkbox-group input[type="checkbox"]:checked {
+            background-color: var(--color-accent);
+            border-color: var(--color-accent);
+        }
+        .checkbox-group input[type="checkbox"]:checked::after {
+            content: '✔';
+            display: block;
+            color: var(--color-bg);
+            font-size: 0.8rem;
+            line-height: 1.1;
+            text-align: center;
+        }
+        .checkbox-group label {
+            font-weight: 400;
+            margin-bottom: 0;
+            cursor: pointer;
+            color: var(--color-secondary);
+        }
+
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; grid-column: span 2; }
+        .btn {
+            padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-size: var(--font-size-base);
+            font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex;
+            align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .result-card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        @media (min-width: 640px) { .result-card-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .result-card {
+            text-align: center; padding: 1.5rem; background-color: var(--color-bg);
+            border: 1px solid var(--color-border); border-radius: 0.375rem;
+        }
+
+        .result-card-label { font-weight: 500; color: var(--color-secondary); margin-bottom: 0.25rem; display: block; }
+        .result-card-value { font-size: var(--font-size-lg); font-weight: 700; color: var(--color-primary); }
+        .highlight-value { color: var(--color-action); }
+        
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { margin-top: 1.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+
+        .faq-item { margin-bottom: 1.5rem; }
+        
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        /* Print Styles */
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            .result-card { border: 1px solid #ccc; background-color: transparent !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { overflow: visible; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>Income Tax Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Estimate Your Income Tax Liability (India, FY 2023-24)</h2>
+            <p>The Income Tax Calculator by EveryCalc is a crucial tool for salaried individuals, consultants, and anyone needing to estimate their tax liability in India for the Financial Year 2023-24 (Assessment Year 2024-25). This calculator helps you compare the Old and New Tax Regimes, considering various deductions and age categories, to identify the most tax-efficient option for your income. Understanding your tax obligations is a fundamental aspect of sound financial planning. With a confident, minimal design and high-contrast elements, EveryCalc provides a distraction-free experience, delivering reliable results compliant with modern web standards and accessibility guidelines. Trust EveryCalc for precise income tax estimations every time.</p>
+            <p class="disclaimer" style="margin-bottom: 0;"><strong>Disclaimer:</strong> This calculator provides estimates for informational purposes only, based on current Indian tax laws (FY 2023-24). For personalized tax planning and advice, always consult a qualified Chartered Accountant or tax professional.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Enter Your Income Details</h2>
+            <form id="tax-form" novalidate>
+                <div class="calculator-grid">
+                    <div class="form-group grid-span-2">
+                        <label for="annualIncome">Gross Annual Income</label>
+                        <div class="input-wrapper">
+                            <span class="prefix">₹</span>
+                            <input type="number" id="annualIncome" name="annualIncome" placeholder="e.g., 800000" required min="0">
+                        </div>
+                        <p class="error-message" id="annualIncome-error"></p>
+                    </div>
+
+                    <div class="form-group grid-span-2">
+                        <label>Tax Regime Selection</label>
+                        <div class="radio-group">
+                            <input type="radio" id="regime-old" name="taxRegime" value="old" checked>
+                            <label for="regime-old">Old Regime</label>
+                            <input type="radio" id="regime-new" name="taxRegime" value="new">
+                            <label for="regime-new">New Regime (Default from FY23-24)</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ageCategory">Age Category (for Old Regime)</label>
+                        <div class="radio-group age-group">
+                             <div>
+                                <input type="radio" id="age-below60" name="ageCategory" value="below60" checked>
+                                <label for="age-below60">Below 60 years</label>
+                             </div>
+                             <div>
+                                <input type="radio" id="age-60to80" name="ageCategory" value="60to80">
+                                <label for="age-60to80">60 to 80 years</label>
+                             </div>
+                             <div>
+                                <input type="radio" id="age-above80" name="ageCategory" value="above80">
+                                <label for="age-above80">Above 80 years</label>
+                             </div>
+                        </div>
+                        <p class="error-message" id="ageCategory-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="totalDeductions">Total Eligible Deductions (e.g., 80C, HRA, etc.)</label>
+                        <div class="input-wrapper">
+                            <span class="prefix">₹</span>
+                            <input type="number" id="totalDeductions" name="totalDeductions" placeholder="e.g., 150000" min="0">
+                        </div>
+                        <p class="disclaimer" style="margin-top: 0.5rem; margin-bottom: 0; font-size: var(--font-size-sm);">Primarily applicable to the Old Regime. New Regime allows very few deductions.</p>
+                        <p class="error-message" id="totalDeductions-error"></p>
+                    </div>
+
+                    <div class="form-group grid-span-2">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="isSalaried" name="isSalaried">
+                            <label for="isSalaried">I am a salaried employee (for Standard Deduction)</label>
+                        </div>
+                        <p class="disclaimer" style="margin-top: 0.5rem; margin-bottom: 0; font-size: var(--font-size-sm);">Standard Deduction of ₹50,000 applies to salaried income in both regimes from FY 2023-24.</p>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">Calculate Income Tax</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Your Tax Summary (FY 2023-24)</h2>
+            <div class="result-card-grid">
+                 <div class="result-card">
+                    <span class="result-card-label">Gross Annual Income</span>
+                    <span class="result-card-value" id="gross-income-display">₹0</span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">Total Deductions Claimed</span>
+                    <span class="result-card-value" id="deductions-display">₹0</span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">Taxable Income</span>
+                    <span class="result-card-value" id="taxable-income-display">₹0</span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">Total Income Tax</span>
+                    <span class="result-card-value highlight-value" id="total-tax-display">₹0</span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">Health & Education Cess (4%)</span>
+                    <span class="result-card-value" id="cess-display">₹0</span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">Net Income (After Tax & Cess)</span>
+                    <span class="result-card-value" id="net-income-display">₹0</span>
+                </div>
+            </div>
+             <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Results</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Summary</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the Income Tax Calculator</h2>
+            <p>The EveryCalc Income Tax Calculator (for India, FY 2023-24) is designed for straightforward tax estimation. Follow these steps for accurate results:</p>
+            <ol>
+                <li><strong>Gross Annual Income:</strong> Enter your total income from all sources (e.g., salary, business, interest) before any deductions. This is your starting point.</li>
+                <li><strong>Tax Regime Selection:</strong> Choose between the 'Old Regime' and the 'New Regime'. These are two distinct taxation structures with different slab rates and deduction eligibility.</li>
+                <li><strong>Age Category (for Old Regime):</strong> If you select the 'Old Regime', choose your age category (Below 60, 60-80, or Above 80 years). This is crucial as the basic exemption limit differs for these categories under the old regime. This option will be disabled if 'New Regime' is selected, as age does not affect new regime slabs.</li>
+                <li><strong>Total Eligible Deductions:</strong> Input the total amount of deductions you plan to claim under various sections of the Income Tax Act (e.g., Section 80C for investments, HRA exemption, etc.). Remember that most common deductions are **not allowed** under the New Regime, so this field primarily impacts Old Regime calculations.</li>
+                <li><strong>I am a salaried employee:</strong> Check this box if you receive a salary. A standard deduction of ₹50,000 is available for salaried individuals in both tax regimes from FY 2023-24.</li>
+            </ol>
+            <p>After filling in all relevant details, click "Calculate Income Tax". The results section will display a detailed breakdown of your taxable income, total tax payable, cess, and net income after tax, helping you compare scenarios.</p>
+            <h3>Accuracy Tips & Disclaimers</h3>
+            <p>Ensure your income and deduction figures are precise. Overestimating deductions, especially for the New Regime, will lead to incorrect results. This calculator provides estimates based on simplified tax rules for FY 2023-24. It does not account for complex scenarios like capital gains, income from multiple houses, foreign income, or specific exemptions not covered by the 'Total Deductions' input. For definitive tax liability and personalized advice, consult a Chartered Accountant.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formula & Methodology (Indian Income Tax FY 2023-24)</h2>
+            <p>The Income Tax Calculator uses the latest tax slabs and rules applicable for the Financial Year 2023-24 (Assessment Year 2024-25) in India. It calculates tax under both the Old and New Tax Regimes to help you compare.</p>
+
+            <h3>Key Components of Calculation:</h3>
+            <ul>
+                <li><strong>Gross Annual Income:</strong> Your total income before any deductions.</li>
+                <li><strong>Standard Deduction:</strong> ₹50,000 for salaried individuals, applicable in both regimes from FY 2023-24.</li>
+                <li><strong>Total Deductions (Old Regime Specific):</strong> Includes common deductions like 80C, 80D, HRA, etc.</li>
+                <li><strong>Taxable Income:</strong> Gross Annual Income - (Applicable Deductions + Standard Deduction).</li>
+                <li><strong>Income Tax:</strong> Calculated based on slab rates.</li>
+                <li><strong>Rebate u/s 87A:</strong> A tax rebate for lower-income groups.</li>
+                <li><strong>Health & Education Cess:</strong> A 4% levy on the calculated income tax.</li>
+            </ul>
+            
+            <h3>1. Old Tax Regime Slabs (FY 2023-24):</h3>
+            <ul>
+                <li><strong>Individuals below 60 years & HUF:</strong>
+                    <ul>
+                        <li>Up to ₹2,50,000: Nil</li>
+                        <li>₹2,50,001 to ₹5,00,000: 5%</li>
+                        <li>₹5,00,001 to ₹10,00,000: 20%</li>
+                        <li>Above ₹10,00,000: 30%</li>
+                    </ul>
+                </li>
+                <li><strong>Senior Citizens (60 years to less than 80 years):</strong>
+                    <ul>
+                        <li>Up to ₹3,00,000: Nil</li>
+                        <li>₹3,00,001 to ₹5,00,000: 5%</li>
+                        <li>₹5,00,001 to ₹10,00,000: 20%</li>
+                        <li>Above ₹10,00,000: 30%</li>
+                    </ul>
+                </li>
+                <li><strong>Super Senior Citizens (80 years and above):</strong>
+                    <ul>
+                        <li>Up to ₹5,00,000: Nil</li>
+                        <li>₹5,00,001 to ₹10,00,000: 20%</li>
+                        <li>Above ₹10,00,000: 30%</li>
+                    </ul>
+                </li>
+            </ul>
+            <p><strong>Rebate u/s 87A (Old Regime):</strong> Available if Taxable Income is up to ₹5,00,000. Rebate is 100% of income tax or ₹12,500, whichever is lower.</p>
+
+            <h3>2. New Tax Regime Slabs (FY 2023-24 - Default Regime):</h3>
+            <ul>
+                <li>Up to ₹3,00,000: Nil</li>
+                <li>₹3,00,001 to ₹6,00,000: 5%</li>
+                <li>₹6,00,001 to ₹9,00,000: 10%</li>
+                <li>₹9,00,001 to ₹12,00,000: 15%</li>
+                <li>₹12,00,001 to ₹15,00,000: 20%</li>
+                <li>Above ₹15,00,000: 30%</li>
+            </ul>
+            <p><strong>Rebate u/s 87A (New Regime):</strong> Available if Taxable Income is up to ₹7,00,000. Rebate is 100% of income tax or ₹25,000, whichever is lower.</p>
+            <p><strong>Health & Education Cess:</strong> A mandatory 4% cess is applied to the total income tax calculated under both regimes.</p>
+            <p>Net Income is calculated as Gross Annual Income - Total Tax - Cess.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical Income Tax Calculation Examples</h2>
+            <p>Here are some scenarios demonstrating how the Income Tax Calculator can be applied for various income levels, age groups, and regime choices for FY 2023-24 (India).</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Gross Income</th>
+                            <th>Regime</th>
+                            <th>Age/Salaried</th>
+                            <th>Deductions</th>
+                            <th>Taxable Income</th>
+                            <th>Total Tax</th>
+                            <th>Net Income</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Entry Level Salaried</strong></td>
+                            <td>₹6,00,000</td>
+                            <td>Old</td>
+                            <td>&lt;60 / Yes</td>
+                            <td>₹1,00,000</td>
+                            <td>₹4,50,000</td>
+                            <td>₹0</td>
+                            <td>₹5,90,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mid-Career Professional</strong></td>
+                            <td>₹12,00,000</td>
+                            <td>Old</td>
+                            <td>&lt;60 / Yes</td>
+                            <td>₹1,50,000</td>
+                            <td>₹10,00,000</td>
+                            <td>₹1,17,000</td>
+                            <td>₹10,36,680</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Choosing New Regime</strong></td>
+                            <td>₹12,00,000</td>
+                            <td>New</td>
+                            <td>&lt;60 / Yes</td>
+                            <td>₹0</td>
+                            <td>₹11,50,000</td>
+                            <td>₹1,52,700</td>
+                            <td>₹10,37,248</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Senior Citizen</strong></td>
+                            <td>₹8,00,000</td>
+                            <td>Old</td>
+                            <td>60-80 / No</td>
+                            <td>₹50,000</td>
+                            <td>₹7,50,000</td>
+                            <td>₹65,000</td>
+                            <td>₹7,20,960</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>*Note: All amounts are displayed in Indian Rupees (₹) and rounded to two decimal places. Deductions for New Regime in examples refer to those beyond the standard deduction.</p>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. What is the difference between the Old and New Tax Regimes in India (FY 2023-24)?</h3>
+                <p>The **Old Regime** offers higher basic exemption limits for senior and super senior citizens and allows taxpayers to claim a wide array of deductions (like 80C, HRA, 80D, etc.) and exemptions to reduce their taxable income. The **New Regime** offers lower tax slab rates but allows very few deductions and exemptions. From FY 2023-24, the new regime is the default, but taxpayers can opt for the old regime if they prefer.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. Is the New Tax Regime always better than the Old Tax Regime?</h3>
+                <p>Not necessarily. The choice between the Old and New Regimes depends on your gross income and the amount of deductions and exemptions you are eligible to claim. Generally, if you have significant deductions (e.g., substantial investments under 80C, home loan interest, HRA), the Old Regime might still be more beneficial. If you have fewer deductions, the New Regime's lower tax rates might lead to lower tax outgo.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. What is a "Standard Deduction" for salaried employees?</h3>
+                <p>A Standard Deduction is a fixed amount (₹50,000 from FY 2023-24) that salaried taxpayers can deduct from their gross salary to arrive at taxable income. This deduction is available under both the Old and New Tax Regimes for salaried individuals, simplifying the tax calculation process for many.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. What is Section 87A Rebate?</h3>
+                <p>Section 87A rebate is a tax relief for resident individuals whose taxable income does not exceed a certain limit. For FY 2023-24:
+                    <ul>
+                        <li>Under the **Old Regime**: 100% tax rebate or ₹12,500, whichever is lower, if taxable income is up to ₹5,00,000.</li>
+                        <li>Under the **New Regime**: 100% tax rebate or ₹25,000, whichever is lower, if taxable income is up to ₹7,00,000.</li>
+                    </ul>
+                </p>
+            </div>
+             <div class="faq-item">
+                <h3>5. What is Health & Education Cess?</h3>
+                <p>Health & Education Cess is a mandatory levy of 4% imposed on the total income tax liability. It is added after calculating the income tax and applying any rebates. This cess is used to fund government initiatives in health and education sectors across India.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. Why does the 'Age Category' option disable for the New Regime?</h3>
+                <p>Under the New Tax Regime (from FY 2023-24), the basic exemption limits are uniform for all individual taxpayers, regardless of their age. The differentiated exemption limits for senior and super senior citizens are only applicable if you opt for the Old Tax Regime.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. Can this calculator account for all possible deductions and exemptions?</h3>
+                <p>No, for simplicity, this calculator provides a single field for "Total Eligible Deductions" primarily relevant to the Old Regime. It does not itemize specific deductions like HRA exemption, LTA, professional tax, interest on home loan, etc. For a precise calculation including all possible deductions specific to your situation, it's best to use professional tax software or consult a CA.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. How often do income tax slabs change in India?</h3>
+                <p>Income tax slabs and rules are typically reviewed and sometimes revised during the annual Union Budget presentation by the Finance Minister. While major changes may not occur every year, it's essential to stay updated with the latest budget announcements for the relevant financial year.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: Financial Planning and Tax Optimization</h2>
+            <p>Understanding your income tax liability is the first step towards effective **financial planning and tax optimization**. The choice between the Old and New Tax Regimes should not be made in isolation but as part of a broader financial strategy. For many, the Old Regime encourages investments in tax-saving instruments (like PPF, ELSS, NPS) and utilizing benefits like home loan interest deductions, which also serve long-term financial goals. The New Regime, while simpler, promotes a minimalist investment approach where returns are not tax-driven. Consider not just the immediate tax saving but also how each regime aligns with your long-term savings goals, risk appetite, and liquidity needs. Regularly reviewing your income, deductions, and investment portfolio against the prevailing tax laws is crucial to ensure you are always opting for the most beneficial regime and optimizing your tax outgo.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+        <p class="disclaimer">
+            EveryCalc does not store or share any personal data.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const annualIncomeInput = document.getElementById('annualIncome');
+            const taxRegimeRadios = document.querySelectorAll('input[name="taxRegime"]');
+            const ageCategoryRadios = document.querySelectorAll('input[name="ageCategory"]');
+            const ageCategoryGroup = document.querySelector('.age-group');
+            const totalDeductionsInput = document.getElementById('totalDeductions');
+            const isSalariedCheckbox = document.getElementById('isSalaried');
+
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const resultsSection = document.getElementById('results-section');
+
+            const annualIncomeError = document.getElementById('annualIncome-error');
+            const totalDeductionsError = document.getElementById('totalDeductions-error');
+            const ageCategoryError = document.getElementById('ageCategory-error');
+
+            const grossIncomeDisplay = document.getElementById('gross-income-display');
+            const deductionsDisplay = document.getElementById('deductions-display');
+            const taxableIncomeDisplay = document.getElementById('taxable-income-display');
+            const totalTaxDisplay = document.getElementById('total-tax-display');
+            const cessDisplay = document.getElementById('cess-display');
+            const netIncomeDisplay = document.getElementById('net-income-display');
+
+            const currencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+
+            const validateInput = (inputEl, errorEl, min = 0, max = Infinity) => {
+                errorEl.style.display = 'none';
+                inputEl.style.borderColor = 'var(--color-border)';
+                const value = parseFloat(inputEl.value);
+
+                if (inputEl.value.trim() === '' || isNaN(value)) {
+                    errorEl.textContent = 'Please enter a valid number.';
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                if (value < min || value > max) {
+                    errorEl.textContent = `Value must be between ${min} and ${max}.`;
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                return true;
+            };
+
+            const calculateTax = () => {
+                const grossAnnualIncome = parseFloat(annualIncomeInput.value);
+                const taxRegime = document.querySelector('input[name="taxRegime"]:checked').value;
+                const ageCategory = document.querySelector('input[name="ageCategory"]:checked')?.value || 'below60'; // Default for new regime or if disabled
+                const totalDeductionsClaimed = parseFloat(totalDeductionsInput.value) || 0;
+                const isSalaried = isSalariedCheckbox.checked;
+
+                const standardDeduction = isSalaried ? 50000 : 0; // Standard deduction for salaried in both regimes
+
+                let applicableDeductions = 0;
+                let basicExemptionLimit = 0;
+                let tax = 0;
+                let rebate87A = 0;
+
+                if (taxRegime === 'old') {
+                    // Deductions are fully applicable in Old Regime
+                    applicableDeductions = Math.min(totalDeductionsClaimed, grossAnnualIncome);
+
+                    if (ageCategory === 'below60') {
+                        basicExemptionLimit = 250000;
+                    } else if (ageCategory === '60to80') {
+                        basicExemptionLimit = 300000;
+                    } else if (ageCategory === 'above80') {
+                        basicExemptionLimit = 500000;
+                    }
+
+                    const taxableIncome = Math.max(0, grossAnnualIncome - standardDeduction - applicableDeductions);
+
+                    // Old Regime Slab Calculation
+                    if (taxableIncome > 1000000) {
+                        tax += (taxableIncome - 1000000) * 0.30;
+                        tax += 500000 * 0.20; // 5L to 10L slab
+                        tax += 250000 * 0.05; // 2.5L to 5L slab (assuming below60 for calculation, will adjust based on actual slab)
+                    } else if (taxableIncome > 500000) {
+                        tax += (taxableIncome - 500000) * 0.20;
+                        tax += 250000 * 0.05; // 2.5L to 5L slab
+                    } else if (taxableIncome > basicExemptionLimit) {
+                        tax += (taxableIncome - basicExemptionLimit) * 0.05;
+                    }
+
+                    // Adjust for exact slab ranges and basic exemption limit
+                    if (taxableIncome > 500000) { /* Tax already calculated, no change needed */ }
+                    else if (taxableIncome > 250000 && taxableIncome <= 500000 && ageCategory === 'below60') { tax = (taxableIncome - 250000) * 0.05; }
+                    else if (taxableIncome > 300000 && taxableIncome <= 500000 && ageCategory === '60to80') { tax = (taxableIncome - 300000) * 0.05; }
+                    else if (taxableIncome > 500000 && ageCategory === 'above80') { /* Tax already calculated based on 20% & 30% slabs */ }
+                    else if (taxableIncome <= basicExemptionLimit) { tax = 0; }
+                    
+                    // Rebate u/s 87A (Old Regime)
+                    if (taxableIncome <= 500000) {
+                        rebate87A = Math.min(tax, 12500);
+                    }
+
+                    tax -= rebate87A;
+                    tax = Math.max(0, tax); // Tax cannot be negative
+
+                    updateResultDisplays(grossAnnualIncome, standardDeduction + applicableDeductions, taxableIncome, tax);
+
+                } else { // New Regime
+                    // For new regime, only standard deduction for salaried is allowed for this calculator
+                    applicableDeductions = isSalaried ? standardDeduction : 0;
+                    const taxableIncome = Math.max(0, grossAnnualIncome - applicableDeductions);
+
+                    // New Regime Slab Calculation (FY 2023-24)
+                    if (taxableIncome > 1500000) {
+                        tax += (taxableIncome - 1500000) * 0.30;
+                        tax += 300000 * 0.20; // 12L to 15L slab
+                        tax += 300000 * 0.15; // 9L to 12L slab
+                        tax += 300000 * 0.10; // 6L to 9L slab
+                        tax += 300000 * 0.05; // 3L to 6L slab
+                    } else if (taxableIncome > 1200000) {
+                        tax += (taxableIncome - 1200000) * 0.20;
+                        tax += 300000 * 0.15;
+                        tax += 300000 * 0.10;
+                        tax += 300000 * 0.05;
+                    } else if (taxableIncome > 900000) {
+                        tax += (taxableIncome - 900000) * 0.15;
+                        tax += 300000 * 0.10;
+                        tax += 300000 * 0.05;
+                    } else if (taxableIncome > 600000) {
+                        tax += (taxableIncome - 600000) * 0.10;
+                        tax += 300000 * 0.05;
+                    } else if (taxableIncome > 300000) {
+                        tax += (taxableIncome - 300000) * 0.05;
+                    }
+
+                    // Rebate u/s 87A (New Regime)
+                    if (taxableIncome <= 700000) {
+                        rebate87A = Math.min(tax, 25000);
+                    }
+                    
+                    tax -= rebate87A;
+                    tax = Math.max(0, tax); // Tax cannot be negative
+
+                    updateResultDisplays(grossAnnualIncome, applicableDeductions, taxableIncome, tax);
+                }
+            };
+
+            const updateResultDisplays = (grossIncome, totalDeductions, taxableIncome, calculatedTax) => {
+                const cess = calculatedTax * 0.04; // 4% Health & Education Cess
+                const finalTaxWithCess = calculatedTax + cess;
+                const netIncome = grossIncome - finalTaxWithCess;
+
+                grossIncomeDisplay.textContent = currencyFormatter.format(grossIncome);
+                deductionsDisplay.textContent = currencyFormatter.format(totalDeductions);
+                taxableIncomeDisplay.textContent = currencyFormatter.format(taxableIncome);
+                totalTaxDisplay.textContent = currencyFormatter.format(calculatedTax);
+                cessDisplay.textContent = currencyFormatter.format(cess);
+                netIncomeDisplay.textContent = currencyFormatter.format(netIncome);
+
+                resultsSection.style.display = 'block';
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            // Event Listeners
+            taxRegimeRadios.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    if (radio.value === 'new') {
+                        ageCategoryGroup.style.opacity = '0.5';
+                        ageCategoryRadios.forEach(ageRadio => ageRadio.disabled = true);
+                        ageCategoryError.style.display = 'none'; // Hide error if disabled
+                    } else {
+                        ageCategoryGroup.style.opacity = '1';
+                        ageCategoryRadios.forEach(ageRadio => ageRadio.disabled = false);
+                    }
+                    resultsSection.style.display = 'none'; // Hide results on regime change
+                });
+            });
+
+            calculateBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                calculateBtn.textContent = 'Calculating...';
+                calculateBtn.disabled = true;
+
+                setTimeout(() => {
+                    let allValid = true;
+                    allValid = validateInput(annualIncomeInput, annualIncomeError, 0) && allValid;
+                    allValid = validateInput(totalDeductionsInput, totalDeductionsError, 0) && allValid;
+                    
+                    if (document.querySelector('input[name="taxRegime"]:checked').value === 'old') {
+                         const ageSelected = Array.from(ageCategoryRadios).some(radio => radio.checked);
+                         if (!ageSelected) {
+                            ageCategoryError.textContent = 'Please select an age category for Old Regime.';
+                            ageCategoryError.style.display = 'block';
+                            allValid = false;
+                         } else {
+                            ageCategoryError.style.display = 'none';
+                         }
+                    } else {
+                        ageCategoryError.style.display = 'none';
+                    }
+
+                    if (allValid) {
+                        calculateTax();
+                    } else {
+                        resultsSection.style.display = 'none'; // Hide results if validation fails
+                    }
+                    
+                    calculateBtn.textContent = 'Calculate Income Tax';
+                    calculateBtn.disabled = false;
+                }, 500);
+            });
+
+            resetBtn.addEventListener('click', function() {
+                document.getElementById('tax-form').reset();
+                annualIncomeInput.style.borderColor = 'var(--color-border)';
+                totalDeductionsInput.style.borderColor = 'var(--color-border)';
+                annualIncomeError.style.display = 'none';
+                totalDeductionsError.style.display = 'none';
+                ageCategoryError.style.display = 'none';
+                resultsSection.style.display = 'none';
+                
+                // Reset radio buttons and checkbox explicitly
+                document.getElementById('regime-old').checked = true;
+                document.getElementById('age-below60').checked = true;
+                isSalariedCheckbox.checked = false;
+                ageCategoryGroup.style.opacity = '1';
+                ageCategoryRadios.forEach(ageRadio => ageRadio.disabled = false);
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const regimeText = document.querySelector('input[name="taxRegime"]:checked').labels[0].textContent.trim();
+                const ageText = (document.querySelector('input[name="taxRegime"]:checked').value === 'old') ? document.querySelector('input[name="ageCategory"]:checked').labels[0].textContent.trim() : 'N/A for New Regime';
+                const salariedText = isSalariedCheckbox.checked ? 'Yes' : 'No';
+
+                const summaryText = `Income Tax Calculation Report by EveryCalc (FY 2023-24, India):\n` +
+                                  `--------------------------------------------------------------\n` +
+                                  `Gross Annual Income: ${grossIncomeDisplay.textContent}\n` +
+                                  `Tax Regime Selected: ${regimeText}\n` +
+                                  `Age Category: ${ageText}\n` +
+                                  `Salaried Employee: ${salariedText}\n` +
+                                  `Total Deductions Claimed: ${deductionsDisplay.textContent}\n` +
+                                  `--------------------------------------------------------------\n` +
+                                  `Taxable Income: ${taxableIncomeDisplay.textContent}\n` +
+                                  `Total Income Tax: ${totalTaxDisplay.textContent}\n` +
+                                  `Health & Education Cess (4%): ${cessDisplay.textContent}\n` +
+                                  `Net Income (After Tax & Cess): ${netIncomeDisplay.textContent}\n` +
+                                  `--------------------------------------------------------------\n` +
+                                  `Calculated at https://everycalc.site\n` +
+                                  `Disclaimer: For estimates only. Consult a professional for advice.`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

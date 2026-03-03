@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loan Calculator by EveryCalc – Free Online Calculator</title>
+  <meta name="description" content="Use the free Loan Calculator by EveryCalc for fast, accurate loan affordability calculations. Built for clarity, performance, and trust.">
+  <meta name="author" content="EveryCalc">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://everycalc.site">
+  <link rel="icon" type="image/png" href="logo.png">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Loan Calculator by EveryCalc",
+    "applicationCategory": "CalculatorApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "url": "https://everycalc.site"
+  }
+  </script>
+
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-surface: #f5f5f5;
+      --color-primary: #111111;
+      --color-secondary: #6b7280;
+      --color-accent: #000000;
+      --color-action: #2563eb;
+      --color-success: #16a34a;
+      --color-warning: #d97706;
+      --color-danger: #dc2626;
+      --color-border: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-primary);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      font-size: clamp(14px, 2.5vw, 16px);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 1rem;
+      display: block;
+      border-radius: 8px;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
+      margin: 0 0 0.5rem 0;
+      color: var(--color-primary);
+    }
+
+    .subtitle {
+      color: var(--color-secondary);
+      font-weight: 500;
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .section {
+      margin-bottom: 3rem;
+    }
+
+    h2 {
+      font-weight: 600;
+      font-size: clamp(1.25rem, 3vw, 1.5rem);
+      margin: 0 0 1.5rem 0;
+      color: var(--color-primary);
+    }
+
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      background: var(--color-surface);
+      padding: 2rem;
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-weight: 500;
+      color: var(--color-primary);
+      font-size: 0.95rem;
+    }
+
+    input[type="number"], select {
+      padding: 1rem;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: inherit;
+      background: var(--color-bg);
+      transition: border-color 0.2s;
+    }
+
+    input[type="number"]:focus, select:focus {
+      outline: none;
+      border-color: var(--color-action);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .error {
+      color: var(--color-danger);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    button {
+      padding: 1rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: var(--color-action);
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background: var(--color-surface);
+      color: var(--color-primary);
+      border: 1px solid var(--color-border);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #e5e7eb;
+    }
+
+    .btn-success {
+      background: var(--color-success);
+      color: white;
+    }
+
+    .btn-success:hover:not(:disabled) {
+      background: #15803d;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .button-status {
+      background: var(--color-success);
+      color: white;
+    }
+
+    .results-grid {
+      background: var(--color-surface);
+      padding: 2rem;
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+      display: none;
+    }
+
+    .results-grid.show {
+      display: block;
+    }
+
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .result-item:last-child {
+      border-bottom: none;
+    }
+
+    .result-label {
+      font-weight: 500;
+      color: var(--color-primary);
+    }
+
+    .result-value {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--color-accent);
+    }
+
+    .affordability-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow-x: auto;
+      display: block;
+      white-space: nowrap;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 640px) {
+      .affordability-table {
+        overflow-x: auto;
+      }
+      
+      .affordability-table thead,
+      .affordability-table tbody,
+      .affordability-table th,
+      .affordability-table td,
+      .affordability-table tr {
+        display: table;
+        width: 100%;
+      }
+      
+      .affordability-table th,
+      .affordability-table td {
+        padding: 0.75rem 0.5rem;
+        text-align: left;
+      }
+    }
+
+    .affordability-table th,
+    .affordability-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .affordability-table th {
+      background: var(--color-bg);
+      font-weight: 600;
+      color: var(--color-primary);
+      position: sticky;
+      top: 0;
+    }
+
+    .affordability-table tbody tr:hover {
+      background: rgba(37, 99, 235, 0.05);
+    }
+
+    .status-indicator {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    .status-safe { background: #dcfce7; color: var(--color-success); }
+    .status-warning { background: #fef3c7; color: var(--color-warning); }
+    .status-danger { background: #fecaca; color: var(--color-danger); }
+
+    footer {
+      margin-top: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--color-border);
+      text-align: center;
+    }
+
+    footer nav {
+      margin: 1.5rem 0;
+    }
+
+    footer nav a {
+      color: var(--color-secondary);
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: 500;
+    }
+
+    footer nav a:hover {
+      color: var(--color-action);
+    }
+
+    .disclaimer {
+      color: var(--color-secondary);
+      font-size: 0.875rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    button:focus,
+    input:focus, select:focus {
+      outline: 2px solid var(--color-action);
+      outline-offset: 2px;
+    }
+
+    @media print {
+      .results-grid,
+      button {
+        display: block !important;
+      }
+      
+      button {
+        display: none;
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <img src="logo.png" alt="EveryCalc Logo" class="logo">
+      <h1>Loan Calculator by EveryCalc</h1>
+      <p class="subtitle">Fast. Accurate. No distractions.</p>
+    </header>
+
+    <main>
+      <section class="section intro">
+        <h2>Can You Afford This Loan?</h2>
+        <p>The Loan Calculator shows exactly how much loan you can afford based on your monthly income. Enter your salary, expenses, desired EMI, and loan tenure to see affordable loan amounts, total interest costs, and bank eligibility status.</p>
+        <p>Perfect for home loans, car loans, business loans, or personal loans. Banks typically approve loans when EMI is under 50-60% of take-home salary. This calculator reveals your true borrowing power and helps you negotiate better terms.</p>
+        <p>Financial freedom starts with knowing your numbers. Avoid over-borrowing, rejected applications, and payment stress. Get bank-ready numbers in 30 seconds.</p>
+      </section>
+
+      <section class="section calculator">
+        <h2>Calculate Loan Affordability</h2>
+        <div class="calculator-grid" role="form" aria-label="Loan Calculator">
+          <div class="input-group">
+            <label for="monthlyIncome">Monthly Take-Home Salary (₹)</label>
+            <input type="number" id="monthlyIncome" min="15000" step="1000" aria-describedby="monthlyIncome-error" required>
+            <div id="monthlyIncome-error" class="error hidden" role="alert"></div>
+          </div>
+
+          <div class="input-group">
+            <label for="monthlyExpenses">Monthly Expenses (₹)</label>
+            <input type="number" id="monthlyExpenses" min="0" step="500" aria-describedby="monthlyExpenses-error" required>
+            <div id="monthlyExpenses-error" class="error hidden" role="alert"></div>
+          </div>
+
+          <div class="input-group">
+            <label for="interestRate">Interest Rate (%)</label>
+            <input type="number" id="interestRate" min="6" max="20" step="0.1" aria-describedby="interestRate-error" required>
+            <div id="interestRate-error" class="error hidden" role="alert"></div>
+          </div>
+
+          <div class="input-group">
+            <label for="loanTenure">Loan Tenure (Years)</label>
+            <input type="number" id="loanTenure" min="1" max="30" step="0.5" aria-describedby="loanTenure-error" required>
+            <div id="loanTenure-error" class="error hidden" role="alert"></div>
+          </div>
+
+          <div class="input-group">
+            <label for="maxEmiPercent">Max EMI as % of Income</label>
+            <select id="maxEmiPercent" aria-describedby="maxEmiPercent-error">
+              <option value="40">40% (Conservative)</option>
+              <option value="50" selected>50% (Standard)</option>
+              <option value="60">60% (Aggressive)</option>
+            </select>
+            <div id="maxEmiPercent-error" class="error hidden" role="alert"></div>
+          </div>
+
+          <div class="button-group">
+            <button id="calculateBtn" class="btn-primary" type="button">Calculate Loan</button>
+            <button id="resetBtn" class="btn-secondary" type="button">Reset All</button>
+          </div>
+        </div>
+
+        <div id="results" class="results-grid" role="region" aria-live="polite">
+          <div id="resultSummary"></div>
+          <div class="affordability-table-container">
+            <h3>Loan Scenarios</h3>
+            <table class="affordability-table" role="table" aria-label="Loan scenarios">
+              <thead>
+                <tr>
+                  <th>Max Loan Amount</th>
+                  <th>Monthly EMI</th>
+                  <th>Total Interest</th>
+                  <th>Total Payment</th>
+                  <th>EMI/Income</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="scenariosTableBody"></tbody>
+            </table>
+          </div>
+          <div class="button-group">
+            <button id="copyBtn" class="btn-success" type="button">Copy Results</button>
+            <button id="printBtn" class="btn-secondary" type="button">Print Summary</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>How to Use This Calculator</h2>
+        <p>Complete loan eligibility analysis in 5 simple steps:</p>
+        <ol style="padding-left: 1.5rem; margin: 1rem 0;">
+          <li><strong>Monthly Take-Home Salary:</strong> Enter net salary after tax/PF (not CTC). Bank statements show this.</li>
+          <li><strong>Monthly Expenses:</strong> Rent + EMIs + bills + groceries. Be honest - banks verify.</li>
+          <li><strong>Interest Rate:</strong> Use bank offer (home: 8.5%, car: 9.5%, personal: 12%). Add 0.5% buffer.</li>
+          <li><strong>Loan Tenure:</strong> 15-30 years (home), 3-7 years (car), 1-5 years (personal).</li>
+          <li><strong>EMI Limit:</strong> 50% standard. 40% safe. 60% maximum banks approve.</li>
+          <li><strong>Click Calculate:</strong> See maximum affordable loan + 3 scenarios.</li>
+        </ol>
+        <p><strong>Common Mistakes:</strong> Using gross salary (not take-home), forgetting existing EMIs, unrealistic expense estimates, ignoring processing fees (1-2%).</p>
+      </section>
+
+      <section class="section">
+        <h2>Understanding Your Results</h2>
+        <p>The calculator shows three loan scenarios based on EMI/income ratio:</p>
+        <ul style="padding-left: 1.5rem; margin: 1rem 0;">
+          <li><strong>Conservative (40%):</strong> Safe borrowing. Easy approval. Low rejection risk.</li>
+          <li><strong>Standard (50%):</strong> Bank sweet spot. Best rates/terms. Most approvals.</li>
+          <li><strong>Aggressive (60%):</strong> Maximum borrowing. Higher scrutiny. Possible rejection.</li>
+        </ul>
+        <p><strong>Status Colors:</strong> Green = Safe, Yellow = Caution, Red = Risky. Banks verify income via salary slips (3-6 months), bank statements (6-12 months).</p>
+        <p><strong>Next Steps:</strong> Match against CIBIL score (750+ ideal). Get pre-approved. Compare 3+ banks. Processing fees: 0.5-2%. Negotiate everything.</p>
+      </section>
+
+      <section class="section">
+        <h2>Loan Eligibility Formula</h2>
+        <p>Our calculator uses standard bank methodology:</p>
+        <p style="font-size: 1.1rem; font-weight: 600; background: var(--color-surface); padding: 1.5rem; border-radius: 6px; margin: 1rem 0;">
+          Max EMI = Monthly Income × EMI Ratio (40/50/60%)<br>
+          Max Loan = EMI × Tenure Factor
+        </p>
+        <p>Tenure Factor derived from EMI formula: P = EMI × [1 - (1+r)^(-n)] / r<br>
+        Where r = monthly rate, n = total months. Reverse-engineered for maximum principal.</p>
+        <p>Banks apply additional filters: Age (21-60/65), CIBIL (700+), Debt/income &lt;60%, Stable employment (1+ years), Property value (for secured loans).</p>
+      </section>
+
+      <section class="section">
+        <h2>Real-Life Examples</h2>
+        <p><strong>Case 1: Salaried Professional (₹1.2L/month)</strong></p>
+        <p>Expenses ₹40K | 8.75% | 20 years → Max Loan: ₹65.2L (50%) | EMI: ₹59K | Total Interest: ₹45.8L</p>
+        <p>First home buyer. Perfect bank profile. EMI = 49% income. Easy approval.</p>
+        
+        <p><strong>Case 2: Mid-Level Manager (₹85K/month)</strong></p>
+        <p>Expenses ₹35K | 9.5% | 7 years → Max Car Loan: ₹28.4L | EMI: ₹42K | Total Interest: ₹6.9L</p>
+        <p>Luxury SUV financing. EMI = 49% income. Requires 2-year job stability.</p>
+        
+        <p><strong>Case 3: Business Owner (₹2.5L/month)</strong></p>
+        <p>Expenses ₹1.2L | 11% | 15 years → Max Loan: ₹95.3L | EMI: ₹1.25L | Total Interest: ₹71.2L</p>
+        <p>Business expansion. Self-employed needs 3-year ITRs + depreciation add-back.</p>
+        
+        <p><strong>Case 4: Rejection Risk (₹65K/month)</strong></p>
+        <p>Expenses ₹28K | Existing EMI ₹12K → Effective income ₹25K. Max loan drops 60%.</p>
+      </section>
+
+      <section class="section">
+        <h2>Frequently Asked Questions</h2>
+        <p><strong>1. Why use take-home salary, not CTC?</strong><br>
+        Banks verify actual cash flow via bank statements. CTC includes PF, gratuity, allowances you never see.</p>
+        
+        <p><strong>2. What CIBIL score do I need?</strong><br>
+        750+ = Best rates. 700-749 = Good. 650-699 = Higher rates/scrutiny. Below 650 = Rejection.</p>
+        
+        <p><strong>3. Self-employed calculation different?</strong><br>
+        Yes. Use ITR profit + depreciation (not turnover). Banks average 2-3 years. Need 10L+ ITR.</p>
+        
+        <p><strong>4. Can I get loan above 60% DSR?</strong><br>
+        Rare. Needs 800+ CIBIL, stable 5+ years job, gold/property collateral. Risky finances.</p>
+        
+        <p><strong>5. Processing fees included?</strong><br>
+        No. Add 0.5-2% separately. Home loans: 0.25-1%, Personal: 1-3%, Car: 0-1%.</p>
+        
+        <p><strong>6. Floating vs fixed rates?</strong><br>
+        95% choose floating (RBI repo linked). Fixed costs 0.75-1.5% more but predictable EMI.</p>
+        
+        <p><strong>7. Impact of job change?</strong><br>
+        Banks verify current employer 6+ months. Frequent switches = rejection. IT sector exception.</p>
+        
+        <p><strong>8. Multiple loan applications hurt?</strong><br>
+        Yes. 6+ enquiries in 6 months = Red flag. Space 30 days apart. Pre-approvals don't hurt.</p>
+      </section>
+
+      <section class="section">
+        <h2>Bank Approval Tips</h2>
+        <p><strong>Documentation:</strong> 3-6 months salary slips, 6-12 months bank statements, 2-year ITR (self-employed), property docs.</p>
+        <p><strong>Negotiation:</strong> Match competitor offers. Existing customer discount 0.1-0.25%. Women/senior citizens extra 0.05-0.1%.</p>
+        <p><strong>Timing:</strong> FY end (March) = faster processing. Salary credit date = stable inflows. Avoid month-end rush.</p>
+        <p><strong>Co-applicant:</strong> Spouse/parents boost eligibility 30-50%. Combined income calculation.</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2026 EveryCalc. All rights reserved.</p>
+      <nav>
+        <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+        <a href="https://everycalc.site/terms-of-service">Terms</a>
+        <a href="https://everycalc.site/contact">Contact</a>
+      </nav>
+      <p class="disclaimer">
+        This calculator provides estimates for informational purposes only.
+        Always consult a qualified professional for critical decisions.
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    class LoanCalculator {
+      constructor() {
+        this.elements = {
+          monthlyIncome: document.getElementById('monthlyIncome'),
+          monthlyExpenses: document.getElementById('monthlyExpenses'),
+          interestRate: document.getElementById('interestRate'),
+          loanTenure: document.getElementById('loanTenure'),
+          maxEmiPercent: document.getElementById('maxEmiPercent'),
+          calculateBtn: document.getElementById('calculateBtn'),
+          resetBtn: document.getElementById('resetBtn'),
+          copyBtn: document.getElementById('copyBtn'),
+          printBtn: document.getElementById('printBtn'),
+          results: document.getElementById('results'),
+          resultSummary: document.getElementById('resultSummary'),
+          scenariosTableBody: document.getElementById('scenariosTableBody')
+        };
+
+        this.results = null;
+        this.init();
+      }
+
+      init() {
+        this.elements.calculateBtn.addEventListener('click', () => this.calculate());
+        this.elements.resetBtn.addEventListener('click', () => this.reset());
+        this.elements.copyBtn.addEventListener('click', () => this.copyResults());
+        this.elements.printBtn.addEventListener('click', () => this.printResults());
+        
+        ['monthlyIncome', 'monthlyExpenses', 'interestRate', 'loanTenure'].forEach(id => {
+          this.elements[id].addEventListener('input', () => this.validateInput(id));
+        });
+      }
+
+      validateInput(field) {
+        const input = this.elements[field];
+        const errorEl = document.getElementById(`${field}-error`);
+        errorEl.classList.add('hidden');
+        
+        const value = parseFloat(input.value);
+        if (isNaN(value) || value <= 0) {
+          errorEl.textContent = 'Please enter a valid positive number';
+          errorEl.classList.remove('hidden');
+          this.elements.calculateBtn.disabled = true;
+          return false;
+        }
+        
+        if (field === 'monthlyIncome' && value < 15000) {
+          errorEl.textContent = 'Minimum salary ₹15,000';
+          errorEl.classList.remove('hidden');
+          return false;
+        }
+        
+        if (field === 'interestRate' && (value < 6 || value > 20)) {
+          errorEl.textContent = 'Rate should be 6-20%';
+          errorEl.classList.remove('hidden');
+          return false;
+        }
+        
+        if (field === 'loanTenure' && (value < 1 || value > 30)) {
+          errorEl.textContent = 'Tenure should be 1-30 years';
+          errorEl.classList.remove('hidden');
+          return false;
+        }
+        
+        this.checkAllValid();
+        return true;
+      }
+
+      checkAllValid() {
+        const valid = ['monthlyIncome', 'monthlyExpenses', 'interestRate', 'loanTenure'].every(field => 
+          !document.getElementById(`${field}-error`).classList.contains('hidden') === false
+        );
+        this.elements.calculateBtn.disabled = !valid;
+      }
+
+      calculateMaxLoan(emi, annualRate, tenureYears) {
+        const monthlyRate = annualRate / 12 / 100;
+        const months = tenureYears * 12;
+        const factor = (1 - Math.pow(1 + monthlyRate, -months)) / monthlyRate;
+        return Math.round(emi * factor);
+      }
+
+      calculateEMI(principal, annualRate, tenureYears) {
+        const monthlyRate = annualRate / 12 / 100;
+        const months = tenureYears * 12;
+        const emi = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / 
+                   (Math.pow(1 + monthlyRate, months) - 1);
+        return Math.round(emi);
+      }
+
+      getStatusClass(emiPercent) {
+        if (emiPercent <= 40) return 'status-safe';
+        if (emiPercent <= 50) return 'status-warning';
+        return 'status-danger';
+      }
+
+      calculate() {
+        if (!this.validateAllInputs()) return;
+        
+        const income = parseFloat(this.elements.monthlyIncome.value);
+        const expenses = parseFloat(this.elements.monthlyExpenses.value);
+        const annualRate = parseFloat(this.elements.interestRate.value);
+        const tenureYears = parseFloat(this.elements.loanTenure.value);
+        const maxEmiPercent = parseFloat(this.elements.maxEmiPercent.value);
+        
+        const disposableIncome = income - expenses;
+        const maxEMI = disposableIncome * (maxEmiPercent / 100);
+        const maxLoan = this.calculateMaxLoan(maxEMI, annualRate, tenureYears);
+        const totalEMI = this.calculateEMI(maxLoan, annualRate, tenureYears);
+        const totalPayment = totalEMI * (tenureYears * 12);
+        const totalInterest = totalPayment - maxLoan;
+        
+        this.results = {
+          income,
+          expenses,
+          disposableIncome,
+          maxEMI,
+          maxLoan,
+          totalInterest,
+          totalPayment,
+          emiPercent: maxEmiPercent,
+          annualRate,
+          tenureYears
+        };
+        
+        this.displayResults();
+        this.showButtonStatus(this.elements.calculateBtn, 'Calculated!');
+      }
+
+      validateAllInputs() {
+        return ['monthlyIncome', 'monthlyExpenses', 'interestRate', 'loanTenure'].every(
+          field => this.validateInput(field)
+        );
+      }
+
+      displayResults() {
+        const { disposableIncome, maxEMI, maxLoan, totalInterest, totalPayment, emiPercent } = this.results;
+        
+        this.elements.resultSummary.innerHTML = `
+          <div class="result-item">
+            <span class="result-label">Disposable Income</span>
+            <span class="result-value">₹${disposableIncome.toLocaleString()}</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Maximum EMI</span>
+            <span class="result-value">₹${maxEMI.toLocaleString()} (${this.results.emiPercent}%)</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Maximum Loan Amount</span>
+            <span class="result-value">₹${maxLoan.toLocaleString()}</span>
+          </div>
+        `;
+        
+        this.generateScenarios();
+        this.elements.results.classList.add('show');
+      }
+
+      generateScenarios() {
+        const tbody = this.elements.scenariosTableBody;
+        tbody.innerHTML = '';
+        
+        const scenarios = [
+          { percent: 40, label: 'Conservative' },
+          { percent: 50, label: 'Standard' },
+          { percent: 60, label: 'Aggressive' }
+        ];
+        
+        scenarios.forEach(scenario => {
+          const maxEmiScenario = this.results.disposableIncome * (scenario.percent / 100);
+          const loanAmount = this.calculateMaxLoan(maxEmiScenario, this.results.annualRate, this.results.tenureYears);
+          const emiScenario = this.calculateEMI(loanAmount, this.results.annualRate, this.results.tenureYears);
+          const totalPayment = emiScenario * (this.results.tenureYears * 12);
+          const totalInterest = totalPayment - loanAmount;
+          
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>₹${loanAmount.toLocaleString()}</td>
+            <td>₹${emiScenario.toLocaleString()}</td>
+            <td>₹${totalInterest.toLocaleString()}</td>
+            <td>₹${totalPayment.toLocaleString()}</td>
+            <td>${scenario.percent}%</td>
+            <td><span class="status-indicator ${this.getStatusClass(scenario.percent)}">${scenario.label}</span></td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+
+      reset() {
+        ['monthlyIncome', 'monthlyExpenses', 'interestRate', 'loanTenure'].forEach(id => {
+          this.elements[id].value = '';
+          document.getElementById(`${id}-error`).classList.add('hidden');
+        });
+        this.elements.maxEmiPercent.value = '50';
+        this.elements.results.classList.remove('show');
+        this.elements.calculateBtn.disabled = true;
+        this.showButtonStatus(this.elements.resetBtn, 'Cleared!');
+      }
+
+      copyResults() {
+        const text = `
+Loan Calculator Results
+Monthly Income: ₹${this.results.income.toLocaleString()}
+Monthly Expenses: ₹${this.results.expenses.toLocaleString()}
+Disposable Income: ₹${this.results.disposableIncome.toLocaleString()}
+Interest Rate: ${this.results.annualRate}%
+Loan Tenure: ${this.results.tenureYears} years
+
+Maximum Loan Amount: ₹${this.results.maxLoan.toLocaleString()}
+Maximum EMI: ₹${this.results.maxEMI.toLocaleString()} (${this.results.emiPercent}% of income)
+Total Interest: ₹${this.results.totalInterest.toLocaleString()}
+Total Payment: ₹${this.results.totalPayment.toLocaleString()}
+        `.trim();
+        
+        navigator.clipboard.writeText(text).then(() => {
+          this.showButtonStatus(this.elements.copyBtn, 'Copied!');
+        });
+      }
+
+      printResults() {
+        window.print();
+      }
+
+      showButtonStatus(button, message) {
+        const originalText = button.textContent;
+        button.textContent = message;
+        button.className = 'button-status';
+        button.disabled = true;
+        
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.className = button.className.replace('button-status', '').trim();
+          button.disabled = false;
+        }, 1500);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      new LoanCalculator();
+    });
+  </script>
+</body>
+</html>
+

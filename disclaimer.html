@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- SEO Meta Tags -->
+    <title>Disclaimer - EveryCalc</title>
+    <meta name="description" content="EveryCalc Disclaimer: Information regarding the accuracy of our calculators, professional advice limitations, and liability. Read before using our tools.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.everycalc.com/disclaimer">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <!-- Structured Data (Schema.org) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Disclaimer",
+      "url": "https://www.everycalc.com/disclaimer",
+      "publisher": {
+        "@type": "Organization",
+        "name": "EveryCalc",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.everycalc.com/logo.png"
+        }
+      }
+    }
+    </script>
+
+    <style>
+        /* 
+         * ------------------------------------------------------------------
+         * CORE VARIABLES & RESET
+         * ------------------------------------------------------------------
+         */
+        :root {
+            /* Branding Palette - Consistent with EveryCalc Identity */
+            --color-primary: #0f172a;       /* Slate 900 */
+            --color-text-main: #334155;     /* Slate 700 */
+            --color-text-muted: #64748b;    /* Slate 500 */
+            --color-accent: #2563eb;        /* Royal Blue */
+            --color-accent-hover: #1d4ed8;
+            --color-bg-body: #f8fafc;       /* Slate 50 */
+            --color-bg-card: #ffffff;
+            --color-border: #e2e8f0;        /* Slate 200 */
+            --color-warning-bg: #fff7ed;    /* Orange 50 */
+            --color-warning-border: #fdba74;/* Orange 300 */
+
+            /* Typography & Layout */
+            --font-main: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --container-width: 800px;
+            --radius-md: 8px;
+            --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-bg-body);
+            color: var(--color-text-main);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: var(--color-accent);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--color-accent-hover);
+            text-decoration: underline;
+        }
+
+        /* 
+         * ------------------------------------------------------------------
+         * LAYOUT UTILITIES
+         * ------------------------------------------------------------------
+         */
+        .container {
+            width: 100%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* 
+         * ------------------------------------------------------------------
+         * HEADER
+         * ------------------------------------------------------------------
+         */
+        .site-header {
+            background: var(--color-bg-card);
+            border-bottom: 1px solid var(--color-border);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--color-primary);
+        }
+
+        .brand img {
+            height: 32px;
+            width: auto;
+        }
+
+        .nav-link {
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 
+         * ------------------------------------------------------------------
+         * CONTENT STYLING
+         * ------------------------------------------------------------------
+         */
+        .content-card {
+            background: var(--color-bg-card);
+            margin: 3rem auto;
+            padding: 3rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        h1 {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .last-updated {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        h2 {
+            font-size: clamp(1.25rem, 3vw, 1.5rem);
+            color: var(--color-primary);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            font-size: 1rem;
+        }
+
+        /* Highlight Box for Critical Warnings */
+        .warning-box {
+            background-color: var(--color-warning-bg);
+            border-left: 4px solid var(--color-warning-border);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        }
+
+        .warning-box strong {
+            color: #9a3412; /* Dark Orange/Brown for contrast */
+        }
+
+        /* 
+         * ------------------------------------------------------------------
+         * FOOTER
+         * ------------------------------------------------------------------
+         */
+        .site-footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--color-border);
+            background: #fff;
+            margin-top: auto;
+        }
+
+        .footer-links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--color-text-muted);
+        }
+
+        .footer-links a:hover {
+            color: var(--color-accent);
+        }
+
+        /* 
+         * ------------------------------------------------------------------
+         * RESPONSIVENESS & ANIMATION
+         * ------------------------------------------------------------------
+         */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .content-card {
+                padding: 1.5rem;
+                margin: 1.5rem auto;
+                border: none;
+                background: transparent;
+                box-shadow: none;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-content">
+            <a href="/" class="brand">
+                <img src="logo.png" alt="EveryCalc Logo" width="32" height="32">
+                <span>EveryCalc</span>
+            </a>
+            <a href="/" class="nav-link">&larr; Back Home</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <article class="content-card fade-in">
+            <h1>Disclaimer</h1>
+            <span class="last-updated">Last Updated: February 01, 2026</span>
+
+            <h2>General Information</h2>
+            <p>The information provided by EveryCalc ("we," "us," or "our") on www.everycalc.com (the "Site") is for general informational purposes only. All information on the Site is provided in good faith, however, we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any information on the Site.</p>
+
+            <h2>Accuracy of Information</h2>
+            <p>EveryCalc strives to provide accurate and up-to-date tools. However, the world of mathematics, finance, and science involves variables that may change or require specific context not captured by a simple calculator.</p>
+            <p>The formulas used in our calculators are based on standard mathematical and financial models. While we rigorously test our tools, software bugs, browser inconsistencies, or rounding errors can occur. Therefore, you should verify any results obtained from this website before using them for official purposes.</p>
+
+            <h2>Calculator Results Disclaimer</h2>
+            <p>The results provided by our calculators are estimates. They are simulation tools designed to give you a "ballpark" figure or a mathematical answer based strictly on the inputs you provide.</p>
+            <ul>
+                <li><strong>Context Matters:</strong> A mortgage calculator does not know your credit score or the bank's hidden fees.</li>
+                <li><strong>Health Metrics:</strong> A BMI calculator does not know your muscle density or family medical history.</li>
+            </ul>
+
+            <h2>No Professional Advice</h2>
+            <div class="warning-box">
+                <p><strong>IMPORTANT:</strong> The Site generally does not provide medical, legal, financial, or tax advice. The use or reliance of any information contained on the Site is solely at your own risk.</p>
+            </div>
+            <p><strong>Financial Tools:</strong> The financial calculators are not a substitute for professional financial advice from a licensed accountant or financial advisor. Laws regarding taxes and loans vary significantly by region and year.</p>
+            <p><strong>Health Tools:</strong> The health and fitness calculators are for educational purposes only. They are not intended to diagnose, treat, cure, or prevent any disease. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</p>
+
+            <h2>External Links Disclaimer</h2>
+            <p>The Site may contain (or you may be sent through the Site to) links to other websites or content belonging to or originating from third parties, or banners or other advertising. Such external links are not investigated, monitored, or checked for accuracy, adequacy, validity, reliability, availability, or completeness by us.</p>
+            <p>We do not warrant, endorse, guarantee, or assume responsibility for the accuracy or reliability of any information offered by third-party websites linked through the site or any website or feature linked in any banner or other advertising.</p>
+
+            <h2>Errors and Omissions</h2>
+            <p>While we have made every attempt to ensure that the information contained in this site has been obtained from reliable sources, EveryCalc is not responsible for any errors or omissions, or for the results obtained from the use of this information.</p>
+
+            <h2>Use at Your Own Risk</h2>
+            <p>All information in this site is provided "as is", with no guarantee of completeness, accuracy, timeliness or of the results obtained from the use of this information, and without warranty of any kind, express or implied, including, but not limited to warranties of performance, merchantability, and fitness for a particular purpose.</p>
+            <p>You agree that you bear all risks associated with the use of the content and calculators on this website.</p>
+
+            <h2>No Guarantees</h2>
+            <p>EveryCalc does not guarantee that the website will function without interruption or errors. In particular, the operation of the website may be interrupted due to maintenance, updates, or technical failures. We do not guarantee that the website will be free of viruses or other harmful components, although we take security seriously (using HTTPS).</p>
+
+            <h2>Limitation of Liability</h2>
+            <p>In no event will EveryCalc, its related partnerships or corporations, or the partners, agents, or employees thereof be liable to you or anyone else for any decision made or action taken in reliance on the information given by the Site or for any consequential, special or similar damages, even if advised of the possibility of such damages.</p>
+
+            <h2>Consent</h2>
+            <p>By using our website, you hereby consent to our disclaimer and agree to its terms.</p>
+
+            <h2>Updates to This Disclaimer</h2>
+            <p>We may update, amend, or make changes to this document to reflect changes in our service or legal requirements. Those changes will be prominently posted here.</p>
+
+            <h2>Contact Information</h2>
+            <p>If you require any more information or have any questions about our site's disclaimer, please feel free to contact us by email.</p>
+            <p><strong>Email:</strong> contact@everycalc.com</p>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; <script>document.write(new Date().getFullYear())</script> EveryCalc. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="/index.html">Home</a>
+                <a href="/privacy.html">Privacy Policy</a>
+                <a href="/terms.html">Terms & Conditions</a>
+                <a href="/disclaimer.html">Disclaimer</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

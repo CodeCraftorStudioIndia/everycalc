@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Time Calculator by EveryCalc – Free Online Calculator</title>
+    <meta name="description" content="Use the free Time Calculator by EveryCalc to add or subtract time durations and calculate the difference between two dates and times. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/time-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Time Calculator by EveryCalc",
+      "applicationCategory": "CalculatorApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/time-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main { flex-grow: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+        header, footer { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--color-primary); }
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        li { margin-bottom: 0.5rem; }
+        strong { font-weight: 600; color: var(--color-primary); }
+
+        .subtitle { font-size: var(--font-size-md); color: var(--color-secondary); font-weight: 400; margin: 0; }
+        section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-module {
+            background-color: var(--color-surface);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--color-border);
+            margin-bottom: 2rem;
+        }
+        .calculator-module:last-of-type { margin-bottom: 0; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media (min-width: 640px) { .form-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 768px) { .form-grid-3col { grid-template-columns: repeat(3, 1fr); } }
+
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .form-group input[type="date"],
+        .form-group input[type="time"],
+        .form-group input[type="number"] {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .radio-group { display: flex; gap: 1rem; margin-top: 0.5rem; }
+        .radio-group label {
+            padding: 0.75rem 1rem; border: 1px solid var(--color-border); border-radius: 0.375rem;
+            text-align: center; cursor: pointer; transition: all 0.2s;
+            background-color: var(--color-bg); font-weight: 400; margin-bottom: 0;
+            flex: 1;
+        }
+        .radio-group input[type="radio"] { display: none; }
+        .radio-group input[type="radio"]:checked + label {
+            background-color: var(--color-accent); color: var(--color-bg); border-color: var(--color-accent);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+        .btn {
+            padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-size: var(--font-size-base);
+            font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex;
+            align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results-output { background-color: var(--color-bg); padding: 1.5rem; border-radius: 0.375rem; border: 1px solid var(--color-border); margin-top: 1.5rem; display: none; }
+        .results-output h3 { margin-top: 0; color: var(--color-action); }
+        .results-output p { margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .result-label { color: var(--color-secondary); font-weight: 500; }
+        .result-value { color: var(--color-primary); font-weight: 600; font-size: var(--font-size-base); }
+        .main-result-value { font-size: var(--font-size-xl); font-weight: 700; color: var(--color-action); text-align: center; margin-bottom: 1rem; }
+
+
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { margin-top: 1.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+
+        .faq-item { margin-bottom: 1.5rem; }
+        
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        /* Print Styles */
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator-module, .results-output { padding: 0 !important; background-color: transparent !important; border: 1px solid #ccc !important; }
+            .results-output { display: block !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { overflow: visible; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>Time Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Master Your Date & Time Calculations</h2>
+            <p>The Time Calculator by EveryCalc is your indispensable tool for precise date and time arithmetic. Whether you need to determine a future deadline, calculate elapsed time for project management, or simply understand the duration between two moments, this calculator provides accurate and detailed results. It seamlessly handles complexities like varying month lengths and leap years, ensuring your calculations are always correct. With two powerful modes—adding/subtracting time durations and finding the difference between two specific points in time—EveryCalc empowers you with confident control over your temporal planning. Built by senior engineers, it offers a minimal, high-contrast, and reliable user experience, free from any distractions.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Choose Your Calculation</h2>
+
+            <!-- Module 1: Add/Subtract Time -->
+            <div class="calculator-module" id="add-subtract-module">
+                <h3>1. Add or Subtract Time from a Date</h3>
+                <form id="add-subtract-form" novalidate>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="start-date-as">Start Date</label>
+                            <input type="date" id="start-date-as" name="start-date-as" required>
+                            <p class="error-message" id="start-date-as-error">Please enter a valid start date.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="start-time-as">Start Time (Optional)</label>
+                            <input type="time" id="start-time-as" name="start-time-as">
+                            <p class="error-message" id="start-time-as-error"></p>
+                        </div>
+                        
+                        <div class="form-group grid-span-2">
+                            <label>Operation</label>
+                            <div class="radio-group">
+                                <input type="radio" id="operation-add" name="operation" value="add" checked>
+                                <label for="operation-add">Add</label>
+                                <input type="radio" id="operation-subtract" name="operation" value="subtract">
+                                <label for="operation-subtract">Subtract</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="duration-years">Years</label>
+                            <input type="number" id="duration-years" name="duration-years" value="0" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="duration-months">Months</label>
+                            <input type="number" id="duration-months" name="duration-months" value="0" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="duration-days">Days</label>
+                            <input type="number" id="duration-days" name="duration-days" value="0" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="duration-hours">Hours</label>
+                            <input type="number" id="duration-hours" name="duration-hours" value="0" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="duration-minutes">Minutes</label>
+                            <input type="number" id="duration-minutes" name="duration-minutes" value="0" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="duration-seconds">Seconds</label>
+                            <input type="number" id="duration-seconds" name="duration-seconds" value="0" min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary" id="calculate-as-btn">Calculate Resulting Date</button>
+                        <button type="button" class="btn btn-secondary btn-reset" data-form="add-subtract-form">Reset</button>
+                    </div>
+                    <div class="results-output" id="add-subtract-results" aria-live="polite">
+                        <h3>Resulting Date & Time</h3>
+                        <p class="main-result-value" id="result-datetime-as"></p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Module 2: Difference Between Dates -->
+            <div class="calculator-module" id="difference-module">
+                <h3>2. Calculate Difference Between Two Dates</h3>
+                <form id="difference-form" novalidate>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="start-date-diff">Start Date</label>
+                            <input type="date" id="start-date-diff" name="start-date-diff" required>
+                            <p class="error-message" id="start-date-diff-error">Please enter a valid start date.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="start-time-diff">Start Time (Optional)</label>
+                            <input type="time" id="start-time-diff" name="start-time-diff">
+                            <p class="error-message" id="start-time-diff-error"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="end-date-diff">End Date</label>
+                            <input type="date" id="end-date-diff" name="end-date-diff" required>
+                            <p class="error-message" id="end-date-diff-error">Please enter a valid end date.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="end-time-diff">End Time (Optional)</label>
+                            <input type="time" id="end-time-diff" name="end-time-diff">
+                            <p class="error-message" id="end-time-diff-error"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary" id="calculate-diff-btn">Calculate Difference</button>
+                        <button type="button" class="btn btn-secondary btn-reset" data-form="difference-form">Reset</button>
+                    </div>
+                    <div class="results-output" id="difference-results" aria-live="polite">
+                        <h3>Exact Duration</h3>
+                        <p class="main-result-value" id="exact-duration-output">0 Years, 0 Months, 0 Days, 0 Hours, 0 Minutes, 0 Seconds</p>
+                        
+                        <h3>Total Units</h3>
+                        <p><span class="result-label">Total Days:</span> <span class="result-value" id="total-days-diff">0</span></p>
+                        <p><span class="result-label">Total Hours:</span> <span class="result-value" id="total-hours-diff">0</span></p>
+                        <p><span class="result-label">Total Minutes:</span> <span class="result-value" id="total-minutes-diff">0</span></p>
+                        <p><span class="result-label">Total Seconds:</span> <span class="result-value" id="total-seconds-diff">0</span></p>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the Time Calculator</h2>
+            <p>The EveryCalc Time Calculator provides two distinct functionalities to manage your date and time calculations:</p>
+            <ol>
+                <li><strong>Add or Subtract Time from a Date:</strong>
+                    <p>This module helps you find a new date and time after adding or subtracting a specific duration. Start by entering your **Start Date** and optionally a **Start Time**. Choose whether you want to **Add** or **Subtract** time using the radio buttons. Then, specify the duration you wish to add or subtract by entering values in the fields for Years, Months, Days, Hours, Minutes, and Seconds. All duration fields default to zero, so only fill in what's relevant. Click "Calculate Resulting Date" to see the final date and time.</p>
+                </li>
+                <li><strong>Calculate Difference Between Two Dates:</strong>
+                    <p>Use this module to determine the exact duration between a **Start Date** and **Start Time** and an **End Date** and **End Time**. Enter both sets of date and time information. The current date and time can be quickly set using the "Today" and "Now" buttons. Click "Calculate Difference" to display the elapsed time broken down into years, months, days, hours, minutes, and seconds, as well as total equivalent units (like total days, total hours, etc.).</p>
+                </li>
+            </ol>
+            <p>Each module has its own "Reset" button to clear inputs and results, allowing you to easily perform new calculations. For optional time fields, if left blank, the calculation will proceed assuming 00:00:00 (midnight) for that date.</p>
+            <h3>Accuracy Tips</h3>
+            <p>Ensure that your dates are entered in the correct format and that for difference calculations, the End Date is chronologically after the Start Date to avoid negative results. The calculator intelligently handles leap years and variable month lengths, so manual adjustments are not necessary. For precise results, especially over long durations, ensure both date and time components are provided.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formulas & Methodology</h2>
+            <p>The EveryCalc Time Calculator leverages JavaScript's native Date object for its core calculations, ensuring high accuracy by inherently handling complexities like leap years, varying month lengths, and time zone considerations (though the results are based on the user's local time zone). This robust approach means you don't have to worry about the intricate calendar math.</p>
+            
+            <h3>1. Add or Subtract Time</h3>
+            <p>This operation involves creating a starting `Date` object and then using `setFullYear()`, `setMonth()`, `setDate()`, `setHours()`, `setMinutes()`, and `setSeconds()` methods to modify it by the specified duration. The `Date` object's methods are designed to automatically carry over or borrow units when a value exceeds its range (e.g., adding 30 days to Jan 1 results in Jan 31, and adding 31 days results in Feb 1). This ensures correct calendar progression.</p>
+            <ul>
+                <li><strong>Concept:</strong> <code>NewDate = StartDate +/- Duration</code></li>
+                <li><strong>Example:</strong> If you add 1 month to January 31st, 2026, the Date object will correctly calculate it as March 3rd, 2026 (accounting for February's length).</li>
+            </ul>
+
+            <h3>2. Calculate Difference Between Two Dates</h3>
+            <p>The most straightforward way to find the total time difference is by subtracting the `getTime()` value (milliseconds since Jan 1, 1970 UTC) of the earlier date from the later date. This gives the total difference in milliseconds. These milliseconds are then precisely converted into total seconds, minutes, hours, and days.</p>
+            <p style="text-align: center; font-size: var(--font-size-md); font-weight: 600; color: var(--color-primary);">Difference in Milliseconds = EndDate.getTime() - StartDate.getTime()</p>
+            <p>For the "Exact Duration" (Years, Months, Days, Hours, Minutes, Seconds), a more granular approach is taken. We iteratively calculate the largest possible whole units (years, then months from remaining, then days, then hours, etc.) to mirror how humans naturally express age or duration. This involves comparing year, month, day, hour, minute, and second components between the two dates and making necessary adjustments for accurate calendar-based counting.</p>
+            <ul>
+                <li><strong>Conversion Factors:</strong>
+                    <ul>
+                        <li>1 second = 1000 milliseconds</li>
+                        <li>1 minute = 60 seconds</li>
+                        <li>1 hour = 60 minutes</li>
+                        <li>1 day = 24 hours</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical Time Calculation Examples</h2>
+            <p>Here are a few real-world scenarios demonstrating how the EveryCalc Time Calculator can be applied:</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Calculation Type</th>
+                            <th>Inputs</th>
+                            <th>Output</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Project Deadline</strong></td>
+                            <td>Add/Subtract Time</td>
+                            <td>Start: 2026-03-01 09:00, Add: 3 Months, 15 Days</td>
+                            <td>Result: 2026-06-16 09:00:00</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Meeting Duration</strong></td>
+                            <td>Difference Between Dates</td>
+                            <td>Start: 2026-02-05 10:30:00, End: 2026-02-05 11:45:30</td>
+                            <td>Exact: 0Y, 0M, 0D, 1H, 15M, 30S<br>Total Minutes: 75.5</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Loan Term End</strong></td>
+                            <td>Add/Subtract Time</td>
+                            <td>Start: 2025-01-20, Add: 2 Years, 6 Months</td>
+                            <td>Result: 2027-07-20 00:00:00</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Vacation Countdown</strong></td>
+                            <td>Difference Between Dates</td>
+                            <td>Start: (Today's Date/Time), End: 2027-08-10 15:00:00</td>
+                            <td>Exact: 1Y, 6M, 5D, 3H, 20M, 0S<br>Total Days: 552.14</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>*Note: Exact output values may vary slightly based on today's date/time for "Vacation Countdown" example.</p>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. How does the calculator handle leap years and varying month lengths?</h3>
+                <p>The calculator uses JavaScript's built-in Date object, which is inherently designed to correctly handle all calendar complexities, including leap years (e.g., February 29th) and the differing number of days in each month. This ensures that adding or subtracting durations, or calculating differences, is always accurate regardless of the calendar specifics.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. Can I calculate time differences in negative values?</h3>
+                <p>In the "Calculate Difference Between Two Dates" module, if your End Date/Time is chronologically *before* your Start Date/Time, the calculator will indicate an error. However, the raw underlying difference in milliseconds would be negative. For clarity, this tool focuses on positive elapsed durations.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. What happens if I leave the "Start Time" or "End Time" fields blank?</h3>
+                <p>If you leave any time field blank, the calculator assumes a default time of 00:00:00 (midnight) for that particular date. This allows you to perform date-only calculations if the time component is not relevant to your needs.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. Is the calculation affected by my local time zone?</h3>
+                <p>Yes, all date and time inputs are interpreted and all calculations are performed based on your local time zone settings of your device. This means that if you share results with someone in a different time zone, they might interpret the *exact moment* differently, but the *duration* itself (e.g., 3 hours, 15 minutes) remains consistent.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. Why are "Total Months" and "Total Years" approximate?</h3>
+                <p>When converting a total number of days into months or years, an approximation is used (e.g., average 30.4375 days per month, 365.25 days per year) because months and years do not have a fixed number of days. The "Exact Duration" provides a calendar-accurate breakdown in years, months, days, etc., without these approximations.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. Can I add/subtract very large durations, like centuries?</h3>
+                <p>Yes, the underlying JavaScript Date object can handle dates spanning many centuries (from roughly 100,000,000 days before to 100,000,000 days after Jan 1, 1970 UTC). However, extremely large durations might push the limits of floating-point precision in displaying total seconds/minutes/hours, though exact date calculations should remain robust.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. What is the maximum value I can enter for duration fields (Years, Months, etc.)?</h3>
+                <p>While technically large numbers are possible, for practical purposes, it's recommended to enter reasonable positive integers. The calculator can handle standard numerical inputs without issue, but overly large numbers might result in dates far in the past or future, exceeding typical human comprehension or practical relevance.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. How can I use this calculator for scheduling tasks?</h3>
+                <p>For scheduling, use the "Add or Subtract Time from a Date" module. Enter your project start date/time, then add the estimated task duration to find the completion date. For complex projects, break down tasks and use the calculator for each segment. This helps visualize your project timeline and set realistic milestones.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: The Philosophy of Time Measurement</h2>
+            <p>Beyond the practical utility, the act of precisely calculating time duration touches upon the fundamental ways we perceive and organize our lives. Calendars and clocks are human inventions designed to bring order to the continuous flow of time. While a second is a fixed unit, months and years are irregular, influenced by astronomical cycles (Earth's orbit around the Sun, Moon's orbit around Earth). This irregularity is why tools like the EveryCalc Time Calculator are so valuable: they abstract away the messy details of these irregularities, providing a consistent and accurate measure. Understanding these complexities can deepen our appreciation for the precision of modern timekeeping and its role in everything from personal scheduling to global synchronization.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+        <p class="disclaimer">
+            EveryCalc does not store or share any personal data.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Helper to pad numbers with leading zeros (for time display)
+            const pad = (num) => num < 10 ? '0' + num : num;
+
+            // --- Validation Helper ---
+            const validateInput = (inputEl, errorEl, type = 'date') => {
+                errorEl.style.display = 'none';
+                inputEl.style.borderColor = 'var(--color-border)';
+
+                if (type === 'number') {
+                    const value = parseInt(inputEl.value);
+                    if (isNaN(value) || value < 0) {
+                        inputEl.value = '0'; // Default to 0 for number inputs
+                        return true; // Don't show error for default 0
+                    }
+                    return true;
+                } else if (type === 'date' || type === 'time') {
+                    if (inputEl.hasAttribute('required') && inputEl.value.trim() === '') {
+                        errorEl.textContent = `Please enter a valid ${type}.`;
+                        errorEl.style.display = 'block';
+                        inputEl.style.borderColor = 'var(--color-danger)';
+                        return false;
+                    }
+                    return true; // Time is optional, date is validated by required
+                }
+                return true;
+            };
+
+            // --- Module 1: Add/Subtract Time ---
+            const startDateAsInput = document.getElementById('start-date-as');
+            const startTimeAsInput = document.getElementById('start-time-as');
+            const operationRadios = document.querySelectorAll('input[name="operation"]');
+            const durationInputs = {
+                years: document.getElementById('duration-years'),
+                months: document.getElementById('duration-months'),
+                days: document.getElementById('duration-days'),
+                hours: document.getElementById('duration-hours'),
+                minutes: document.getElementById('duration-minutes'),
+                seconds: document.getElementById('duration-seconds')
+            };
+            const addSubtractResultsDiv = document.getElementById('add-subtract-results');
+            const resultDatetimeAsOutput = document.getElementById('result-datetime-as');
+            const calculateAsBtn = document.getElementById('calculate-as-btn');
+
+            startDateAsInput.valueAsDate = new Date(); // Default start date to today
+            startTimeAsInput.value = new Date().toTimeString().slice(0, 5); // Default start time to now
+
+            document.getElementById('add-subtract-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                calculateAsBtn.textContent = 'Calculating...';
+                calculateAsBtn.disabled = true;
+
+                setTimeout(() => {
+                    let allValid = true;
+                    allValid = validateInput(startDateAsInput, document.getElementById('start-date-as-error'), 'date') && allValid;
+                    validateInput(startTimeAsInput, document.getElementById('start-time-as-error'), 'time'); // Optional, no need to fail form
+                    
+                    for (const key in durationInputs) {
+                        validateInput(durationInputs[key], null, 'number'); // Errors are implicit by defaulting to 0
+                    }
+
+                    if (!allValid) {
+                        calculateAsBtn.textContent = 'Calculate Resulting Date';
+                        calculateAsBtn.disabled = false;
+                        return;
+                    }
+
+                    const startDateStr = startDateAsInput.value;
+                    const startTimeStr = startTimeAsInput.value || '00:00';
+                    const startDatetime = new Date(`${startDateStr}T${startTimeStr}:00`); // Combine date and time
+
+                    const operation = document.querySelector('input[name="operation"]:checked').value;
+                    const sign = (operation === 'add') ? 1 : -1;
+
+                    let newDatetime = new Date(startDatetime);
+
+                    // Apply durations
+                    newDatetime.setFullYear(newDatetime.getFullYear() + (sign * parseInt(durationInputs.years.value)));
+                    newDatetime.setMonth(newDatetime.getMonth() + (sign * parseInt(durationInputs.months.value)));
+                    newDatetime.setDate(newDatetime.getDate() + (sign * parseInt(durationInputs.days.value)));
+                    newDatetime.setHours(newDatetime.getHours() + (sign * parseInt(durationInputs.hours.value)));
+                    newDatetime.setMinutes(newDatetime.getMinutes() + (sign * parseInt(durationInputs.minutes.value)));
+                    newDatetime.setSeconds(newDatetime.getSeconds() + (sign * parseInt(durationInputs.seconds.value)));
+
+                    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+                    resultDatetimeAsOutput.textContent = newDatetime.toLocaleDateString(undefined, options);
+                    addSubtractResultsDiv.style.display = 'block';
+                    addSubtractResultsDiv.scrollIntoView({ behavior: 'smooth' });
+                    
+                    calculateAsBtn.textContent = 'Calculate Resulting Date';
+                    calculateAsBtn.disabled = false;
+
+                }, 500);
+            });
+
+            // --- Module 2: Difference Between Dates ---
+            const startDateDiffInput = document.getElementById('start-date-diff');
+            const startTimeDiffInput = document.getElementById('start-time-diff');
+            const endDateDiffInput = document.getElementById('end-date-diff');
+            const endTimeDiffInput = document.getElementById('end-time-diff');
+            const differenceResultsDiv = document.getElementById('difference-results');
+            const exactDurationOutput = document.getElementById('exact-duration-output');
+            const totalDaysDiffOutput = document.getElementById('total-days-diff');
+            const totalHoursDiffOutput = document.getElementById('total-hours-diff');
+            const totalMinutesDiffOutput = document.getElementById('total-minutes-diff');
+            const totalSecondsDiffOutput = document.getElementById('total-seconds-diff');
+            const calculateDiffBtn = document.getElementById('calculate-diff-btn');
+
+            startDateDiffInput.valueAsDate = new Date(); // Default start date to today
+            startTimeDiffInput.value = new Date().toTimeString().slice(0, 5); // Default start time to now
+            endDateDiffInput.valueAsDate = new Date(); // Default end date to today
+            endTimeDiffInput.value = new Date().toTimeString().slice(0, 5); // Default end time to now
+
+            document.getElementById('difference-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                calculateDiffBtn.textContent = 'Calculating...';
+                calculateDiffBtn.disabled = true;
+
+                setTimeout(() => {
+                    let allValid = true;
+                    allValid = validateInput(startDateDiffInput, document.getElementById('start-date-diff-error'), 'date') && allValid;
+                    validateInput(startTimeDiffInput, document.getElementById('start-time-diff-error'), 'time'); // Optional
+                    allValid = validateInput(endDateDiffInput, document.getElementById('end-date-diff-error'), 'date') && allValid;
+                    validateInput(endTimeDiffInput, document.getElementById('end-time-diff-error'), 'time'); // Optional
+
+                    if (!allValid) {
+                        calculateDiffBtn.textContent = 'Calculate Difference';
+                        calculateDiffBtn.disabled = false;
+                        return;
+                    }
+
+                    const startDateTimeStr = `${startDateDiffInput.value}T${startTimeDiffInput.value || '00:00'}:00`;
+                    const endDateTimeStr = `${endDateDiffInput.value}T${endTimeDiffInput.value || '00:00'}:00`;
+                    const startDate = new Date(startDateTimeStr);
+                    const endDate = new Date(endDateTimeStr);
+
+                    if (endDate < startDate) {
+                        document.getElementById('end-date-diff-error').textContent = 'End date cannot be before start date.';
+                        document.getElementById('end-date-diff-error').style.display = 'block';
+                        endDateDiffInput.style.borderColor = 'var(--color-danger)';
+                        calculateDiffBtn.textContent = 'Calculate Difference';
+                        calculateDiffBtn.disabled = false;
+                        return;
+                    }
+
+                    // Exact Duration (Years, Months, Days, Hours, Minutes, Seconds)
+                    let years = endDate.getFullYear() - startDate.getFullYear();
+                    let months = endDate.getMonth() - startDate.getMonth();
+                    let days = endDate.getDate() - startDate.getDate();
+                    let hours = endDate.getHours() - startDate.getHours();
+                    let minutes = endDate.getMinutes() - startDate.getMinutes();
+                    let seconds = endDate.getSeconds() - startDate.getSeconds();
+
+                    if (seconds < 0) { seconds += 60; minutes--; }
+                    if (minutes < 0) { minutes += 60; hours--; }
+                    if (hours < 0) { hours += 24; days--; }
+
+                    // Handle months and days accurately based on calendar
+                    while (days < 0) {
+                        months--;
+                        const tempDate = new Date(startDate.getFullYear(), startDate.getMonth() + months, 1);
+                        days += new Date(tempDate.getFullYear(), tempDate.getMonth() + 1, 0).getDate();
+                    }
+                    if (months < 0) { months += 12; years--; }
+
+                    exactDurationOutput.textContent = 
+                        `${years}Y, ${months}M, ${days}D, ${hours}H, ${minutes}M, ${seconds}S`;
+
+                    // Total Units
+                    const diffMilliseconds = endDate.getTime() - startDate.getTime();
+                    const totalSeconds = diffMilliseconds / 1000;
+                    const totalMinutes = totalSeconds / 60;
+                    const totalHours = totalMinutes / 60;
+                    const totalDays = totalHours / 24;
+
+                    totalSecondsDiffOutput.textContent = Math.floor(totalSeconds).toLocaleString();
+                    totalMinutesDiffOutput.textContent = Math.floor(totalMinutes).toLocaleString();
+                    totalHoursDiffOutput.textContent = Math.floor(totalHours).toLocaleString();
+                    totalDaysDiffOutput.textContent = Math.floor(totalDays).toLocaleString();
+
+                    differenceResultsDiv.style.display = 'block';
+                    differenceResultsDiv.scrollIntoView({ behavior: 'smooth' });
+                    
+                    calculateDiffBtn.textContent = 'Calculate Difference';
+                    calculateDiffBtn.disabled = false;
+
+                }, 500);
+            });
+
+            // --- Reset Buttons ---
+            document.querySelectorAll('.btn-reset').forEach(button => {
+                button.addEventListener('click', function() {
+                    const formId = this.dataset.form;
+                    const form = document.getElementById(formId);
+                    form.reset();
+                    // Clear error messages
+                    form.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+                    form.querySelectorAll('input').forEach(input => input.style.borderColor = 'var(--color-border)');
+                    // Hide results
+                    form.querySelector('.results-output').style.display = 'none';
+
+                    // Reset specific defaults for each form
+                    if (formId === 'add-subtract-form') {
+                        startDateAsInput.valueAsDate = new Date();
+                        startTimeAsInput.value = new Date().toTimeString().slice(0, 5);
+                        document.getElementById('operation-add').checked = true;
+                        for (const key in durationInputs) {
+                            durationInputs[key].value = '0';
+                        }
+                    } else if (formId === 'difference-form') {
+                        startDateDiffInput.valueAsDate = new Date();
+                        startTimeDiffInput.value = new Date().toTimeString().slice(0, 5);
+                        endDateDiffInput.valueAsDate = new Date();
+                        endTimeDiffInput.value = new Date().toTimeString().slice(0, 5);
+                    }
+                });
+            });
+
+            // --- Copy Results Buttons ---
+            document.getElementById('copy-btn').addEventListener('click', function() {
+                let summaryText = `Time Calculation Report by EveryCalc:\n`;
+                summaryText += `--------------------------------------------------\n\n`;
+
+                if (addSubtractResultsDiv.style.display !== 'none') {
+                    summaryText += `[ Add / Subtract Time ]\n`;
+                    summaryText += `Start Date: ${startDateAsInput.value}\n`;
+                    summaryText += `Start Time: ${startTimeAsInput.value || '00:00'}\n`;
+                    summaryText += `Operation: ${document.querySelector('input[name="operation"]:checked').value.toUpperCase()}\n`;
+                    summaryText += `Duration: ${durationInputs.years.value}Y, ${durationInputs.months.value}M, ${durationInputs.days.value}D, ${durationInputs.hours.value}H, ${durationInputs.minutes.value}M, ${durationInputs.seconds.value}S\n`;
+                    summaryText += `Resulting Date: ${resultDatetimeAsOutput.textContent}\n\n`;
+                }
+
+                if (differenceResultsDiv.style.display !== 'none') {
+                    summaryText += `[ Difference Between Dates ]\n`;
+                    summaryText += `Start Date: ${startDateDiffInput.value}\n`;
+                    summaryText += `Start Time: ${startTimeDiffInput.value || '00:00'}\n`;
+                    summaryText += `End Date: ${endDateDiffInput.value}\n`;
+                    summaryText += `End Time: ${endTimeDiffInput.value || '00:00'}\n`;
+                    summaryText += `Exact Duration: ${exactDurationOutput.textContent}\n`;
+                    summaryText += `Total Days: ${totalDaysDiffOutput.textContent}\n`;
+                    summaryText += `Total Hours: ${totalHoursDiffOutput.textContent}\n`;
+                    summaryText += `Total Minutes: ${totalMinutesDiffOutput.textContent}\n`;
+                    summaryText += `Total Seconds: ${totalSecondsDiffOutput.textContent}\n\n`;
+                }
+
+                summaryText += `--------------------------------------------------\n`;
+                summaryText += `Calculated at https://everycalc.site`;
+
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

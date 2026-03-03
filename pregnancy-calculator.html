@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pregnancy Calculator by EveryCalc – Free Online Tool</title>
+    <meta name="description" content="Use the free Pregnancy Calculator by EveryCalc to estimate your due date, current gestational age, and key milestones. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/pregnancy-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Pregnancy Calculator by EveryCalc",
+      "applicationCategory": "HealthAndFitness",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/pregnancy-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main { flex-grow: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+        header, footer { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--color-primary); }
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        li { margin-bottom: 0.5rem; }
+        strong { font-weight: 600; color: var(--color-primary); }
+
+        .subtitle { font-size: var(--font-size-md); color: var(--color-secondary); font-weight: 400; margin: 0; }
+        section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media (min-width: 640px) { .calculator-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .form-group input, .form-group select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .input-method-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            grid-column: span 2;
+        }
+        .input-method-selector input[type="radio"] { display: none; }
+        .input-method-selector label {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-weight: 500;
+            background-color: var(--color-surface);
+            transition: all 0.2s;
+            white-space: nowrap; /* Prevent wrapping on smaller screens */
+            min-width: 120px; /* Ensure buttons don't get too small */
+        }
+        .input-method-selector input[type="radio"]:checked + label {
+            background-color: var(--color-accent);
+            color: var(--color-bg);
+            border-color: var(--color-accent);
+        }
+        @media (max-width: 480px) {
+            .input-method-selector label {
+                flex-basis: 100%; /* Stack buttons on very small screens */
+            }
+        }
+        
+        /* Specific input group hiding/showing */
+        .input-group {
+            display: none; /* Hidden by default */
+            grid-column: span 2; /* Take full width for input groups */
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .input-group.active {
+            display: flex; /* Show when active */
+        }
+        .input-group .form-group {
+            flex: 1;
+            min-width: calc(50% - 0.75rem); /* Two columns on larger screens */
+        }
+        @media (max-width: 639px) {
+            .input-group .form-group {
+                min-width: 100%; /* Stack on smaller screens */
+            }
+        }
+
+
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; grid-column: span 2; }
+        .btn {
+            padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-size: var(--font-size-base);
+            font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex;
+            align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .result-group { margin-bottom: 1.5rem; }
+        .result-group h3 { margin-bottom: 0.75rem; color: var(--color-action); font-size: var(--font-size-lg); }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--color-border);
+        }
+        .result-item:last-child { border-bottom: none; }
+
+        .result-label { font-weight: 500; color: var(--color-primary); }
+        .result-value { font-size: var(--font-size-base); font-weight: 600; color: var(--color-primary); }
+        .edd-value { font-size: var(--font-size-xl); font-weight: 700; color: var(--color-success); }
+        .gestational-age-value { font-size: var(--font-size-lg); font-weight: 700; color: var(--color-action); }
+
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { margin-top: 1.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+
+        .faq-item { margin-bottom: 1.5rem; }
+        
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        /* Print Styles */
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .input-method-selector, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            .result-group { border: none !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { overflow: visible; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>Pregnancy Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Estimate Your Due Date & Track Milestones</h2>
+            <p>The Pregnancy Calculator by EveryCalc is a compassionate and precise tool designed to help expectant parents estimate their baby's due date (EDD), track current gestational age, and anticipate key developmental milestones. Understanding your pregnancy timeline is crucial for planning, emotional preparation, and ensuring optimal prenatal care. Our calculator offers four common input methods—Last Menstrual Period (LMP), Conception Date, IVF Transfer Date, or Ultrasound Scan Date—to provide the most accurate estimate possible. Built with a confident, minimal design and high-contrast elements, EveryCalc offers a distraction-free experience, adhering to modern web standards and accessibility guidelines. Trust EveryCalc for reliable pregnancy timeline estimations, but always confirm with your healthcare provider.</p>
+            <p class="disclaimer" style="margin-bottom: 0;"><strong>Disclaimer:</strong> This calculator provides estimates for informational purposes only. Every pregnancy is unique, and actual due dates can vary. Always consult with your doctor or healthcare provider for personalized medical advice and official due date confirmation.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Choose Your Calculation Method</h2>
+            
+            <div class="input-method-selector">
+                <input type="radio" id="method-lmp" name="calcMethod" value="lmp" checked>
+                <label for="method-lmp">By LMP</label>
+                
+                <input type="radio" id="method-conception" name="calcMethod" value="conception">
+                <label for="method-conception">By Conception Date</label>
+                
+                <input type="radio" id="method-ivf" name="calcMethod" value="ivf">
+                <label for="method-ivf">By IVF Transfer</label>
+                
+                <input type="radio" id="method-ultrasound" name="calcMethod" value="ultrasound">
+                <label for="method-ultrasound">By Ultrasound</label>
+            </div>
+
+            <form id="pregnancy-form" novalidate>
+                <div class="calculator-grid">
+                    <!-- LMP Input Group -->
+                    <div class="input-group" id="group-lmp">
+                        <div class="form-group">
+                            <label for="lmpDate">First Day of Last Menstrual Period (LMP)</label>
+                            <input type="date" id="lmpDate" name="lmpDate" required>
+                            <p class="error-message" id="lmpDate-error"></p>
+                        </div>
+                    </div>
+
+                    <!-- Conception Input Group -->
+                    <div class="input-group" id="group-conception">
+                        <div class="form-group">
+                            <label for="conceptionDate">Date of Conception</label>
+                            <input type="date" id="conceptionDate" name="conceptionDate" required>
+                            <p class="error-message" id="conceptionDate-error"></p>
+                        </div>
+                    </div>
+
+                    <!-- IVF Input Group -->
+                    <div class="input-group" id="group-ivf">
+                        <div class="form-group">
+                            <label for="ivfTransferDate">Date of Embryo Transfer</label>
+                            <input type="date" id="ivfTransferDate" name="ivfTransferDate" required>
+                            <p class="error-message" id="ivfTransferDate-error"></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="embryoAge">Embryo Age (days)</label>
+                            <input type="number" id="embryoAge" name="embryoAge" placeholder="e.g., 3 or 5" min="1" required>
+                            <p class="error-message" id="embryoAge-error">Enter 3 or 5 for embryo age.</p>
+                        </div>
+                    </div>
+
+                    <!-- Ultrasound Input Group -->
+                    <div class="input-group" id="group-ultrasound">
+                        <div class="form-group">
+                            <label for="ultrasoundDate">Date of Ultrasound Scan</label>
+                            <input type="date" id="ultrasoundDate" name="ultrasoundDate" required>
+                            <p class="error-message" id="ultrasoundDate-error"></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="gestationalWeeks">Gestational Age (Weeks)</label>
+                            <input type="number" id="gestationalWeeks" name="gestationalWeeks" placeholder="e.g., 12" min="1" max="40" required>
+                            <p class="error-message" id="gestationalWeeks-error">Enter valid weeks (1-40).</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="gestationalDays">Gestational Age (Days)</label>
+                            <input type="number" id="gestationalDays" name="gestationalDays" placeholder="e.g., 3" min="0" max="6" value="0" required>
+                            <p class="error-message" id="gestationalDays-error">Enter valid days (0-6).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">Calculate Pregnancy Timeline</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Your Pregnancy Timeline</h2>
+            
+            <div class="result-group">
+                <h3>Estimated Due Date (EDD)</h3>
+                <div class="result-item">
+                    <span class="edd-value" id="edd-output">Not Calculated</span>
+                </div>
+            </div>
+
+            <div class="result-group">
+                <h3>Current Gestational Age (Today)</h3>
+                <div class="result-item">
+                    <span class="gestational-age-value" id="current-gestational-age-output">0 Weeks, 0 Days</span>
+                </div>
+            </div>
+
+            <div class="result-group">
+                <h3>Time Remaining Until Due Date</h3>
+                <div class="result-item">
+                    <span class="result-label">Days Remaining:</span>
+                    <span class="result-value" id="days-remaining-output">0 days</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Weeks & Days Remaining:</span>
+                    <span class="result-value" id="weeks-days-remaining-output">0 weeks, 0 days</span>
+                </div>
+            </div>
+
+            <div class="result-group">
+                <h3>Key Milestones</h3>
+                <div class="result-item">
+                    <span class="result-label">End of 1st Trimester (Week 13+6):</span>
+                    <span class="result-value" id="trimester1-end-output"></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Quickening (Approx. Week 18-20):</span>
+                    <span class="result-value" id="quickening-output"></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Fetal Viability (Approx. Week 24):</span>
+                    <span class="result-value" id="viability-output"></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">End of 2nd Trimester (Week 27+6):</span>
+                    <span class="result-value" id="trimester2-end-output"></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Start of 3rd Trimester (Week 28+0):</span>
+                    <span class="result-value" id="trimester3-start-output"></span>
+                </div>
+            </div>
+
+            <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Results</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Summary</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the Pregnancy Calculator</h2>
+            <p>The EveryCalc Pregnancy Calculator offers four accurate methods to estimate your baby's due date and track your pregnancy journey. Select the input method that best suits your information:</p>
+            <ol>
+                <li><strong>By LMP (Last Menstrual Period):</strong> This is the most common method if you have regular menstrual cycles and remember the exact start date. Enter the first day of your last period. The calculator assumes a 28-day cycle with ovulation on day 14.</li>
+                <li><strong>By Conception Date:</strong> If you know the precise date of conception (e.g., through ovulation tracking or intercourse date), this method can be very accurate. Enter this specific date.</li>
+                <li><strong>By IVF Transfer:</strong> For pregnancies achieved through In Vitro Fertilization, this method uses the date of embryo transfer. You'll also need to specify the **Embryo Age** (typically 3-day or 5-day post-fertilization).</li>
+                <li><strong>By Ultrasound:</strong> If you've had an early ultrasound (usually before 20 weeks) that provided a gestational age, this is considered a highly accurate method. Enter the **Date of your Ultrasound Scan** and the **Gestational Age (Weeks and Days)** provided by your sonographer.</li>
+            </ol>
+            <p>After selecting your method and entering the required details, click "Calculate Pregnancy Timeline". The results section will display your estimated due date, current gestational age, time remaining, and key developmental milestones. Use the "Reset" button to clear fields for a new calculation.</p>
+            <h3>Accuracy Tips & Disclaimers</h3>
+            <p>For LMP, a regular 28-day cycle is assumed. If your cycle is irregular or differs significantly, the conception or ultrasound methods might be more accurate. For IVF, precise embryo age is vital. Early ultrasounds (especially between 8-12 weeks) are often considered the most reliable for dating a pregnancy. Remember, these are estimates; only your healthcare provider can provide definitive medical advice and confirm your due date based on comprehensive clinical assessment.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formula & Methodology</h2>
+            <p>The EveryCalc Pregnancy Calculator employs established medical formulas and conventions to calculate due dates and gestational age. All calculations assume a standard pregnancy duration of 280 days (40 weeks) from the Last Menstrual Period (LMP).</p>
+            
+            <h3>1. By Last Menstrual Period (LMP) - Naegele's Rule:</h3>
+            <p>This is the classic method for estimating a due date. It adds 280 days (40 weeks) to the first day of the last menstrual period, assuming a regular 28-day cycle with ovulation on day 14.
+            <br><strong style="font-size: 1.1em;">EDD = LMP Date + 280 days (40 weeks)</strong></p>
+
+            <h3>2. By Conception Date:</h3>
+            <p>If the exact date of conception is known, the due date is calculated by adding 266 days (38 weeks) to this date. This accounts for the ~2 weeks between LMP and conception.
+            <br><strong style="font-size: 1.1em;">EDD = Conception Date + 266 days (38 weeks)</strong></p>
+
+            <h3>3. By IVF Transfer Date:</h3>
+            <p>This method adjusts for the embryo's age at transfer.
+            <ul>
+                <li><strong>For a 3-day embryo transfer:</strong> EDD = Transfer Date + 263 days (37 weeks, 4 days)</li>
+                <li><strong>For a 5-day embryo transfer (blastocyst):</strong> EDD = Transfer Date + 261 days (37 weeks, 2 days)</li>
+            </ul>
+            The gestational age at the time of transfer is typically 2 weeks + embryo age (e.g., for 3-day embryo, 2 weeks 3 days; for 5-day embryo, 2 weeks 5 days). The remaining days are added to reach 280 days from LMP equivalent.</p>
+
+            <h3>4. By Ultrasound Scan Date:</h3>
+            <p>When an ultrasound provides an estimated gestational age (e.g., 12 weeks, 3 days) on a specific scan date, the EDD is calculated by adding the remaining time until 40 weeks to the scan date.
+            <br><strong style="font-size: 1.1em;">EDD = Ultrasound Date + (40 weeks - Gestational Age on Scan Date)</strong></p>
+            
+            <h3>Calculating Current Gestational Age & Milestones:</h3>
+            <p>Once the EDD is established, the **Estimated Conception Date** is derived (EDD - 266 days). The **Current Gestational Age** is then calculated by determining the number of weeks and days elapsed between the estimated conception date and today's date. Milestones are set relative to the Estimated Conception Date, adding specific durations (e.g., End of 1st Trimester is Conception Date + 12 weeks, 6 days, etc.). All date arithmetic is handled by JavaScript's robust Date object, accurately accounting for leap years and varying month lengths.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical Pregnancy Timeline Examples</h2>
+            <p>Here are some scenarios demonstrating how the Pregnancy Calculator provides estimated due dates and key milestones based on different input methods.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Input Method</th>
+                            <th>Key Input(s)</th>
+                            <th>Estimated Due Date (EDD)</th>
+                            <th>Current Gestational Age*</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>First-Time Parents (LMP)</strong></td>
+                            <td>By LMP</td>
+                            <td>LMP: 2026-01-05</td>
+                            <td>2026-10-12</td>
+                            <td>~4 weeks, 2 days</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Known Conception Date</strong></td>
+                            <td>By Conception Date</td>
+                            <td>Conception: 2026-01-19</td>
+                            <td>2026-10-12</td>
+                            <td>~2 weeks, 2 days</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IVF Journey</strong></td>
+                            <td>By IVF Transfer</td>
+                            <td>Transfer: 2026-02-01 (5-day embryo)</td>
+                            <td>2026-10-19</td>
+                            <td>~3 weeks, 0 days</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Ultrasound Scan</strong></td>
+                            <td>By Ultrasound</td>
+                            <td>Scan Date: 2026-02-01, Gestational Age: 8w 0d</td>
+                            <td>2026-08-25</td>
+                            <td>~9 weeks, 4 days</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size: var(--font-size-sm); color: var(--color-secondary); margin-top: 1rem;">*Current Gestational Age is approximate and will vary based on "today's date" when you run the calculator.</p>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. What is the most accurate way to date a pregnancy?</h3>
+                <p>An early ultrasound (typically between 8 and 12 weeks gestation) is generally considered the most accurate method for dating a pregnancy, especially if there's uncertainty about the last menstrual period or conception date. It measures the baby's size to estimate gestational age.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. How long does a typical pregnancy last?</h3>
+                <p>A full-term pregnancy typically lasts about 40 weeks (280 days) from the first day of the last menstrual period (LMP), or 38 weeks (266 days) from the date of conception. However, it's common for babies to be born anywhere between 37 and 42 weeks.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. Why might my due date change during pregnancy?</h3>
+                <p>Your initial due date, often based on LMP, might be adjusted if a subsequent ultrasound provides a significantly different gestational age, or if there were uncertainties about your LMP. Healthcare providers usually stick with the earliest, most accurate dating scan unless there's a strong reason to change.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. Is the estimated due date an exact date?</h3>
+                <p>No, the estimated due date is exactly that—an estimate. Only about 5% of babies are born precisely on their due date. Most babies arrive within a week either side of the EDD. It serves as a guide for planning and monitoring the pregnancy rather than a fixed arrival date.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. What is "Quickening" and "Fetal Viability"?</h3>
+                <p>**Quickening** refers to the first time you feel your baby move. It usually occurs between 16 and 22 weeks, but often around 18-20 weeks for first-time mothers. **Fetal Viability** is the point at which a fetus can potentially survive outside the womb with medical assistance. This is typically considered to be around 24 weeks gestation, though outcomes vary greatly.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. Can I use this calculator if I have irregular periods?</h3>
+                <p>If you have irregular periods, calculating your due date based solely on your Last Menstrual Period (LMP) might be inaccurate. In such cases, using your conception date (if known) or an early ultrasound scan for dating purposes would provide a more reliable estimate.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. What are the trimesters of pregnancy?</h3>
+                <p>Pregnancy is typically divided into three trimesters:
+                    <ul>
+                        <li>**First Trimester:** Weeks 1-13 (from LMP) - Focus on conception, implantation, and rapid organ development.</li>
+                        <li>**Second Trimester:** Weeks 14-27 (from LMP) - Often considered the "golden trimester" with increased energy and noticeable fetal movement.</li>
+                        <li>**Third Trimester:** Weeks 28-40+ (from LMP) - Focus on fetal growth, preparing for birth.</li>
+                    </ul>
+                </p>
+            </div>
+            <div class="faq-item">
+                <h3>8. Why do IVF calculations require embryo age?</h3>
+                <p>In IVF, conception occurs outside the body. The "embryo age" (e.g., 3-day or 5-day post-fertilization) tells healthcare providers how old the embryo was at the time of transfer. This information is crucial to accurately backtrack to a virtual conception date and then calculate the estimated due date, bypassing the need for LMP.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: The Importance of Prenatal Care</h2>
+            <p>While a pregnancy calculator provides a valuable timeline, nothing replaces consistent and comprehensive **prenatal care**. Regular check-ups with your healthcare provider are essential for monitoring the health of both mother and baby, addressing any concerns, and receiving guidance on nutrition, exercise, and lifestyle choices. Early and continuous prenatal care can significantly improve outcomes, detect potential complications, and ensure a healthier pregnancy journey. Use this calculator as a helpful guide for understanding your personal timeline, but always view it as a complement to, not a substitute for, professional medical guidance. Embrace this journey with confidence, knowing that you have tools and medical support available every step of the way.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+        <p class="disclaimer">
+            EveryCalc does not store or share any personal data.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Normalize today to midnight for consistent day-based calculations
+
+            const inputMethods = document.querySelectorAll('input[name="calcMethod"]');
+            const inputGroups = {
+                lmp: document.getElementById('group-lmp'),
+                conception: document.getElementById('group-conception'),
+                ivf: document.getElementById('group-ivf'),
+                ultrasound: document.getElementById('group-ultrasound')
+            };
+
+            const lmpDateInput = document.getElementById('lmpDate');
+            const conceptionDateInput = document.getElementById('conceptionDate');
+            const ivfTransferDateInput = document.getElementById('ivfTransferDate');
+            const embryoAgeInput = document.getElementById('embryoAge');
+            const ultrasoundDateInput = document.getElementById('ultrasoundDate');
+            const gestationalWeeksInput = document.getElementById('gestationalWeeks');
+            const gestationalDaysInput = document.getElementById('gestationalDays');
+
+            const lmpDateError = document.getElementById('lmpDate-error');
+            const conceptionDateError = document.getElementById('conceptionDate-error');
+            const ivfTransferDateError = document.getElementById('ivfTransferDate-error');
+            const embryoAgeError = document.getElementById('embryoAge-error');
+            const ultrasoundDateError = document.getElementById('ultrasoundDate-error');
+            const gestationalWeeksError = document.getElementById('gestationalWeeks-error');
+            const gestationalDaysError = document.getElementById('gestationalDays-error');
+
+            const resultsSection = document.getElementById('results-section');
+            const eddOutput = document.getElementById('edd-output');
+            const currentGestationalAgeOutput = document.getElementById('current-gestational-age-output');
+            const daysRemainingOutput = document.getElementById('days-remaining-output');
+            const weeksDaysRemainingOutput = document.getElementById('weeks-days-remaining-output');
+            const trimester1EndOutput = document.getElementById('trimester1-end-output');
+            const quickeningOutput = document.getElementById('quickening-output');
+            const viabilityOutput = document.getElementById('viability-output');
+            const trimester2EndOutput = document.getElementById('trimester2-end-output');
+            const trimester3StartOutput = document.getElementById('trimester3-start-output');
+            
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+
+            // --- Utility Functions ---
+            const formatDate = (date) => date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            const addDays = (date, days) => {
+                const newDate = new Date(date);
+                newDate.setDate(newDate.getDate() + days);
+                return newDate;
+            };
+            const dateDiffInDays = (date1, date2) => Math.floor(Math.abs(date1.getTime() - date2.getTime()) / (1000 * 60 * 60 * 24));
+            
+            const weeksAndDays = (totalDays) => {
+                const weeks = Math.floor(totalDays / 7);
+                const days = totalDays % 7;
+                return { weeks, days };
+            };
+
+            const validateInput = (inputEl, errorEl, min = 0, max = Infinity, isDate = false) => {
+                errorEl.style.display = 'none';
+                inputEl.style.borderColor = 'var(--color-border)';
+                const value = isDate ? new Date(inputEl.value) : parseFloat(inputEl.value);
+
+                if (inputEl.disabled) return true; // Don't validate disabled fields
+
+                if (inputEl.value.trim() === '' || (isDate && isNaN(value.getTime()))) {
+                    errorEl.textContent = `Please enter a valid ${isDate ? 'date' : 'number'}.`;
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                if (!isDate && (value < min || value > max)) {
+                    errorEl.textContent = `Value must be between ${min} and ${max}.`;
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                if (isDate && value > today) {
+                    errorEl.textContent = `Date cannot be in the future.`;
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                return true;
+            };
+
+            const showInputGroup = (method) => {
+                Object.values(inputGroups).forEach(group => {
+                    group.classList.remove('active');
+                    group.querySelectorAll('input').forEach(input => {
+                        input.disabled = true;
+                        input.removeAttribute('required');
+                    });
+                });
+
+                const activeGroup = inputGroups[method];
+                if (activeGroup) {
+                    activeGroup.classList.add('active');
+                    activeGroup.querySelectorAll('input').forEach(input => {
+                        input.disabled = false;
+                        input.setAttribute('required', 'required');
+                        // Special handling for optional fields (e.g., gestationalDays defaults to 0, not required for basic check)
+                        if (input.id === 'gestationalDays' && method === 'ultrasound') {
+                            input.removeAttribute('required'); // It has a default value
+                        }
+                    });
+                }
+            };
+
+            // --- Calculation Logic ---
+            const calculatePregnancy = () => {
+                const selectedMethod = document.querySelector('input[name="calcMethod"]:checked').value;
+                let estimatedConceptionDate;
+                let estimatedDueDate;
+
+                // Reset specific errors for current method
+                [lmpDateError, conceptionDateError, ivfTransferDateError, embryoAgeError, ultrasoundDateError, gestationalWeeksError, gestationalDaysError].forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.input-group.active input').forEach(input => input.style.borderColor = 'var(--color-border)');
+
+
+                if (selectedMethod === 'lmp') {
+                    const lmpDate = new Date(lmpDateInput.value);
+                    estimatedConceptionDate = addDays(lmpDate, 14); // Assumes ovulation 14 days after LMP
+                    estimatedDueDate = addDays(lmpDate, 280); // Naegele's Rule (40 weeks from LMP)
+                } else if (selectedMethod === 'conception') {
+                    const conceptionDate = new Date(conceptionDateInput.value);
+                    estimatedConceptionDate = conceptionDate;
+                    estimatedDueDate = addDays(conceptionDate, 266); // 38 weeks from conception
+                } else if (selectedMethod === 'ivf') {
+                    const ivfTransferDate = new Date(ivfTransferDateInput.value);
+                    const embryoAge = parseInt(embryoAgeInput.value);
+                    
+                    if (embryoAge === 3) {
+                        estimatedConceptionDate = addDays(ivfTransferDate, -3); // Conception is 3 days before transfer
+                        estimatedDueDate = addDays(ivfTransferDate, 263); // 37 weeks 4 days from transfer
+                    } else if (embryoAge === 5) {
+                        estimatedConceptionDate = addDays(ivfTransferDate, -5); // Conception is 5 days before transfer
+                        estimatedDueDate = addDays(ivfTransferDate, 261); // 37 weeks 2 days from transfer
+                    } else {
+                        embryoAgeError.textContent = 'Embryo age must be 3 or 5 days.';
+                        embryoAgeError.style.display = 'block';
+                        embryoAgeInput.style.borderColor = 'var(--color-danger)';
+                        return; // Stop calculation if embryo age is invalid
+                    }
+                } else if (selectedMethod === 'ultrasound') {
+                    const ultrasoundDate = new Date(ultrasoundDateInput.value);
+                    const gestationalWeeks = parseInt(gestationalWeeksInput.value);
+                    const gestationalDays = parseInt(gestationalDaysInput.value) || 0;
+
+                    const totalGestationalDaysAtScan = (gestationalWeeks * 7) + gestationalDays;
+                    const daysRemainingUntilDue = 280 - totalGestationalDaysAtScan;
+
+                    estimatedDueDate = addDays(ultrasoundDate, daysRemainingUntilDue);
+                    estimatedConceptionDate = addDays(estimatedDueDate, -266); // Conception is 38 weeks before EDD
+                }
+
+                // --- Display Results ---
+                eddOutput.textContent = formatDate(estimatedDueDate);
+
+                const totalDaysSinceConception = dateDiffInDays(estimatedConceptionDate, today);
+                const currentGestational = weeksAndDays(totalDaysSinceConception + 14); // Gestational age is from LMP, so +14 days from conception
+                currentGestationalAgeOutput.textContent = `${currentGestational.weeks} Weeks, ${currentGestational.days} Days`;
+
+                const daysToDue = dateDiffInDays(today, estimatedDueDate);
+                daysRemainingOutput.textContent = `${daysToDue} days`;
+                const weeksDaysToDue = weeksAndDays(daysToDue);
+                weeksDaysRemainingOutput.textContent = `${weeksDaysToDue.weeks} weeks, ${weeksDaysToDue.days} days`;
+
+                // Milestones (relative to conception date for consistency if needed, or directly from EDD)
+                // Assuming milestones are calculated relative to EDD - 280 for LMP-equivalent
+                const eddMs = estimatedDueDate.getTime();
+                const msPerDay = 1000 * 60 * 60 * 24;
+
+                trimester1EndOutput.textContent = formatDate(addDays(new Date(eddMs), - (280 - 13*7 - 6))); // 13 weeks + 6 days
+                quickeningOutput.textContent = formatDate(addDays(new Date(eddMs), - (280 - 18*7))) + ' to ' + formatDate(addDays(new Date(eddMs), - (280 - 20*7))); // Approx 18-20 weeks
+                viabilityOutput.textContent = formatDate(addDays(new Date(eddMs), - (280 - 24*7))); // Approx 24 weeks
+                trimester2EndOutput.textContent = formatDate(addDays(new Date(eddMs), - (280 - 27*7 - 6))); // 27 weeks + 6 days
+                trimester3StartOutput.textContent = formatDate(addDays(new Date(eddMs), - (280 - 28*7))); // 28 weeks + 0 days
+
+                resultsSection.style.display = 'block';
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            // --- Event Listeners ---
+            inputMethods.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    showInputGroup(radio.value);
+                    // Clear all input fields and errors when switching methods
+                    document.getElementById('pregnancy-form').reset();
+                    document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+                    document.querySelectorAll('input').forEach(input => input.style.borderColor = 'var(--color-border)');
+                    resultsSection.style.display = 'none'; // Hide results on method switch
+                });
+            });
+
+            document.getElementById('pregnancy-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                calculateBtn.textContent = 'Calculating...';
+                calculateBtn.disabled = true;
+
+                setTimeout(() => {
+                    let allValid = true;
+                    const selectedMethod = document.querySelector('input[name="calcMethod"]:checked').value;
+
+                    if (selectedMethod === 'lmp') {
+                        allValid = validateInput(lmpDateInput, lmpDateError, 0, Infinity, true);
+                    } else if (selectedMethod === 'conception') {
+                        allValid = validateInput(conceptionDateInput, conceptionDateError, 0, Infinity, true);
+                    } else if (selectedMethod === 'ivf') {
+                        allValid = validateInput(ivfTransferDateInput, ivfTransferDateError, 0, Infinity, true) && allValid;
+                        allValid = validateInput(embryoAgeInput, embryoAgeError, 1, 5, false) && allValid; // Max 5 days for embryo
+                        if (allValid && ![3, 5].includes(parseInt(embryoAgeInput.value))) {
+                             embryoAgeError.textContent = 'Embryo age must be 3 or 5 days.';
+                             embryoAgeError.style.display = 'block';
+                             embryoAgeInput.style.borderColor = 'var(--color-danger)';
+                             allValid = false;
+                        }
+                    } else if (selectedMethod === 'ultrasound') {
+                        allValid = validateInput(ultrasoundDateInput, ultrasoundDateError, 0, Infinity, true) && allValid;
+                        allValid = validateInput(gestationalWeeksInput, gestationalWeeksError, 1, 40, false) && allValid;
+                        allValid = validateInput(gestationalDaysInput, gestationalDaysError, 0, 6, false) && allValid;
+                    }
+                    
+                    if (allValid) {
+                        calculatePregnancy();
+                    } else {
+                        resultsSection.style.display = 'none'; // Hide results if validation fails
+                    }
+                    
+                    calculateBtn.textContent = 'Calculate Pregnancy Timeline';
+                    calculateBtn.disabled = false;
+                }, 500);
+            });
+
+            resetBtn.addEventListener('click', function() {
+                document.getElementById('pregnancy-form').reset();
+                document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('input').forEach(input => input.style.borderColor = 'var(--color-border)');
+                resultsSection.style.display = 'none';
+                
+                // Reset to default method and re-show its inputs
+                document.getElementById('method-lmp').checked = true;
+                showInputGroup('lmp');
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const selectedMethod = document.querySelector('input[name="calcMethod"]:checked').labels[0].textContent.trim();
+                let inputDetails = '';
+
+                if (selectedMethod.includes('LMP')) {
+                    inputDetails = `LMP Date: ${lmpDateInput.value}`;
+                } else if (selectedMethod.includes('Conception')) {
+                    inputDetails = `Conception Date: ${conceptionDateInput.value}`;
+                } else if (selectedMethod.includes('IVF')) {
+                    inputDetails = `IVF Transfer Date: ${ivfTransferDateInput.value}, Embryo Age: ${embryoAgeInput.value} days`;
+                } else if (selectedMethod.includes('Ultrasound')) {
+                    inputDetails = `Ultrasound Date: ${ultrasoundDateInput.value}, Gestational Age: ${gestationalWeeksInput.value} weeks, ${gestationalDaysInput.value || 0} days`;
+                }
+
+                const summaryText = `Pregnancy Timeline Report by EveryCalc:\n` +
+                                  `----------------------------------------\n` +
+                                  `Input Method: ${selectedMethod}\n` +
+                                  `${inputDetails}\n` +
+                                  `----------------------------------------\n` +
+                                  `Estimated Due Date: ${eddOutput.textContent}\n` +
+                                  `Current Gestational Age (Today): ${currentGestationalAgeOutput.textContent}\n` +
+                                  `Time Remaining: ${daysRemainingOutput.textContent} (${weeksDaysRemainingOutput.textContent})\n\n` +
+                                  `Key Milestones:\n` +
+                                  ` - End of 1st Trimester: ${trimester1EndOutput.textContent}\n` +
+                                  ` - Quickening (Approx.): ${quickeningOutput.textContent}\n` +
+                                  ` - Fetal Viability (Approx.): ${viabilityOutput.textContent}\n` +
+                                  ` - End of 2nd Trimester: ${trimester2EndOutput.textContent}\n` +
+                                  ` - Start of 3rd Trimester: ${trimester3StartOutput.textContent}\n` +
+                                  `----------------------------------------\n` +
+                                  `Calculated at https://everycalc.site\n` +
+                                  `Disclaimer: For estimates only. Consult a doctor for medical advice.`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+
+            // Initial setup: show LMP group
+            showInputGroup('lmp');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mortgage Calculator by EveryCalc – Free Online Calculator</title>
+  <meta name="description" content="Use the free Mortgage Calculator by EveryCalc for fast, accurate home loan calculations with tax benefits. Built for clarity, performance, and trust.">
+  <meta name="author" content="EveryCalc">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://everycalc.site">
+  <link rel="icon" type="image/png" href="logo.png">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Mortgage Calculator by EveryCalc",
+    "applicationCategory": "CalculatorApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "url": "https://everycalc.site"
+  }
+  </script>
+
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-surface: #f5f5f5;
+      --color-primary: #111111;
+      --color-secondary: #6b7280;
+      --color-accent: #000000;
+      --color-action: #2563eb;
+      --color-success: #16a34a;
+      --color-warning: #d97706;
+      --color-danger: #dc2626;
+      --color-border: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-primary);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      font-size: clamp(14px, 2.5vw, 16px);
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 1rem;
+      display: block;
+      border-radius: 8px;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
+      margin: 0 0 0.5rem 0;
+      color: var(--color-primary);
+    }
+
+    .subtitle {
+      color: var(--color-secondary);
+      font-weight: 500;
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .section {
+      margin-bottom: 3rem;
+    }
+
+    h2 {
+      font-weight: 600;
+      font-size: clamp(1.25rem, 3vw, 1.5rem);
+      margin: 0 0 1.5rem 0;
+      color: var(--color-primary);
+    }
+
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      background: var(--color-surface);
+      padding: 2rem;
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-weight: 500;
+      color: var(--color-primary);
+      font-size: 0.95rem;
+    }
+
+    input[type="number"], select {
+      padding: 1rem;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: inherit;
+      background: var(--color-bg);
+      transition: border-color 0.2s;
+    }
+
+    input[type="number"]:focus, select:focus {
+      outline: none;
+      border-color: var(--color-action);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .error {
+      color: var(--color-danger);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    button {
+      padding: 1rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: var(--color-action);
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background: var(--color-surface);
+      color: var(--color-primary);
+      border: 1px solid var(--color-border);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #e5e7eb;
+    }
+
+    .btn-success {
+      background: var(--color-success);
+      color: white;
+    }
+
+    .btn-success:hover:not(:disabled) {
+      background: #15803d;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .button-status {
+      background: var(--color-success);
+      color: white;
+    }
+
+    .results-grid {
+      background: var(--color-surface);
+      padding: 2rem;
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+      display: none;
+    }
+
+    .results-grid.show {
+      display: block;
+    }
+
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .result-item:last-child {
+      border-bottom: none;
+    }
+
+    .result-label {
+      font-weight: 500;
+      color: var(--color-primary);
+    }
+
+    .result-value {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--color-accent);
+    }
+
+    .amortization-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow-x: auto;
+      display: block;
+      white-space: nowrap;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 640px) {
+      .amortization-table {
+        overflow-x: auto;
+      }
+      
+      .amortization-table thead,
+      .amortization-table tbody,
+      .amortization-table th,
+      .amortization-table td,
+      .amortization-table tr {
+        display: table;
+        width: 100%;
+      }
+      
+      .amortization-table th,
+      .amortization-table td {
+        padding: 0.75rem 0.5rem;
+        text-align: left;
+      }
+    }
+
+    .amortization-table th,
+    .amortization-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .amortization-table th {
+      background: var(--color-bg);
+      font-weight: 600;
+      color: var(--color-primary);
+      position: sticky;
+      top: 0;
+    }
+
+    .amortization-table tbody tr:hover {
+      background: rgba(37, 99, 235, 0.05);
+    }
+
+    .tax-benefit {
+      background: #f0fdf4;
+      border: 1px solid var(--color-success);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+
+    .status-indicator {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    .status-low { background: #dbeafe; color: var(--color-action); }
+    .status-medium { background: #fef3c7; color: var(--color-warning); }
+    .status-high { background: #fecaca; color: var(--color-danger); }
+
+    footer {
+      margin-top: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--color-border);
+      text-align: center;
+    }
+
+    footer nav {
+      margin: 1.5rem 0;
+    }
+
+    footer nav a {
+      color: var(--color-secondary);
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: 500;
+    }
+
+    footer nav a:hover {
+      color: var(--color-action);
+    }
+
+    .disclaimer {
+      color: var(--color-secondary);
+      font-size: 0.875rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    button:focus,
+    input:focus, select:focus {
+      outline: 2px solid var(--color-action);
+      outline-offset: 2px;
+    }
+
+    @media print {
+      .results-grid,
+      button {
+        display: block !important;
+      }
+      
+      button {
+        display: none;
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <img src="logo.png" alt="EveryCalc Logo" class="logo">
+      <h1>Mortgage Calculator by EveryCalc</h1>
+      <p class="subtitle">Fast. Accurate. No distractions.</p>
+    </header>
+
+    <main>
+      <section class="section intro">
+        <h2>Complete Home Loan Analysis</h2>
+        <p>The Mortgage Calculator delivers precise home loan calculations including tax benefits under Sections 80C and 24(b). Enter property price, down payment, interest rate, and tenure to see monthly EMI, total interest, tax savings, and full amortization schedule.</p>
+        <p>Perfect for first-time home buyers, property investors, and loan refinancing. Shows effective cost after tax deductions (₹45K-92K annual savings). Helps compare 20 vs 30-year mortgages and prepayment strategies.</p>
+        <p>Your home is your biggest investment. Understand every rupee before signing. Bank-ready numbers in 30 seconds.</p>
+      </section>
+
+      <section class="section calculator">
+        <h2>Calculate Your Mortgage</h2>
+        <div class="calculator-grid" role="form" aria-label="Mortgage Calculator">
+          <div class="input-group">
+            <label for="propertyPrice">Property Price (₹)</label>
+            <input type="number" id="propertyPrice" min="1000000" step="100000" aria-describedby="propertyPrice-error" required>
+            <div id="propertyPrice-error" class="error hidden" role="alert"></div>
+          </div>
+
+          <div class="input-group">
+            <label for="downPayment">Down Payment (₹)</label>
+            <input type="number" id="downPayment" min="0" max="50" step="50000" aria-describedby="downPayment-error" required>
+            <div id="downPayment-error" class="error hidden" role="alert"></div>
+          </div>
+
+          <div class="input-group">
+            <label for="downPaymentPercent">Down Payment (%)</label>
+            <input type="number" id="downPaymentPercent" min="0" max="50" step="1" aria-describedby="downPaymentPercent-error" required>
+            <div id="downPaymentPercent-error" class="error hidden" role="alert"></div>
+          </div>
+
+          <div class="input-group">
+            <label for="interestRate">Interest Rate (% p.a.)</label>
+            <input type="number" id="interestRate" min="6.5" max="12" step="0.05" aria-describedby="interestRate-error" required>
+            <div id="interestRate-error" class="error hidden" role="alert"></div>
+          </div>
+
+          <div class="input-group">
+            <label for="loanTenure">Loan Tenure (Years)</label>
+            <select id="loanTenure" aria-describedby="loanTenure-error">
+              <option value="15">15 Years</option>
+              <option value="20" selected>20 Years</option>
+              <option value="25">25 Years</option>
+              <option value="30">30 Years</option>
+            </select>
+            <div id="loanTenure-error" class="error hidden" role="alert"></div>
+          </div>
+
+          <div class="input-group">
+            <label for="taxBracket">Tax Bracket (%)</label>
+            <select id="taxBracket">
+              <option value="0">0% (No tax)</option>
+              <option value="5" selected>5%</option>
+              <option value="15">15%</option>
+              <option value="20">20%</option>
+              <option value="30">30%</option>
+            </select>
+          </div>
+
+          <div class="button-group">
+            <button id="calculateBtn" class="btn-primary" type="button">Calculate Mortgage</button>
+            <button id="resetBtn" class="btn-secondary" type="button">Reset All</button>
+          </div>
+        </div>
+
+        <div id="results" class="results-grid" role="region" aria-live="polite">
+          <div id="resultSummary"></div>
+          <div class="tax-benefit">
+            <h3>Annual Tax Benefits</h3>
+            <div id="taxSummary"></div>
+          </div>
+          <div class="amortization-preview">
+            <h3>First 12 Months Schedule</h3>
+            <table class="amortization-table" role="table" aria-label="Amortization schedule">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>EMI</th>
+                  <th>Principal</th>
+                  <th>Interest</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tbody id="amortizationTableBody"></tbody>
+            </table>
+          </div>
+          <div class="button-group">
+            <button id="copyBtn" class="btn-success" type="button">Copy Results</button>
+            <button id="printBtn" class="btn-secondary" type="button">Print Summary</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>How to Use This Calculator</h2>
+        <p>Complete mortgage analysis in 6 precise steps:</p>
+        <ol style="padding-left: 1.5rem; margin: 1rem 0;">
+          <li><strong>Property Price:</strong> Total agreement value including registration/stamp duty.</li>
+          <li><strong>Down Payment:</strong> 10-20% typical. Banks require minimum 10-20%.</li>
+          <li><strong>Interest Rate:</strong> Current home loan rates 8.4-9.2%. Women get 0.05-0.1% extra.</li>
+          <li><strong>Loan Tenure:</strong> 15-30 years standard. Shorter = less interest, higher EMI.</li>
+          <li><strong>Tax Bracket:</strong> Your marginal tax rate. New regime has limited deductions.</li>
+          <li><strong>Click Calculate:</strong> See EMI, tax savings, amortization + affordability analysis.</li>
+        </ol>
+        <p><strong>Pro Tips:</strong> Down payment >20% gets better rates. Pre-approve from 3 banks. Factor 1-2% processing fees + 5-7% stamp duty.</p>
+      </section>
+
+      <section class="section">
+        <h2>Understanding Your Mortgage Results</h2>
+        <p>Key outputs explained:</p>
+        <ul style="padding-left: 1.5rem; margin: 1rem 0;">
+          <li><strong>Monthly EMI:</strong> Fixed payment covering principal + interest.</li>
+          <li><strong>Total Interest:</strong> 70-120% of loan amount over tenure.</li>
+          <li><strong>Tax Savings:</strong> Section 80C (₹1.5L principal) + 24(b) (₹2L interest). 30% bracket = ₹1.05L annual savings.</li>
+          <li><strong>Effective Cost:</strong> Total interest - tax benefits over tenure.</li>
+          <li><br><strong>Amortization:</strong> Early payments = 70-90% interest. Year 10+ shifts to principal.</li>
+        </ul>
+        <p><strong>Decision Framework:</strong> EMI &lt;35% take-home pay = comfortable. 35-50% = manageable. >50% = risky unless dual income.</p>
+      </section>
+
+      <section class="section">
+        <h2>Mortgage Formula & Tax Benefits</h2>
+        <p><strong>EMI Formula:</strong> P × r × (1+r)^n / ((1+r)^n - 1)</p>
+        <p><strong>Tax Benefits (Old Regime):</strong></p>
+        <ul style="padding-left: 1.5rem; margin: 1rem 0;">
+          <li>Section 80C: Max ₹1.5L principal repayment annually</li>
+          <li>Section 24(b): Max ₹2L home loan interest annually</li>
+          <li>Total deduction: ₹3.5L → ₹1.05L tax savings (30% bracket)</li>
+        </ul>
+        <p>Calculator auto-computes eligible principal/interest portions annually and applies your tax bracket for net savings.</p>
+      </section>
+
+      <section class="section">
+        <h2>Real-World Examples</h2>
+        <p><strong>Case 1: ₹80 Lakh Flat, 15% Down (First Home)</strong></p>
+        <p>Loan: ₹68L | 8.75% | 20Y → EMI: ₹58,891 | Total Interest: ₹75.3L | Tax Savings: ₹18.2L | Effective Cost: ₹57.1L</p>
+        
+        <p><strong>Case 2: ₹1.5 Crore Villa, 25% Down (Premium)</strong></p>
+        <p>Loan: ₹1.125Cr | 8.5% | 25Y → EMI: ₹91,234 | Total Interest: ₹1.49Cr | Tax Savings: ₹23.8L | Effective: ₹1.26Cr</p>
+        
+        <p><strong>Case 3: 15 vs 30 Years (Same ₹68L Loan)</strong></p>
+        <p>15Y: EMI ₹66,891 | Interest ₹38.2L | 30Y: EMI ₹52,234 | Interest ₹1.12Cr (+₹74L extra!)</p>
+        
+        <p><strong>Prepayment Impact:</strong> ₹10L prepaid Year 5 saves ₹22.4L interest, cuts 6 years tenure.</p>
+      </section>
+
+      <section class="section">
+        <h2>Frequently Asked Questions</h2>
+        <p><strong>1. Down payment mandatory?</strong><br>Yes. Banks require 10-20% minimum. >20% = better rates + lower EMI.</p>
+        
+        <p><strong>2. New vs old tax regime?</strong><br>Old regime needed for deductions. New regime: no 80C/24b benefits but lower rates.</p>
+        
+        <p><strong>3. Can EMI change?</strong><br>Floating rate (99% loans): Yes, with RBI repo changes. Fixed rate: No.</p>
+        
+        <p><strong>4. Prepayment rules?</strong><br>Floating loans: Unlimited free prepayments. Fixed: 2-4% charge on amount prepaid.</p>
+        
+        <p><strong>5. Processing fees?</strong><br>0.25-1% of loan. Negotiable. Existing customers get waivers.</p>
+        
+        <p><strong>6. Women borrowers benefit?</strong><br>Yes. 0.05-0.15% lower rates from most banks + priority processing.</p>
+        
+        <p><strong>7. Joint loan advantages?</strong><br>Combined income → higher eligibility. Both get tax benefits on shared ownership.</p>
+        
+        <p><strong>8. Balance transfer worth it?</strong><br>Yes if rate drops >0.5% + processing waiver. Saves ₹8-12L on ₹50L loans.</p>
+      </section>
+
+      <section class="section">
+        <h2>Home Loan Strategies</h2>
+        <p><strong>Prepayment Priority:</strong> Years 1-7 maximum impact. Use bonuses, maturity proceeds.</p>
+        <p><strong>Rate Shopping:</strong> Get 3 pre-approvals. Match lowest rate + 0.1% processing waiver.</p>
+        <p><strong>Tenure Sweet Spot:</strong> EMI comfortable + interest minimized. Usually 20 years.</p>
+        <p><strong>Documentation:</strong> Ready: 6 months salary slips/statements, 3 ITRs, property papers.</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2026 EveryCalc. All rights reserved.</p>
+      <nav>
+        <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+        <a href="https://everycalc.site/terms-of-service">Terms</a>
+        <a href="https://everycalc.site/contact">Contact</a>
+      </nav>
+      <p class="disclaimer">
+        This calculator provides estimates for informational purposes only.
+        Always consult a qualified professional for critical decisions.
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    class MortgageCalculator {
+      constructor() {
+        this.elements = {
+          propertyPrice: document.getElementById('propertyPrice'),
+          downPayment: document.getElementById('downPayment'),
+          downPaymentPercent: document.getElementById('downPaymentPercent'),
+          interestRate: document.getElementById('interestRate'),
+          loanTenure: document.getElementById('loanTenure'),
+          taxBracket: document.getElementById('taxBracket'),
+          calculateBtn: document.getElementById('calculateBtn'),
+          resetBtn: document.getElementById('resetBtn'),
+          copyBtn: document.getElementById('copyBtn'),
+          printBtn: document.getElementById('printBtn'),
+          results: document.getElementById('results'),
+          resultSummary: document.getElementById('resultSummary'),
+          taxSummary: document.getElementById('taxSummary'),
+          amortizationTableBody: document.getElementById('amortizationTableBody')
+        };
+
+        this.results = null;
+        this.init();
+      }
+
+      init() {
+        this.syncDownPayment();
+        this.elements.calculateBtn.addEventListener('click', () => this.calculate());
+        this.elements.resetBtn.addEventListener('click', () => this.reset());
+        this.elements.copyBtn.addEventListener('click', () => this.copyResults());
+        this.elements.printBtn.addEventListener('click', () => this.printResults());
+        
+        ['propertyPrice', 'downPayment', 'downPaymentPercent'].forEach(id => {
+          this.elements[id].addEventListener('input', () => {
+            this.syncDownPayment();
+            this.validateInput(id);
+          });
+        });
+        
+        ['interestRate', 'loanTenure'].forEach(id => {
+          this.elements[id].addEventListener('change', () => this.validateInput(id));
+        });
+      }
+
+      syncDownPayment() {
+        const price = parseFloat(this.elements.propertyPrice.value) || 0;
+        const percent = parseFloat(this.elements.downPaymentPercent.value) || 0;
+        const downPayment = Math.round(price * percent / 100);
+        
+        if (percent > 0 && price > 0) {
+          this.elements.downPayment.value = downPayment;
+        }
+      }
+
+      validateInput(field) {
+        const input = this.elements[field];
+        const errorEl = document.getElementById(`${field}-error`);
+        if (!errorEl) return true;
+        
+        errorEl.classList.add('hidden');
+        const value = parseFloat(input.value);
+        
+        if (isNaN(value) || value <= 0) {
+          errorEl.textContent = 'Please enter a valid positive number';
+          errorEl.classList.remove('hidden');
+          this.elements.calculateBtn.disabled = true;
+          return false;
+        }
+        
+        if (field === 'propertyPrice' && value < 1000000) {
+          errorEl.textContent = 'Minimum property value ₹10 Lakh';
+          errorEl.classList.remove('hidden');
+          return false;
+        }
+        
+        if (field === 'downPaymentPercent' && (value < 0 || value > 50)) {
+          errorEl.textContent = 'Down payment 0-50%';
+          errorEl.classList.remove('hidden');
+          return false;
+        }
+        
+        if (field === 'interestRate' && (value < 6.5 || value > 12)) {
+          errorEl.textContent = 'Rate should be 6.5-12%';
+          errorEl.classList.remove('hidden');
+          return false;
+        }
+        
+        this.checkAllValid();
+        return true;
+      }
+
+      checkAllValid() {
+        const valid = ['propertyPrice', 'downPayment', 'interestRate'].every(
+          field => !document.getElementById(`${field}-error`)?.classList.contains('hidden') === false
+        );
+        this.elements.calculateBtn.disabled = !valid;
+      }
+
+      calculateEMI(principal, annualRate, tenureYears) {
+        const monthlyRate = annualRate / 12 / 100;
+        const months = tenureYears * 12;
+        return principal * monthlyRate * Math.pow(1 + monthlyRate, months) / 
+               (Math.pow(1 + monthlyRate, months) - 1);
+      }
+
+      calculateTaxSavings(principal, interest, taxRate) {
+        const principalDeduction = Math.min(principal, 150000);
+        const interestDeduction = Math.min(interest, 200000);
+        return (principalDeduction + interestDeduction) * (taxRate / 100);
+      }
+
+      calculate() {
+        if (!this.validateAllInputs()) return;
+        
+        const propertyPrice = parseFloat(this.elements.propertyPrice.value);
+        const downPayment = parseFloat(this.elements.downPayment.value);
+        const loanAmount = propertyPrice - downPayment;
+        const annualRate = parseFloat(this.elements.interestRate.value);
+        const tenureYears = parseFloat(this.elements.loanTenure.value);
+        const taxRate = parseFloat(this.elements.taxBracket.value);
+        
+        const monthlyRate = annualRate / 12 / 100;
+        const totalMonths = tenureYears * 12;
+        const emi = this.calculateEMI(loanAmount, annualRate, tenureYears);
+        const totalPayment = emi * totalMonths;
+        const totalInterest = totalPayment - loanAmount;
+        const annualTaxSaving = this.calculateTaxSavings(loanAmount / totalMonths * 12, 
+                                                        totalInterest / totalMonths * 12, taxRate);
+        const totalTaxSavings = annualTaxSaving * tenureYears;
+        const effectiveCost = totalInterest - totalTaxSavings;
+        
+        this.results = {
+          propertyPrice,
+          downPayment,
+          loanAmount,
+          emi: Math.round(emi),
+          totalPayment: Math.round(totalPayment),
+          totalInterest: Math.round(totalInterest),
+          totalTaxSavings: Math.round(totalTaxSavings),
+          effectiveCost: Math.round(effectiveCost),
+          annualRate,
+          tenureYears,
+          taxRate,
+          totalMonths
+        };
+        
+        this.displayResults();
+        this.showButtonStatus(this.elements.calculateBtn, 'Calculated!');
+      }
+
+      validateAllInputs() {
+        return ['propertyPrice', 'downPayment', 'interestRate'].every(
+          field => this.validateInput(field)
+        );
+      }
+
+      displayResults() {
+        const { emi, loanAmount, totalInterest, totalPayment, totalTaxSavings, effectiveCost, tenureYears, taxRate } = this.results;
+        
+        this.elements.resultSummary.innerHTML = `
+          <div class="result-item">
+            <span class="result-label">Monthly EMI</span>
+            <span class="result-value">₹${emi.toLocaleString()}</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Loan Amount</span>
+            <span class="result-value">₹${loanAmount.toLocaleString()}</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Total Interest</span>
+            <span class="result-value">₹${totalInterest.toLocaleString()}</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Effective Cost (After Tax)</span>
+            <span class="result-value">₹${effectiveCost.toLocaleString()}</span>
+          </div>
+        `;
+        
+        this.elements.taxSummary.innerHTML = `
+          <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+            <span>Annual Tax Savings (${taxRate}% bracket):</span>
+            <span class="result-value">₹${Math.round(this.results.totalTaxSavings / this.results.tenureYears).toLocaleString()}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span>Total Tax Benefits (${tenureYears} years):</span>
+            <span class="result-value">₹${totalTaxSavings.toLocaleString()}</span>
+          </div>
+        `;
+        
+        this.generateAmortization();
+        this.elements.results.classList.add('show');
+      }
+
+      generateAmortization() {
+        const tbody = this.elements.amortizationTableBody;
+        tbody.innerHTML = '';
+        
+        let balance = this.results.loanAmount;
+        const emi = this.results.emi;
+        const monthlyRate = this.results.annualRate / 12 / 100;
+        
+        for (let month = 1; month <= 12 && month <= this.results.totalMonths; month++) {
+          const interest = balance * monthlyRate;
+          const principal = emi - interest;
+          balance -= principal;
+          
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${month}</td>
+            <td>₹${emi.toLocaleString()}</td>
+            <td>₹${Math.round(principal).toLocaleString()}</td>
+            <td>₹${Math.round(interest).toLocaleString()}</td>
+            <td>₹${Math.max(0, Math.round(balance)).toLocaleString()}</td>
+          `;
+          tbody.appendChild(row);
+        }
+      }
+
+      reset() {
+        this.elements.propertyPrice.value = '';
+        this.elements.downPayment.value = '';
+        this.elements.downPaymentPercent.value = '';
+        this.elements.interestRate.value = '';
+        this.elements.loanTenure.value = '20';
+        this.elements.taxBracket.value = '5';
+        
+        document.querySelectorAll('.error').forEach(el => el.classList.add('hidden'));
+        this.elements.results.classList.remove('show');
+        this.elements.calculateBtn.disabled = true;
+        this.showButtonStatus(this.elements.resetBtn, 'Cleared!');
+      }
+
+      copyResults() {
+        const { propertyPrice, downPayment, loanAmount, emi, totalInterest, totalTaxSavings, effectiveCost } = this.results;
+        const text = `
+Mortgage Calculator Results
+Property Price: ₹${propertyPrice.toLocaleString()}
+Down Payment: ₹${downPayment.toLocaleString()}
+Loan Amount: ₹${loanAmount.toLocaleString()}
+Interest Rate: ${this.elements.interestRate.value}%
+Tenure: ${this.elements.loanTenure.value} years
+
+Monthly EMI: ₹${emi.toLocaleString()}
+Total Interest: ₹${totalInterest.toLocaleString()}
+Tax Savings: ₹${totalTaxSavings.toLocaleString()}
+Effective Cost: ₹${effectiveCost.toLocaleString()}
+        `.trim();
+        
+        navigator.clipboard.writeText(text).then(() => {
+          this.showButtonStatus(this.elements.copyBtn, 'Copied!');
+        });
+      }
+
+      printResults() {
+        window.print();
+      }
+
+      showButtonStatus(button, message) {
+        const originalText = button.textContent;
+        button.textContent = message;
+        button.className = 'button-status';
+        button.disabled = true;
+        
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.className = button.className.replace('button-status', '').trim();
+          button.disabled = false;
+        }, 1500);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      new MortgageCalculator();
+    });
+  </script>
+</body>
+</html>
+

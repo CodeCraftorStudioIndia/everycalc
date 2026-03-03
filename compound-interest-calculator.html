@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF--8">
+    <title>Compound Interest Calculator by EveryCalc – Free Online Calculator</title>
+    <meta name="description" content="Use the free Compound Interest Calculator by EveryCalc for fast, accurate results. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site">
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            font-family: var(--font-family);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        header, main, footer {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        h1, h2, h3 {
+            font-weight: 600;
+        }
+        h1 {
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            display: flex;
+            align-items: center;
+        }
+        h1 img {
+            width: 40px;
+            height: 40px;
+            margin-right: 1rem;
+        }
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--color-secondary);
+        }
+        .calculator {
+            background-color: var(--color-surface);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            outline: 2px solid var(--color-action);
+            border-color: var(--color-action);
+        }
+        .error-message {
+            color: var(--color-danger);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .btn-primary {
+            background-color: var(--color-action);
+            color: var(--color-bg);
+        }
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+        .btn-secondary {
+            background-color: var(--color-surface);
+            color: var(--color-primary);
+            border: 1px solid var(--color-border);
+        }
+        .btn-secondary:hover {
+            background-color: #e5e7eb;
+        }
+        .results {
+            margin-top: 2rem;
+            background-color: #f9fafb;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+            display: none;
+        }
+        .results h2 {
+            margin-top: 0;
+        }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        .result-label {
+            font-weight: 500;
+        }
+        .result-value {
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--color-success);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+        th, td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+        th {
+            background-color: var(--color-surface);
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--color-border);
+            color: var(--color-secondary);
+        }
+        footer nav {
+            margin: 1rem 0;
+        }
+        footer nav a {
+            color: var(--color-secondary);
+            text-decoration: none;
+            margin: 0 0.75rem;
+        }
+        footer nav a:hover {
+            text-decoration: underline;
+        }
+        .disclaimer {
+            font-size: 0.875rem;
+        }
+        .education, .examples, .faq {
+            margin-top: 3rem;
+        }
+        .faq-item {
+            margin-bottom: 1.5rem;
+        }
+        .faq-question {
+            font-weight: 600;
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Compound Interest Calculator by EveryCalc",
+      "applicationCategory": "CalculatorApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site"
+    }
+    </script>
+</head>
+<body>
+
+    <header>
+        <h1><img src="logo.png" alt="EveryCalc Logo">Compound Interest Calculator by EveryCalc</h1>
+        <p class="subtitle">Fast. Accurate. No distractions.</p>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Your Financial Future, Compounded</h2>
+            <p>Welcome to the Compound Interest Calculator by EveryCalc. This tool is designed for investors, savers, and financial planners who need a clear and precise understanding of how their money can grow over time. Compound interest is the principle of earning returns on both your initial investment and the accumulated interest from previous periods. It is a fundamental concept in personal finance, and understanding its power is the first step toward building substantial wealth. Whether you're planning for retirement, saving for a major purchase, or simply exploring investment scenarios, this calculator provides the accurate projections you need without unnecessary complexity. We focus on delivering a clean, fast, and reliable user experience to help you make informed financial decisions.</p>
+        </section>
+
+        <section class="calculator">
+            <form id="compound-interest-form">
+                <div class="form-group">
+                    <label for="initial-investment">Initial Investment ($)</label>
+                    <input type="number" id="initial-investment" required min="0" step="any">
+                    <p class="error-message" id="initial-investment-error">Please enter a valid positive number.</p>
+                </div>
+                <div class="form-group">
+                    <label for="monthly-contribution">Monthly Contribution ($)</label>
+                    <input type="number" id="monthly-contribution" min="0" step="any">
+                    <p class="error-message" id="monthly-contribution-error">Please enter a valid positive number.</p>
+                </div>
+                <div class="form-group">
+                    <label for="interest-rate">Annual Interest Rate (%)</label>
+                    <input type="number" id="interest-rate" required min="0" step="any">
+                    <p class="error-message" id="interest-rate-error">Please enter a valid positive number.</p>
+                </div>
+                <div class="form-group">
+                    <label for="compounding-frequency">Compounding Frequency</label>
+                    <select id="compounding-frequency">
+                        <option value="1">Annually</option>
+                        <option value="2">Semi-Annually</option>
+                        <option value="4">Quarterly</option>
+                        <option value="12" selected>Monthly</option>
+                        <option value="365">Daily</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="years">Length of Time (Years)</label>
+                    <input type="number" id="years" required min="1" step="1">
+                    <p class="error-message" id="years-error">Please enter a valid number of years (1 or more).</p>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="btn-primary" id="calculate-btn">Calculate</button>
+                    <button type="button" class="btn-secondary" id="reset-btn">Reset</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section">
+            <h2>Calculation Results</h2>
+            <div class="result-item">
+                <span class="result-label">Future Value</span>
+                <span class="result-value" id="future-value"></span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Total Contributions</span>
+                <span class="result-value" id="total-contributions"></span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Total Interest Earned</span>
+                <span class="result-value" id="total-interest"></span>
+            </div>
+            <div class="table-container">
+                <table id="amortization-table">
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th>Starting Balance</th>
+                            <th>Contributions</th>
+                            <th>Interest Earned</th>
+                            <th>Ending Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="button-group">
+                <button type="button" class="btn-secondary" id="copy-btn">Copy Results</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>Understanding the Results</h2>
+            <p>The numbers generated by the calculator provide a clear picture of your investment's growth trajectory. The 'Future Value' is the total amount your investment will be worth at the end of the specified period. This includes your initial investment, all your contributions, and the total interest earned. The 'Total Contributions' figure shows the total amount of money you have personally invested over the entire period. Finally, the 'Total Interest Earned' highlights the power of compounding by showing how much of the future value is pure profit from interest. The year-by-year breakdown in the table illustrates how your investment grows, with the interest earned each year increasing as the balance grows. This demonstrates the accelerating nature of compound interest.</p>
+
+            <h2>Formula & Methodology</h2>
+            <p>The calculator uses the standard formula for the future value of a series with compound interest. The core formula to calculate the future value (A) is: <strong>A = P(1 + r/n)^(nt)</strong>. In this formula, 'P' is the principal amount (the initial investment), 'r' is the annual interest rate in decimal form, 'n' is the number of times that interest is compounded per year, and 't' is the number of years the money is invested for. For calculations that include regular monthly contributions, a more complex formula is used which accounts for the future value of an ordinary annuity, compounded at the same rate. Our calculator processes these two components separately and then adds them together to give you the total future value. This ensures an accurate and transparent calculation of your potential earnings, reflecting both the growth of your initial lump sum and your ongoing contributions.</p>
+        </section>
+
+        <section class="examples">
+            <h2>Practical Examples</h2>
+            <div>
+                <h3>1. Retirement Savings</h3>
+                <p>Imagine a 25-year-old starting to save for retirement. They begin with an initial investment of $5,000 and contribute $300 every month. With an average annual interest rate of 7% compounded monthly, by the time they are 65 (a 40-year period), their investment would grow to approximately $793,650. Of this, their total contributions would be $149,000, meaning they would have earned over $644,000 in interest alone. This example highlights the immense power of starting early and being consistent.</p>
+            </div>
+            <div>
+                <h3>2. Saving for a House Deposit</h3>
+                <p>A couple wants to save for a house deposit over the next 5 years. They have an initial savings of $10,000 and can afford to save an additional $800 per month. They find a high-yield savings account that offers a 4% annual interest rate, compounded monthly. After 5 years, their savings would grow to approximately $64,650. Their total contributions would be $58,000, with the remaining amount being the interest earned. This shows how compound interest can help accelerate savings goals, even over a shorter time frame.</p>
+            </div>
+            <div>
+                <h3>3. The Cost of Waiting</h3>
+                <p>Consider two individuals: Alex starts investing $200 a month at age 25, while Ben starts investing $400 a month at age 35. Both earn a 6% annual return compounded monthly. By age 65, Alex, who started earlier with smaller contributions, will have an investment worth around $395,000. Ben, despite contributing double the monthly amount, will only have approximately $303,000. This stark difference is due to the extra 10 years of compounding that Alex's investment benefited from, underscoring the importance of time in the market.</p>
+            </div>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <p class="faq-question">What is the difference between simple and compound interest?</p>
+                <p>Simple interest is calculated only on the principal amount of a loan or deposit, while compound interest is calculated on the principal amount and also on the accumulated interest from previous periods. Essentially, with compound interest, you are earning "interest on your interest," which leads to exponential growth over time.</p>
+            </div>
+            <div class="faq-item">
+                <p class="faq-question">How does the compounding frequency affect my returns?</p>
+                <p>The compounding frequency is the number of times per year the accumulated interest is capitalized. The more frequently interest is compounded, the higher the effective annual rate and the more your investment will grow. For example, an investment with interest compounded daily will earn slightly more than the same investment with interest compounded annually, assuming the same nominal interest rate.</p>
+            </div>
+            <div class="faq-item">
+                <p class="faq-question">Can this calculator be used for loans?</p>
+                <p>While the underlying principle of compound interest applies to loans, this calculator is designed for investments. For loans, the interest is added to the amount you owe, and your payments reduce the principal and interest. Specific loan calculators, such as mortgage or auto loan calculators, are better suited for those scenarios as they account for amortization schedules.</p>
+            </div>
+            <div class="faq-item">
+                <p class="faq-question">What is a realistic interest rate to expect?</p>
+                <p>Expected interest rates vary widely depending on the type of investment. High-yield savings accounts might offer lower, more stable returns, while investments in the stock market have historically provided higher average returns but with greater volatility. It's important to research historical averages for the types of investments you are considering and to be aware that past performance is not a guarantee of future results.</p>
+            </div>
+             <div class="faq-item">
+                <p class="faq-question">Why is starting to save early so important?</p>
+                <p>Starting early is crucial because it gives your money more time to grow through the power of compounding. As seen in our examples, even small, consistent investments made over a long period can grow into a substantial sum, often outperforming larger investments made over a shorter period. The longer your money is invested, the more significant the impact of "interest on interest" becomes.</p>
+            </div>
+            <div class="faq-item">
+                <p class="faq-question">Does this calculator account for inflation?</p>
+                <p>This calculator does not factor in inflation, which is the rate at which the general level of prices for goods and services is rising, and subsequently, purchasing power is falling. To understand the real return on your investment, you would need to subtract the inflation rate from your investment's rate of return. For long-term planning, it's important to consider that the future value of your investment will have less purchasing power than it does today.</p>
+            </div>
+            <div class="faq-item">
+                <p class="faq-question">What types of accounts use compound interest?</p>
+                <p>Compound interest is a feature of many types of financial products. This includes high-yield savings accounts, certificates of deposit (CDs), and many investment accounts where dividends and capital gains are reinvested. The frequency of compounding can vary from daily to annually depending on the specific account.</p>
+            </div>
+            <div class="faq-item">
+                <p class="faq-question">What is the "Rule of 72"?</p>
+                <p>The Rule of 72 is a simplified way to estimate the number of years it will take for an investment to double in value. You simply divide 72 by the annual interest rate. For example, an investment with a 6% annual return would be expected to double in approximately 12 years (72 / 6 = 12). It's a useful mental shortcut, but it provides an approximation rather than a precise calculation.</p>
+            </div>
+        </section>
+
+        <section class="additional-insights">
+             <h2>Additional Insights</h2>
+             <p>When using this calculator, it's important to remember that the projections are based on the consistent inputs you provide. In reality, interest rates can fluctuate, and your ability to make contributions may change over time. For investments in assets like stocks or mutual funds, the annual return is an average, and actual year-to-year returns will vary. Therefore, it's wise to run multiple scenarios with different interest rates to understand a range of potential outcomes. Also, consider the impact of taxes on your investment gains, as this can affect your net returns. This calculator is a powerful tool for planning, but should be used as one part of a comprehensive financial strategy.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('compound-interest-form');
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const resultsSection = document.getElementById('results-section');
+
+            const initialInvestmentInput = document.getElementById('initial-investment');
+            const monthlyContributionInput = document.getElementById('monthly-contribution');
+            const interestRateInput = document.getElementById('interest-rate');
+            const yearsInput = document.getElementById('years');
+
+            const validateInput = (input, errorId) => {
+                const value = parseFloat(input.value);
+                const errorEl = document.getElementById(errorId);
+                if (isNaN(value) || value < 0) {
+                    errorEl.style.display = 'block';
+                    return false;
+                }
+                errorEl.style.display = 'none';
+                return true;
+            };
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const isInitialValid = validateInput(initialInvestmentInput, 'initial-investment-error');
+                const isMonthlyValid = validateInput(monthlyContributionInput, 'monthly-contribution-error');
+                const isRateValid = validateInput(interestRateInput, 'interest-rate-error');
+                const isYearsValid = validateInput(yearsInput, 'years-error') && parseFloat(yearsInput.value) >= 1;
+                if (!isYearsValid) {
+                    document.getElementById('years-error').style.display = 'block';
+                }
+
+                if (isInitialValid && isMonthlyValid && isRateValid && isYearsValid) {
+                    calculate();
+                    calculateBtn.textContent = 'Calculated!';
+                    setTimeout(() => {
+                        calculateBtn.textContent = 'Calculate';
+                    }, 2000);
+                }
+            });
+
+            resetBtn.addEventListener('click', function() {
+                form.reset();
+                resultsSection.style.display = 'none';
+                document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+            });
+
+            copyBtn.addEventListener('click', function() {
+                let resultsText = `Compound Interest Calculation Results:\n`;
+                resultsText += `Future Value: ${document.getElementById('future-value').textContent}\n`;
+                resultsText += `Total Contributions: ${document.getElementById('total-contributions').textContent}\n`;
+                resultsText += `Total Interest Earned: ${document.getElementById('total-interest').textContent}\n\n`;
+
+                const table = document.getElementById('amortization-table');
+                resultsText += `${table.rows[0].cells[0].textContent}\t${table.rows[0].cells[1].textContent}\t${table.rows[0].cells[2].textContent}\t${table.rows[0].cells[3].textContent}\t${table.rows[0].cells[4].textContent}\n`;
+                for (let i = 1; i < table.rows.length; i++) {
+                    resultsText += `${table.rows[i].cells[0].textContent}\t${table.rows[i].cells[1].textContent}\t${table.rows[i].cells[2].textContent}\t${table.rows[i].cells[3].textContent}\t${table.rows[i].cells[4].textContent}\n`;
+                }
+
+                navigator.clipboard.writeText(resultsText).then(() => {
+                    copyBtn.textContent = 'Copied!';
+                    setTimeout(() => {
+                        copyBtn.textContent = 'Copy Results';
+                    }, 2000);
+                });
+            });
+
+            function calculate() {
+                const P = parseFloat(initialInvestmentInput.value);
+                const PMT = parseFloat(monthlyContributionInput.value) || 0;
+                const r = parseFloat(interestRateInput.value) / 100;
+                const n = parseInt(document.getElementById('compounding-frequency').value);
+                const t = parseInt(yearsInput.value);
+
+                let totalContributions = P + (PMT * 12 * t);
+                let futureValue = 0;
+                let balance = P;
+                
+                const tableBody = document.getElementById('amortization-table').getElementsByTagName('tbody')[0];
+                tableBody.innerHTML = '';
+
+                let yearlyData = [];
+                let cumulativeInterest = 0;
+                
+                for (let year = 1; year <= t; year++) {
+                    let startingBalance = balance;
+                    let yearlyContributions = 0;
+                    let yearlyInterest = 0;
+
+                    for (let month = 1; month <= 12; month++) {
+                         balance += PMT;
+                         yearlyContributions += PMT;
+                         let monthlyInterest = balance * (r / 12);
+                         balance += monthlyInterest;
+                         yearlyInterest += monthlyInterest;
+                    }
+
+                    yearlyData.push({
+                        year: year,
+                        startingBalance: startingBalance,
+                        contributions: yearlyContributions,
+                        interest: yearlyInterest,
+                        endingBalance: balance
+                    });
+                     cumulativeInterest += yearlyInterest;
+                }
+
+                futureValue = balance;
+                totalContributions = P + (PMT * 12 * t);
+
+                document.getElementById('future-value').textContent = `$${futureValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                document.getElementById('total-contributions').textContent = `$${totalContributions.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                document.getElementById('total-interest').textContent = `$${(futureValue - totalContributions).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                
+                yearlyData.forEach(data => {
+                    let row = tableBody.insertRow();
+                    row.insertCell().textContent = data.year;
+                    row.insertCell().textContent = `$${data.startingBalance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    row.insertCell().textContent = `$${data.contributions.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    row.insertCell().textContent = `$${data.interest.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    row.insertCell().textContent = `$${data.endingBalance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                });
+
+                resultsSection.style.display = 'block';
+            }
+        });
+    </script>
+
+</body>
+</html>

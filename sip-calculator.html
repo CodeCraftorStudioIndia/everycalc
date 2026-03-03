@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- SEO Meta Tags -->
+    <title>SIP Calculator - Estimate Mutual Fund Returns | EveryCalc</title>
+    <meta name="description" content="Calculate your future wealth with EveryCalc's free SIP Calculator. Estimate maturity value, total investment, and wealth gain for your mutual fund investments instantly.">
+    <meta name="keywords" content="sip calculator, mutual fund calculator, investment returns, systematic investment plan, wealth calculator">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.everycalc.com/sip-calculator">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="SIP Calculator - Plan Your Wealth | EveryCalc">
+    <meta property="og:description" content="Get accurate estimates for your monthly SIP investments. Fast, free, and mobile-friendly.">
+    <meta property="og:image" content="logo.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "EveryCalc SIP Calculator",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "EveryCalc",
+        "logo": "https://www.everycalc.com/logo.png"
+      }
+    }
+    </script>
+
+    <style>
+        /* 
+         * DESIGN SYSTEM
+         */
+        :root {
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-500: #64748b;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+            --blue-600: #2563eb;
+            --emerald-500: #10b981;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --font-main: system-ui, -apple-system, sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: var(--font-main);
+            background-color: var(--slate-50);
+            color: var(--slate-700);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { width: 100%; max-width: 1000px; margin: 0 auto; padding: 0 1.5rem; }
+
+        /* HEADER */
+        .site-header {
+            background: #fff;
+            border-bottom: 1px solid var(--slate-200);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-wrap { display: flex; justify-content: space-between; align-items: center; }
+        .brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--slate-900); font-weight: 700; font-size: 1.25rem; }
+        .brand img { height: 32px; width: auto; }
+
+        /* HERO */
+        .hero { padding: 3rem 0 2rem; text-align: center; }
+        h1 { font-size: clamp(1.75rem, 5vw, 2.5rem); color: var(--slate-900); letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+        .hero p { color: var(--slate-500); font-size: 1.1rem; }
+
+        /* CALCULATOR GRID */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (max-width: 850px) {
+            .calc-grid { grid-template-columns: 1fr; }
+        }
+
+        /* CARD STYLING */
+        .card {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1px solid var(--slate-200);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+        }
+
+        .input-group { margin-bottom: 1.5rem; }
+        .label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        label { font-weight: 600; color: var(--slate-900); font-size: 0.95rem; }
+        .val-preview { color: var(--blue-600); font-weight: 700; font-size: 1.1rem; }
+
+        .input-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1.1rem;
+            border: 2px solid var(--slate-200);
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+        .input-control:focus { border-color: var(--blue-600); }
+
+        input[type="range"] {
+            width: 100%;
+            margin-top: 1rem;
+            accent-color: var(--blue-600);
+            cursor: pointer;
+        }
+
+        /* RESULTS AREA */
+        .results-pane {
+            background: var(--slate-900);
+            color: #fff;
+            border-radius: var(--radius);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .res-item { margin-bottom: 1.5rem; }
+        .res-label { font-size: 0.85rem; color: var(--slate-500); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+        .res-value { font-size: 1.75rem; font-weight: 800; }
+        .res-value.highlight { color: var(--emerald-500); font-size: 2.25rem; line-height: 1.2; }
+
+        /* CHART VIZ */
+        .viz-container {
+            margin-top: 1rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--slate-800);
+            text-align: center;
+        }
+        .chart-svg { width: 150px; height: 150px; transform: rotate(-90deg); margin: 0 auto; display: block; }
+        .chart-bg { fill: none; stroke: var(--slate-800); stroke-width: 20; }
+        .chart-fill { fill: none; stroke: var(--blue-600); stroke-width: 20; stroke-dasharray: 0 100; transition: stroke-dasharray 0.6s ease; stroke-linecap: round; }
+        
+        .legend { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; font-size: 0.8rem; }
+        .legend-item { display: flex; align-items: center; gap: 0.5rem; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+
+        /* CONTENT AREA */
+        .content { max-width: 800px; margin: 0 auto 5rem; }
+        .content h2 { color: var(--slate-900); margin: 2rem 0 1rem; }
+        .content p { margin-bottom: 1.2rem; }
+        .formula-box { background: var(--slate-100); padding: 1.5rem; border-radius: 8px; font-family: monospace; text-align: center; margin: 1.5rem 0; font-size: 1.1rem; }
+        .disclaimer { font-size: 0.85rem; color: var(--slate-500); border-top: 1px solid var(--slate-200); padding-top: 1.5rem; margin-top: 3rem; }
+
+        /* FOOTER */
+        footer { background: #fff; border-top: 1px solid var(--slate-200); padding: 3rem 0; text-align: center; }
+        .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap; }
+        .footer-links a { text-decoration: none; color: var(--slate-500); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container header-wrap">
+            <a href="/" class="brand">
+                <img src="logo.png" alt="EveryCalc">
+                <span>EveryCalc</span>
+            </a>
+            <nav><a href="/" style="text-decoration:none; color:var(--slate-700); font-size:0.9rem; font-weight:600;">Home</a></nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>SIP Calculator</h1>
+            <p>Calculate the wealth gain of your Systematic Investment Plan.</p>
+        </section>
+
+        <div class="calc-grid">
+            <!-- Inputs -->
+            <div class="card">
+                <div class="input-group">
+                    <div class="label-row">
+                        <label for="monthlyInv">Monthly Investment ($)</label>
+                        <span class="val-preview" id="previewMonthly">$5,000</span>
+                    </div>
+                    <input type="number" id="monthlyInv" class="input-control" value="5000">
+                    <input type="range" id="rangeMonthly" min="500" max="100000" step="500" value="5000">
+                </div>
+
+                <div class="input-group">
+                    <div class="label-row">
+                        <label for="returnRate">Expected Return Rate (% p.a)</label>
+                        <span class="val-preview" id="previewRate">12%</span>
+                    </div>
+                    <input type="number" id="returnRate" class="input-control" value="12" step="0.1">
+                    <input type="range" id="rangeRate" min="1" max="30" step="0.1" value="12">
+                </div>
+
+                <div class="input-group">
+                    <div class="label-row">
+                        <label for="duration">Investment Period (Years)</label>
+                        <span class="val-preview" id="previewYears">10 Yr</span>
+                    </div>
+                    <input type="number" id="duration" class="input-control" value="10">
+                    <input type="range" id="rangeYears" min="1" max="40" step="1" value="10">
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="results-pane">
+                <div class="res-item">
+                    <span class="res-label">Invested Amount</span>
+                    <div class="res-value" id="resInvested">$0</div>
+                </div>
+                <div class="res-item">
+                    <span class="res-label">Estimated Returns</span>
+                    <div class="res-value" id="resReturns">$0</div>
+                </div>
+                <div class="res-item">
+                    <span class="res-label">Total Maturity Value</span>
+                    <div class="res-value highlight" id="resTotal">$0</div>
+                </div>
+
+                <div class="viz-container">
+                    <svg class="chart-svg" viewBox="0 0 100 100">
+                        <circle class="chart-bg" cx="50" cy="50" r="40"></circle>
+                        <circle class="chart-fill" id="chartStroke" cx="50" cy="50" r="40"></circle>
+                    </svg>
+                    <div class="legend">
+                        <div class="legend-item"><span class="dot" style="background:var(--blue-600)"></span> Invested</div>
+                        <div class="legend-item"><span class="dot" style="background:var(--slate-800)"></span> Gain</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <article class="content">
+            <h2>What is a Systematic Investment Plan (SIP)?</h2>
+            <p>A SIP is a disciplined approach to investing in mutual funds. Instead of a large lump-sum investment, you contribute a fixed amount of money every month. This strategy allows you to benefit from "Rupee Cost Averaging" and the power of compounding over long durations.</p>
+            
+            <h2>How the SIP Formula Works</h2>
+            <p>The maturity amount of a SIP is calculated using the Future Value of an Annuity formula:</p>
+            <div class="formula-box">
+                M = P × ({[1 + i]^n – 1} / i) × (1 + i)
+            </div>
+            <p>Where: <br>
+                <strong>M</strong> = Maturity Value <br>
+                <strong>P</strong> = Monthly SIP Amount <br>
+                <strong>i</strong> = Periodic Rate of Interest (Annual Rate / 12 / 100) <br>
+                <strong>n</strong> = Number of installments (Years × 12)
+            </p>
+
+            <h2>Benefits of Using EveryCalc</h2>
+            <p>Our SIP calculator helps you visualize how small monthly savings grow into substantial wealth. By adjusting the expected return rate and duration, you can plan your financial goals—whether it's retirement, education, or buying a home—with realistic mathematical projections.</p>
+
+            <div class="disclaimer">
+                <strong>Disclaimer:</strong> This calculator provides mathematical estimates based on user inputs. Mutual fund investments are subject to market risks. Past performance is not an indicator of future results. Please consult with a certified financial advisor before making investment decisions.
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 EveryCalc. Precision Tools for Every Need.</p>
+            <div class="footer-links">
+                <a href="/privacy-policy">Privacy Policy</a>
+                <a href="/terms-conditions">Terms & Conditions</a>
+                <a href="/disclaimer">Disclaimer</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /**
+         * SIP Calculation Logic
+         * High-performance vanilla implementation
+         */
+        const SIPApp = (() => {
+            const inputs = {
+                monthly: document.getElementById('monthlyInv'),
+                rate: document.getElementById('returnRate'),
+                years: document.getElementById('duration'),
+                rMonthly: document.getElementById('rangeMonthly'),
+                rRate: document.getElementById('rangeRate'),
+                rYears: document.getElementById('rangeYears')
+            };
+
+            const previews = {
+                monthly: document.getElementById('previewMonthly'),
+                rate: document.getElementById('previewRate'),
+                years: document.getElementById('previewYears')
+            };
+
+            const displays = {
+                invested: document.getElementById('resInvested'),
+                returns: document.getElementById('resReturns'),
+                total: document.getElementById('resTotal'),
+                stroke: document.getElementById('chartStroke')
+            };
+
+            const format = (v) => new Intl.NumberFormat('en-US', { 
+                style: 'currency', 
+                currency: 'USD', 
+                maximumFractionDigits: 0 
+            }).format(v);
+
+            const calculate = () => {
+                const P = parseFloat(inputs.monthly.value) || 0;
+                const annualRate = parseFloat(inputs.rate.value) || 0;
+                const years = parseFloat(inputs.years.value) || 0;
+
+                const i = annualRate / 100 / 12;
+                const n = years * 12;
+
+                let maturityValue = 0;
+                if (i === 0) {
+                    maturityValue = P * n;
+                } else {
+                    // Formula: M = P × ({[1 + i]^n – 1} / i) × (1 + i)
+                    maturityValue = P * ((Math.pow(1 + i, n) - 1) / i) * (1 + i);
+                }
+
+                const totalInvested = P * n;
+                const estimatedReturns = Math.max(0, maturityValue - totalInvested);
+
+                // Update UI
+                displays.invested.textContent = format(totalInvested);
+                displays.returns.textContent = format(estimatedReturns);
+                displays.total.textContent = format(maturityValue);
+
+                // Update Previews
+                previews.monthly.textContent = format(P);
+                previews.rate.textContent = annualRate + '%';
+                previews.years.textContent = years + ' Yr';
+
+                // Update Viz (Stroke Dash Array for circle)
+                // Circumference is 2 * PI * r = 2 * 3.14 * 40 ≈ 251.2
+                if (maturityValue > 0) {
+                    const ratio = (totalInvested / maturityValue) * 251.2;
+                    displays.stroke.style.strokeDasharray = `${ratio} 251.2`;
+                }
+            };
+
+            const sync = (src, target) => {
+                target.value = src.value;
+                calculate();
+            };
+
+            const init = () => {
+                inputs.monthly.addEventListener('input', () => sync(inputs.monthly, inputs.rMonthly));
+                inputs.rMonthly.addEventListener('input', () => sync(inputs.rMonthly, inputs.monthly));
+                
+                inputs.rate.addEventListener('input', () => sync(inputs.rate, inputs.rRate));
+                inputs.rRate.addEventListener('input', () => sync(inputs.rRate, inputs.rate));
+                
+                inputs.years.addEventListener('input', () => sync(inputs.years, inputs.rYears));
+                inputs.rYears.addEventListener('input', () => sync(inputs.rYears, inputs.years));
+
+                calculate();
+            };
+
+            return { init };
+        })();
+
+        document.addEventListener('DOMContentLoaded', SIPApp.init);
+    </script>
+</body>
+</html>

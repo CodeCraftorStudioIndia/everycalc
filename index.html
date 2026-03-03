@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- SEO Meta Tags -->
+    <title>EveryCalc - Free Online Calculators & Tools for Finance, Math & Health</title>
+    <meta name="description" content="Simplicity meets accuracy. Access 50+ free, fast, and easy-to-use calculators for finance, math, health, conversions, and daily utilities at EveryCalc.">
+    <meta name="keywords" content="online calculator, free tools, finance calculator, math tools, bmi calculator, unit converter">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.everycalc.com/">
+
+    <!-- Social Media / Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="EveryCalc - Every Calculator in One Place">
+    <meta property="og:description" content="Calculate loans, BMI, percentages, and more instantly. Clean, fast, and free.">
+    <meta property="og:image" content="logo.png">
+    <meta property="og:url" content="https://www.everycalc.com/">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "name": "EveryCalc",
+          "url": "https://www.everycalc.com/",
+          "description": "Every Calculator in One Place.",
+          "publisher": {
+            "@type": "Organization",
+            "name": "EveryCalc",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.everycalc.com/logo.png"
+            }
+          }
+        },
+        {
+          "@type": "CollectionPage",
+          "name": "All Calculators",
+          "description": "Directory of free online calculators for finance, math, health, and conversions."
+        }
+      ]
+    }
+    </script>
+
+    <style>
+        /* 
+         * ------------------------------------------------------------------
+         * CORE VARIABLES & RESET
+         * ------------------------------------------------------------------
+         */
+        :root {
+            /* Palette: Professional, Trustworthy, Clean */
+            --color-primary: #0f172a;       /* Slate 900 */
+            --color-primary-light: #1e293b; /* Slate 800 */
+            --color-accent: #2563eb;        /* Royal Blue */
+            --color-accent-hover: #1d4ed8;
+            --color-text-main: #334155;     /* Slate 700 */
+            --color-text-muted: #64748b;    /* Slate 500 */
+            --color-bg-body: #f8fafc;       /* Slate 50 */
+            --color-bg-card: #ffffff;
+            --color-border: #e2e8f0;        /* Slate 200 */
+
+            /* Spacing & Typography */
+            --container-width: 1200px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --font-main: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+            --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-bg-body);
+            color: var(--color-text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* 
+         * ------------------------------------------------------------------
+         * UTILITIES & LAYOUT
+         * ------------------------------------------------------------------
+         */
+        .container {
+            width: 100%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Fluid Typography using clamp() */
+        h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: var(--color-primary); letter-spacing: -0.02em; line-height: 1.1; }
+        h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; color: var(--color-primary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+        h3 { font-size: 1.125rem; font-weight: 600; color: var(--color-primary); margin-bottom: 0.5rem; }
+        p { font-size: 1rem; color: var(--color-text-muted); }
+
+        /* 
+         * ------------------------------------------------------------------
+         * HEADER
+         * ------------------------------------------------------------------
+         */
+        .site-header {
+            background: var(--color-bg-card);
+            border-bottom: 1px solid var(--color-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .brand img {
+            height: 32px;
+            width: auto;
+        }
+
+        .brand span {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        /* 
+         * ------------------------------------------------------------------
+         * HERO SECTION
+         * ------------------------------------------------------------------
+         */
+        .hero {
+            padding: 4rem 0 3rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.25rem);
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+            max-width: 60ch;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Search Bar */
+        .search-wrapper {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            padding-left: 3rem;
+            font-size: 1rem;
+            border: 2px solid var(--color-border);
+            border-radius: 50px;
+            transition: all 0.2s ease;
+            outline: none;
+            background-color: var(--color-bg-card);
+        }
+
+        .search-input:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-muted);
+            pointer-events: none;
+        }
+
+        /* 
+         * ------------------------------------------------------------------
+         * CALCULATOR GRID
+         * ------------------------------------------------------------------
+         */
+        .category-section {
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .category-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .calc-card {
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            text-decoration: none;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* GPU Accelerated Hover */
+        .calc-card:hover, .calc-card:focus-visible {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--color-accent);
+            outline: none;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: #eff6ff;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: var(--color-accent);
+        }
+
+        .calc-card p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-top: 0.5rem;
+            /* Clamp description to 2 lines */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-arrow {
+            margin-top: auto;
+            padding-top: 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-accent);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.2s ease;
+        }
+
+        .calc-card:hover .card-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* 
+         * ------------------------------------------------------------------
+         * FOOTER
+         * ------------------------------------------------------------------
+         */
+        .site-footer {
+            background: var(--color-primary);
+            color: #cbd5e1;
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            color: #fff;
+            margin-bottom: 1.25rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        /* 
+         * ------------------------------------------------------------------
+         * ANIMATION & ACCESSIBILITY
+         * ------------------------------------------------------------------
+         */
+        @media (prefers-reduced-motion: no-preference) {
+            .reveal {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            }
+            .reveal.active {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 640px) {
+            .hero { padding: 2.5rem 0; }
+            .category-section { padding: 2rem 0; }
+            .calc-grid { grid-template-columns: 1fr; }
+            /* Make cards look clickable on mobile without hover */
+            .card-arrow { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Sprites (Hidden) - Optimization technique for fast loading icons -->
+    <svg style="display: none;">
+        <symbol id="icon-finance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></symbol>
+        <symbol id="icon-math" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><line x1="8" y1="12" x2="16" y2="12"></line><line x1="12" y1="8" x2="12" y2="16"></line></symbol>
+        <symbol id="icon-health" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></symbol>
+        <symbol id="icon-convert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></symbol>
+        <symbol id="icon-business" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></symbol>
+        <symbol id="icon-tech" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></symbol>
+        <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></symbol>
+    </svg>
+
+    <header class="site-header">
+        <div class="container header-content">
+            <a href="/" class="brand">
+                <img src="logo.png" alt="EveryCalc Logo" width="32" height="32">
+                <span>EveryCalc</span>
+            </a>
+            <!-- Simple Nav placeholder for future expansion -->
+            <nav>
+                <!-- Nav items can go here -->
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            
+            <!-- Hero Section -->
+            <section class="hero reveal">
+                <h1>Every Calculator in One Place.</h1>
+                <p>Simplicity meets accuracy. Whether you're planning your finances, solving math problems, or tracking your health, EveryCalc provides the tools you need without the clutter.</p>
+                
+                <div class="search-wrapper">
+                    <svg class="search-icon" width="20" height="20"><use href="#icon-search"/></svg>
+                    <input type="text" id="calc-search" class="search-input" placeholder="Search for a calculator (e.g., 'EMI', 'BMI')..." aria-label="Search calculators">
+                </div>
+            </section>
+
+            <!-- AdSense Placeholder: Top Banner (Not visible until ads added) -->
+            <!-- <div class="ad-slot" style="min-height: 90px; margin-bottom: 2rem;"></div> -->
+
+            <!-- 
+              ========================================
+              FINANCE & MONEY
+              ========================================
+            -->
+            <section class="category-section" id="finance">
+                <h2><svg width="28" height="28" class="text-accent"><use href="#icon-finance"/></svg> Finance & Money</h2>
+                <div class="calc-grid">
+                    <a href="/emi-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-finance"/></svg></div>
+                        <h3>EMI Calculator</h3>
+                        <p>Calculate your monthly Equated Monthly Installment for home, car, or personal loans.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/loan-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-finance"/></svg></div>
+                        <h3>Loan Calculator</h3>
+                        <p>Estimate your total interest payment and amortization schedule.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/mortgage-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-finance"/></svg></div>
+                        <h3>Mortgage Calculator</h3>
+                        <p>Plan your home purchase with detailed mortgage estimates including taxes.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/sip-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-finance"/></svg></div>
+                        <h3>SIP Calculator</h3>
+                        <p>Visualize the future value of your Systematic Investment Plans.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/compound-interest-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-finance"/></svg></div>
+                        <h3>Compound Interest Calculator</h3>
+                        <p>See the power of compounding on your savings and investments over time.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/simple-interest-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-finance"/></svg></div>
+                        <h3>Simple Interest Calculator</h3>
+                        <p>Quickly determine interest earned on principal amounts without compounding.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/credit-card-payoff-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-finance"/></svg></div>
+                        <h3>Credit Card Payoff Calculator</h3>
+                        <p>Find out how long it will take to become debt-free based on your payments.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/fd-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-finance"/></svg></div>
+                        <h3>FD Calculator</h3>
+                        <p>Check returns on Fixed Deposits with banks or post offices.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/rd-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-finance"/></svg></div>
+                        <h3>RD Calculator</h3>
+                        <p>Calculate the maturity amount for your Recurring Deposit investments.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/roi-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-finance"/></svg></div>
+                        <h3>ROI Calculator</h3>
+                        <p>Measure the profitability and efficiency of an investment portfolio.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 
+              ========================================
+              MATH
+              ========================================
+            -->
+            <section class="category-section" id="math">
+                <h2><svg width="28" height="28" class="text-accent"><use href="#icon-math"/></svg> Math</h2>
+                <div class="calc-grid">
+                    <a href="/percentage-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-math"/></svg></div>
+                        <h3>Percentage Calculator</h3>
+                        <p>Easily solve percentage changes, increases, and decreases.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/average-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-math"/></svg></div>
+                        <h3>Average Calculator</h3>
+                        <p>Compute the mean, median, and mode for a data set.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/ratio-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-math"/></svg></div>
+                        <h3>Ratio Calculator</h3>
+                        <p>Solve ratio proportions and scale numbers up or down.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/lcm-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-math"/></svg></div>
+                        <h3>LCM Calculator</h3>
+                        <p>Find the Least Common Multiple for a group of numbers.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/hcf-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-math"/></svg></div>
+                        <h3>HCF Calculator</h3>
+                        <p>Determine the Highest Common Factor (GCD) instantly.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/scientific-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-math"/></svg></div>
+                        <h3>Scientific Calculator</h3>
+                        <p>Perform complex operations including trig functions and logs.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/algebra-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-math"/></svg></div>
+                        <h3>Algebra Calculator</h3>
+                        <p>Solve linear and quadratic equations step-by-step.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/fraction-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-math"/></svg></div>
+                        <h3>Fraction Calculator</h3>
+                        <p>Add, subtract, multiply, and divide fractions easily.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/square-root-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-math"/></svg></div>
+                        <h3>Square Root Calculator</h3>
+                        <p>Find square roots and cube roots of any number.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/power-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-math"/></svg></div>
+                        <h3>Power Calculator</h3>
+                        <p>Calculate exponents and powers for mathematical equations.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 
+              ========================================
+              HEALTH & FITNESS
+              ========================================
+            -->
+            <section class="category-section" id="health">
+                <h2><svg width="28" height="28" class="text-accent"><use href="#icon-health"/></svg> Health & Fitness</h2>
+                <div class="calc-grid">
+                    <a href="/bmi-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-health"/></svg></div>
+                        <h3>BMI Calculator</h3>
+                        <p>Check your Body Mass Index to understand your weight category.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/bmr-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-health"/></svg></div>
+                        <h3>BMR Calculator</h3>
+                        <p>Calculate Basal Metabolic Rate to know calories burned at rest.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/calorie-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-health"/></svg></div>
+                        <h3>Calorie Calculator</h3>
+                        <p>Estimate daily caloric needs for weight maintenance or loss.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/body-fat-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-health"/></svg></div>
+                        <h3>Body Fat Calculator</h3>
+                        <p>Estimate your total body fat percentage based on measurements.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/ideal-weight-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-health"/></svg></div>
+                        <h3>Ideal Weight Calculator</h3>
+                        <p>Find the healthy weight range for your height and age.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 
+              ========================================
+              CONVERSION
+              ========================================
+            -->
+            <section class="category-section" id="conversion">
+                <h2><svg width="28" height="28" class="text-accent"><use href="#icon-convert"/></svg> Conversion</h2>
+                <div class="calc-grid">
+                    <a href="/age-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-convert"/></svg></div>
+                        <h3>Age Calculator</h3>
+                        <p>Calculate your exact age in years, months, and days.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/time-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-convert"/></svg></div>
+                        <h3>Time Calculator</h3>
+                        <p>Add or subtract hours and minutes between two times.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/date-difference-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-convert"/></svg></div>
+                        <h3>Date Difference Calculator</h3>
+                        <p>Find the number of days between two specific dates.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/currency-converter" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-convert"/></svg></div>
+                        <h3>Currency Converter</h3>
+                        <p>Convert exchange rates between major global currencies.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/length-converter.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-convert"/></svg></div>
+                        <h3>Length Converter</h3>
+                        <p>Convert between meters, feet, inches, kilometers, and miles.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/weight-converter.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-convert"/></svg></div>
+                        <h3>Weight Converter</h3>
+                        <p>Switch between kilograms, pounds, ounces, and grams.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/temperature-converter.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-convert"/></svg></div>
+                        <h3>Temperature Converter</h3>
+                        <p>Convert Celsius, Fahrenheit, and Kelvin instantly.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/speed-converter.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-convert"/></svg></div>
+                        <h3>Speed Converter</h3>
+                        <p>Convert MPH, KPH, Knots, and Mach numbers.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/area-converter.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-convert"/></svg></div>
+                        <h3>Area Converter</h3>
+                        <p>Convert square meters, acres, hectares, and square feet.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/volume-converter.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-convert"/></svg></div>
+                        <h3>Volume Converter</h3>
+                        <p>Convert liters, gallons, cups, and milliliters.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                </div>
+            </section>
+
+             <!-- 
+              ========================================
+              BUSINESS & UTILITY
+              ========================================
+            -->
+            <section class="category-section" id="business">
+                <h2><svg width="28" height="28" class="text-accent"><use href="#icon-business"/></svg> Business & Utility</h2>
+                <div class="calc-grid">
+                    <a href="/gst-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-business"/></svg></div>
+                        <h3>GST Calculator</h3>
+                        <p>Calculate Goods and Services Tax inclusive or exclusive amounts.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/salary-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-business"/></svg></div>
+                        <h3>Salary Calculator</h3>
+                        <p>Convert hourly wages to annual salary and vice-versa.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/income-tax-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-business"/></svg></div>
+                        <h3>Income Tax Calculator</h3>
+                        <p>Estimate your annual income tax liability.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/profit-margin-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-business"/></svg></div>
+                        <h3>Profit Margin Calculator</h3>
+                        <p>Determine net profit margins and markup percentages.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/break-even-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-business"/></svg></div>
+                        <h3>Break-Even Calculator</h3>
+                        <p>Find the sales volume needed to cover costs.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/discount-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-business"/></svg></div>
+                        <h3>Discount Calculator</h3>
+                        <p>Calculate final price after sales discounts are applied.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/tip-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-business"/></svg></div>
+                        <h3>Tip Calculator</h3>
+                        <p>Split bills and calculate tips for dining out.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                </div>
+            </section>
+
+             <!-- 
+              ========================================
+              TECH & MISC
+              ========================================
+            -->
+            <section class="category-section" id="tech">
+                <h2><svg width="28" height="28" class="text-accent"><use href="#icon-tech"/></svg> Tech & Misc</h2>
+                <div class="calc-grid">
+                    <a href="/binary-to-decimal-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-tech"/></svg></div>
+                        <h3>Binary to Decimal Calculator</h3>
+                        <p>Translate binary code into decimal numbers and back.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/ip-subnet-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-tech"/></svg></div>
+                        <h3>IP Subnet Calculator</h3>
+                        <p>Calculate IP ranges, masks, and subnets for networking.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/data-transfer-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-tech"/></svg></div>
+                        <h3>Data Transfer Calculator</h3>
+                        <p>Estimate time required to upload or download files.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/password-strength-checker.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-tech"/></svg></div>
+                        <h3>Password Strength Checker</h3>
+                        <p>Test the complexity and security of your passwords.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/fuel-cost-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-tech"/></svg></div>
+                        <h3>Fuel Cost Calculator</h3>
+                        <p>Estimate the trip cost based on mileage and gas prices.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/electricity-bill-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-tech"/></svg></div>
+                        <h3>Electricity Bill Calculator</h3>
+                        <p>Estimate monthly energy costs based on appliance usage.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/pregnancy-calculator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-tech"/></svg></div>
+                        <h3>Pregnancy Calculator</h3>
+                        <p>Estimate due dates and track pregnancy milestones.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                    <a href="/random-number-generator.html" class="calc-card reveal">
+                        <div class="card-icon"><svg width="24" height="24"><use href="#icon-tech"/></svg></div>
+                        <h3>Random Number Generator</h3>
+                        <p>Generate truly random numbers within a specific range.</p>
+                        <span class="card-arrow">Calculate Now &rarr;</span>
+                    </a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="brand" style="margin-bottom: 1rem; filter: brightness(100);">
+                        <img src="logo.png" alt="EveryCalc" width="24" height="24">
+                        <span style="color: white; font-size: 1.1rem;">EveryCalc</span>
+                    </div>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">Your trusted destination for accurate, free online calculators and tools. Simplifying numbers for everyone.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="/privacy.html">Privacy Policy</a></li>
+                        <li><a href="/terms.html">Terms & Conditions</a></li>
+                        <li><a href="/disclaimer.html">Disclaimer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="#finance">Finance</a></li>
+                        <li><a href="#math">Math</a></li>
+                        <li><a href="#health">Health</a></li>
+                        <li><a href="#conversion">Conversion</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; <script>document.write(new Date().getFullYear())</script> EveryCalc. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- 
+      ========================================
+      LOGIC: SEARCH + ANIMATIONS
+      ========================================
+    -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. INTERSECTION OBSERVER FOR SCROLL ANIMATIONS
+            // Uses IntersectionObserver API for high performance
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); // Only animate once
+                    }
+                });
+            }, observerOptions);
+
+            const revealElements = document.querySelectorAll('.reveal');
+            revealElements.forEach(el => observer.observe(el));
+
+            // 2. SEARCH FILTER LOGIC
+            // Client-side filtering for instant feedback
+            const searchInput = document.getElementById('calc-search');
+            const cards = document.querySelectorAll('.calc-card');
+            const categories = document.querySelectorAll('.category-section');
+
+            if(searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const term = e.target.value.toLowerCase().trim();
+
+                    cards.forEach(card => {
+                        const title = card.querySelector('h3').textContent.toLowerCase();
+                        const desc = card.querySelector('p').textContent.toLowerCase();
+                        
+                        // Toggle visibility based on search match
+                        if(title.includes(term) || desc.includes(term)) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+
+                    // Hide empty categories to clean up UI
+                    categories.forEach(section => {
+                        const visibleCards = section.querySelectorAll('.calc-card[style="display: flex;"], .calc-card:not([style*="display: none"])');
+                        if (visibleCards.length === 0) {
+                            section.style.display = 'none';
+                        } else {
+                            section.style.display = 'block';
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

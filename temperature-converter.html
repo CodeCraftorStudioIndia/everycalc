@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Temperature Calculator by EveryCalc – Free Online Unit Converter</title>
+    <meta name="description" content="Use the free Temperature Calculator by EveryCalc for fast, accurate conversions between Celsius, Fahrenheit, and Kelvin. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/temperature-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Temperature Calculator by EveryCalc",
+      "applicationCategory": "Converter",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/temperature-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main { flex-grow: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+        header, footer { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--color-primary); }
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        li { margin-bottom: 0.5rem; }
+        strong { font-weight: 600; color: var(--color-primary); }
+
+        .subtitle { font-size: var(--font-size-md); color: var(--color-secondary); font-weight: 400; margin: 0; }
+        section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: end; }
+        @media (min-width: 640px) { .calculator-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .form-group input, .form-group select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; grid-column: span 3; }
+        .btn {
+            padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-size: var(--font-size-base);
+            font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex;
+            align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .result-card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        @media (min-width: 640px) { .result-card-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .result-card {
+            text-align: center; padding: 1.5rem; background-color: var(--color-bg);
+            border: 1px solid var(--color-border); border-radius: 0.375rem;
+        }
+
+        .result-card-label { font-weight: 500; color: var(--color-secondary); margin-bottom: 0.25rem; display: block; }
+        .result-card-value { font-size: var(--font-size-xl); font-weight: 700; color: var(--color-action); }
+        
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { margin-top: 1.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+
+        .faq-item { margin-bottom: 1.5rem; }
+        
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        /* Print Styles */
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            .result-card { border: 1px solid #ccc; background-color: transparent !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { overflow: visible; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>Temperature Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Instant & Accurate Temperature Conversions</h2>
+            <p>The Temperature Calculator by EveryCalc is your go-to tool for quick and precise conversions between Celsius, Fahrenheit, and Kelvin. Temperature is a fundamental measurement in countless aspects of life, from meteorology and cooking to scientific research and industrial processes. This calculator eliminates the need for complex manual formulas, providing immediate and reliable results. With its confident, minimal design and a focus on high contrast, it ensures optimal readability and a distraction-free experience. Trust EveryCalc to deliver professional-grade conversions, adhering to modern web standards and accessibility guidelines, so you can focus on what matters most, be it a precise recipe or critical scientific data.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Enter Your Temperature</h2>
+            <form id="temperature-form" novalidate>
+                <div class="calculator-grid">
+                    <div class="form-group">
+                        <label for="amount">Temperature Value</label>
+                        <input type="number" id="amount" name="amount" placeholder="e.g., 25" required>
+                        <p class="error-message" id="amount-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="from-unit">From Unit</label>
+                        <select id="from-unit" name="from-unit" aria-describedby="from-unit-error">
+                            <option value="celsius" selected>Celsius (°C)</option>
+                            <option value="fahrenheit">Fahrenheit (°F)</option>
+                            <option value="kelvin">Kelvin (K)</option>
+                        </select>
+                        <p class="error-message" id="from-unit-error"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="to-unit">To Unit</label>
+                        <select id="to-unit" name="to-unit" aria-describedby="to-unit-error">
+                            <option value="fahrenheit">Fahrenheit (°F)</option>
+                            <option value="celsius">Celsius (°C)</option>
+                            <option value="kelvin">Kelvin (K)</option>
+                        </select>
+                        <p class="error-message" id="to-unit-error"></p>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">Convert Temperature</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Conversion Result</h2>
+            <div class="result-card-grid">
+                 <div class="result-card">
+                    <span class="result-card-label">Original Value</span>
+                    <span class="result-card-value" id="original-value-display">0 °C</span>
+                </div>
+                 <div class="result-card">
+                    <span class="result-card-label">Converted Value</span>
+                    <span class="result-card-value" id="converted-value-display">0 °F</span>
+                </div>
+            </div>
+             <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Results</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Summary</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use the Temperature Calculator</h2>
+            <p>Using the EveryCalc Temperature Calculator is simple and effective. Follow these straightforward steps to convert any temperature value:</p>
+            <ol>
+                <li><strong>Enter Temperature Value:</strong> Input the numerical value of the temperature you wish to convert into the "Temperature Value" field. This field accepts both positive and negative numbers, reflecting the full range of temperature scales.</li>
+                <li><strong>Select "From Unit":</strong> From the "From Unit" dropdown list, choose the current unit of your temperature measurement. Options include Celsius (°C), Fahrenheit (°F), and Kelvin (K).</li>
+                <li><strong>Select "To Unit":</strong> From the "To Unit" dropdown list, select the unit you wish to convert your temperature to.</li>
+            </ol>
+            <p>Once your temperature value and both units are selected, click the "Convert Temperature" button. The results section will instantly display your original value with its unit and the precisely converted value in the target unit. To perform a new calculation, use the "Reset" button to clear all fields.</p>
+            <h3>Accuracy Tips</h3>
+            <p>Ensure your input temperature is accurate. For scientific or precise applications, enter values with appropriate decimal places. The calculator maintains high precision in its internal calculations, typically providing results to several decimal places. Double-check your "From" and "To" unit selections, as selecting the wrong unit is a common source of conversion errors. Remember that Kelvin is an absolute scale, meaning it has no negative values.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formula & Methodology</h2>
+            <p>The Temperature Calculator uses standard, universally accepted formulas for converting between Celsius, Fahrenheit, and Kelvin. To maintain consistency and minimize errors, all conversions are performed by first converting the input temperature to **Celsius** as an intermediate step, and then converting from Celsius to the desired "To Unit".</p>
+            
+            <h3>Core Conversion Formulas:</h3>
+            <ul>
+                <li><strong>Celsius to Fahrenheit:</strong> <code>F = (C × 9/5) + 32</code></li>
+                <li><strong>Fahrenheit to Celsius:</strong> <code>C = (F - 32) × 5/9</code></li>
+                <li><strong>Celsius to Kelvin:</strong> <code>K = C + 273.15</code></li>
+                <li><strong>Kelvin to Celsius:</strong> <code>C = K - 273.15</code></li>
+            </ul>
+
+            <h3>The Two-Step Conversion Process:</h3>
+            <p>Regardless of the chosen "From Unit" and "To Unit", the calculator follows this logical flow:</p>
+            <ol>
+                <li><strong>Convert "From Unit" to Celsius:</strong>
+                    <ul>
+                        <li>If "From Unit" is Celsius, no conversion is needed.</li>
+                        <li>If "From Unit" is Fahrenheit, apply <code>C = (F - 32) × 5/9</code>.</li>
+                        <li>If "From Unit" is Kelvin, apply <code>C = K - 273.15</code>.</li>
+                    </ul>
+                </li>
+                <li><strong>Convert from Celsius to "To Unit":</strong>
+                    <ul>
+                        <li>If "To Unit" is Celsius, no conversion is needed (the value is already in Celsius).</li>
+                        <li>If "To Unit" is Fahrenheit, apply <code>F = (C × 9/5) + 32</code>.</li>
+                        <li>If "To Unit" is Kelvin, apply <code>K = C + 273.15</code>.</li>
+                    </ul>
+                </li>
+            </ol>
+            <p>This systematic approach ensures that every conversion, regardless of the direct path, utilizes robust and proven formulas for accurate results. The precision is typically maintained to two decimal places for practical readability.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical Temperature Conversion Examples</h2>
+            <p>Here are several real-world scenarios demonstrating how the Temperature Calculator handles various unit conversions, providing instant and precise results.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Value</th>
+                            <th>From Unit</th>
+                            <th>To Unit</th>
+                            <th>Converted Value (Approx.)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Weather Forecast</strong></td>
+                            <td>25</td>
+                            <td>celsius</td>
+                            <td>fahrenheit</td>
+                            <td>77.00 °F</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Oven Setting</strong></td>
+                            <td>350</td>
+                            <td>fahrenheit</td>
+                            <td>celsius</td>
+                            <td>176.67 °C</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scientific Experiment</strong></td>
+                            <td>298.15</td>
+                            <td>kelvin</td>
+                            <td>celsius</td>
+                            <td>25.00 °C</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Body Temperature</strong></td>
+                            <td>98.6</td>
+                            <td>fahrenheit</td>
+                            <td>kelvin</td>
+                            <td>310.15 K</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>*Note: All results are rounded to two decimal places for display purposes, but the internal calculations maintain high precision.</p>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. What is the main difference between Celsius, Fahrenheit, and Kelvin?</h3>
+                <p><strong>Celsius (°C)</strong> is widely used globally and sets water's freezing point at 0°C and boiling point at 100°C. <strong>Fahrenheit (°F)</strong> is primarily used in the United States, with water freezing at 32°F and boiling at 212°F. <strong>Kelvin (K)</strong> is an absolute thermodynamic scale used in science and engineering, where 0 K (absolute zero) is the point at which all thermal motion ceases.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. Is there a minimum or maximum temperature I can convert?</h3>
+                <p>For Celsius and Fahrenheit, there isn't a theoretical maximum, but there is a theoretical minimum: **absolute zero**. This is approximately -273.15°C or -459.67°F, which corresponds to 0 K. Attempting to convert values below absolute zero on Celsius or Fahrenheit scales might yield mathematically valid but physically impossible Kelvin results. Our calculator allows any numerical input.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. Why is Kelvin considered an "absolute" temperature scale?</h3>
+                <p>Kelvin is absolute because its zero point (0 K) represents absolute zero, the theoretical temperature at which particles have the minimum possible thermal energy. Unlike Celsius and Fahrenheit, which have arbitrary zero points, Kelvin's scale directly relates to the energy content of matter, making it fundamental in physics and chemistry.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. What are common mistakes when converting temperatures manually?</h3>
+                <p>Common mistakes include confusing the order of operations (e.g., adding 32 before multiplying by 9/5 for C to F), using incorrect fractions (e.g., 5/9 instead of 9/5 in the wrong place), or forgetting the 273.15 offset for Kelvin conversions. Our calculator automates these steps to prevent such errors.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. How many decimal places are displayed in the results?</h3>
+                <p>The calculator typically displays results rounded to two decimal places. This level of precision is generally sufficient for most practical applications. Internal calculations maintain higher precision to ensure accuracy before final rounding for display.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. Why is Celsius the intermediate unit for all conversions?</h3>
+                <p>Celsius is chosen as the intermediate unit because it is the most widely used metric temperature scale globally and has a straightforward relationship with Kelvin (an offset of 273.15). Converting everything to a common base (Celsius) and then to the target unit simplifies the logic and minimizes the chance of cumulative rounding errors.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. Are there other temperature scales not included here?</h3>
+                <p>Yes, other historical or specialized temperature scales exist, such as Rankine, Réaumur, and Delisle. However, Celsius, Fahrenheit, and Kelvin are the three most common and universally recognized scales for general and scientific purposes, which is why our calculator focuses on them.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. How important is accurate temperature conversion in daily life?</h3>
+                <p>Accurate temperature conversion is more critical than often realized. In cooking, precise oven temperatures ensure food safety and quality. In travel, understanding local weather temperatures is essential for packing and comfort. In healthcare, converting body temperature between units is vital for accurate diagnosis and patient care, especially across different countries.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: Temperature and Human Perception</h2>
+            <p>While temperature is a precise physical quantity, our human perception of it is subjective and influenced by many factors beyond the thermometer reading. Concepts like "wind chill" (how cold it feels due to wind) and "heat index" (how hot it feels due to humidity) illustrate this difference. Even the same temperature can feel dramatically different depending on humidity, wind speed, sun exposure, and individual acclimatization. For instance, 25°C might feel pleasantly warm in a dry climate but uncomfortably muggy in a humid one. This highlights that while accurate conversion tools are crucial for objective measurement, interpreting that measurement for personal comfort or safety often requires considering environmental context and individual physiological responses. The calculator gives you the objective data; your experience provides the subjective understanding.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+        <p class="disclaimer">
+            EveryCalc does not store or share any personal data.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const amountInput = document.getElementById('amount');
+            const fromUnitSelect = document.getElementById('from-unit');
+            const toUnitSelect = document.getElementById('to-unit');
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const resultsSection = document.getElementById('results-section');
+
+            const amountError = document.getElementById('amount-error');
+
+            const originalValueDisplay = document.getElementById('original-value-display');
+            const convertedValueDisplay = document.getElementById('converted-value-display');
+
+            // Conversion functions (intermediate to Celsius)
+            const convertToCelsius = (value, unit) => {
+                switch (unit) {
+                    case 'celsius': return value;
+                    case 'fahrenheit': return (value - 32) * 5 / 9;
+                    case 'kelvin': return value - 273.15;
+                    default: return NaN;
+                }
+            };
+
+            // Conversion functions (from Celsius)
+            const convertFromCelsius = (valueC, unit) => {
+                switch (unit) {
+                    case 'celsius': return valueC;
+                    case 'fahrenheit': return (valueC * 9 / 5) + 32;
+                    case 'kelvin': return valueC + 273.15;
+                    default: return NaN;
+                }
+            };
+
+            const getUnitSymbol = (unit) => {
+                switch (unit) {
+                    case 'celsius': return '°C';
+                    case 'fahrenheit': return '°F';
+                    case 'kelvin': return 'K';
+                    default: return '';
+                }
+            };
+
+            const validateInput = (inputEl, errorEl) => {
+                errorEl.style.display = 'none';
+                inputEl.style.borderColor = 'var(--color-border)';
+                const value = parseFloat(inputEl.value);
+
+                if (inputEl.value.trim() === '' || isNaN(value)) {
+                    errorEl.textContent = 'Please enter a valid number.';
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                return true;
+            };
+
+            const performConversion = () => {
+                const amount = parseFloat(amountInput.value);
+                const fromUnit = fromUnitSelect.value;
+                const toUnit = toUnitSelect.value;
+
+                if (fromUnit === toUnit) {
+                    originalValueDisplay.textContent = `${amount.toFixed(2)} ${getUnitSymbol(fromUnit)}`;
+                    convertedValueDisplay.textContent = `${amount.toFixed(2)} ${getUnitSymbol(toUnit)}`;
+                    return;
+                }
+
+                // Step 1: Convert amount from 'fromUnit' to Celsius
+                const amountInCelsius = convertToCelsius(amount, fromUnit);
+
+                // Step 2: Convert amount from Celsius to 'toUnit'
+                const convertedAmount = convertFromCelsius(amountInCelsius, toUnit);
+
+                originalValueDisplay.textContent = `${amount.toFixed(2)} ${getUnitSymbol(fromUnit)}`;
+                convertedValueDisplay.textContent = `${convertedAmount.toFixed(2)} ${getUnitSymbol(toUnit)}`;
+            };
+
+            calculateBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                calculateBtn.textContent = 'Calculating...';
+                calculateBtn.disabled = true;
+
+                setTimeout(() => {
+                    let allValid = true;
+                    allValid = validateInput(amountInput, amountError) && allValid;
+
+                    if (allValid) {
+                        performConversion();
+                        resultsSection.style.display = 'block';
+                        resultsSection.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        resultsSection.style.display = 'none'; // Hide results if validation fails
+                    }
+                    
+                    calculateBtn.textContent = 'Convert Temperature';
+                    calculateBtn.disabled = false;
+                }, 500);
+            });
+
+            resetBtn.addEventListener('click', function() {
+                document.getElementById('temperature-form').reset();
+                amountInput.style.borderColor = 'var(--color-border)';
+                amountError.style.display = 'none';
+                fromUnitSelect.style.borderColor = 'var(--color-border)';
+                toUnitSelect.style.borderColor = 'var(--color-border)';
+                resultsSection.style.display = 'none';
+                
+                // Reset select options to initial defaults
+                fromUnitSelect.value = 'celsius';
+                toUnitSelect.value = 'fahrenheit';
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const summaryText = `Temperature Conversion Report by EveryCalc:\n` +
+                                  `----------------------------------------\n` +
+                                  `Original Value: ${originalValueDisplay.textContent}\n` +
+                                  `Converted Value: ${convertedValueDisplay.textContent}\n` +
+                                  `From Unit: ${fromUnitSelect.options[fromUnitSelect.selectedIndex].text}\n` +
+                                  `To Unit: ${toUnitSelect.options[toUnitSelect.selectedIndex].text}\n` +
+                                  `----------------------------------------\n` +
+                                  `Calculated at https://everycalc.site`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

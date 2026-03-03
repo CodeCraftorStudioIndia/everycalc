@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Speed Calculator by EveryCalc – Free Online Unit Converter</title>
+<meta name="description" content="Use the free Speed Calculator by EveryCalc for fast, accurate conversions between km/h, mph, m/s, ft/s, knots, and more. Built for clarity, performance, and trust.">
+<meta name="author" content="EveryCalc">
+<meta name="robots" content="index, follow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="canonical" href="https://everycalc.site/speed-calculator">
+<link rel="icon" href="logo.png" type="image/png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Speed Calculator by EveryCalc",
+  "applicationCategory": "Converter",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://everycalc.site/speed-calculator"
+}
+</script>
+
+<style>
+    :root {
+        --color-bg: #ffffff;
+        --color-surface: #f5f5f5;
+        --color-primary: #111111;
+        --color-secondary: #6b7280;
+        --color-accent: #000000;
+        --color-action: #2563eb;
+        --color-success: #16a34a;
+        --color-warning: #d97706;
+        --color-danger: #dc2626;
+        --color-border: #e5e7eb;
+
+        --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        --line-height-base: 1.6;
+
+        --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+        --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+        --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+        --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+        --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+        font-family: var(--font-family-base);
+        line-height: var(--line-height-base);
+        font-weight: 400;
+        background-color: var(--color-bg);
+        color: var(--color-primary);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    main { flex-grow: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+    header, footer { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+    
+    header {
+        text-align: center;
+        border-bottom: 1px solid var(--color-border);
+        padding-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    header img { width: 48px; height: 48px; }
+    header .header-text { text-align: left; }
+
+    h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--color-primary); }
+    h1 { font-size: var(--font-size-xl); }
+    h2 { font-size: var(--font-size-lg); }
+    h3 { font-size: var(--font-size-md); font-weight: 600; }
+    p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+    a { color: var(--color-action); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+    li { margin-bottom: 0.5rem; }
+    strong { font-weight: 600; color: var(--color-primary); }
+
+    .subtitle { font-size: var(--font-size-md); color: var(--color-secondary); font-weight: 400; margin: 0; }
+    section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+    section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    
+    .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: end; }
+    @media (min-width: 640px) { .calculator-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+    
+    .form-group input, .form-group select {
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--color-border);
+        border-radius: 0.375rem;
+        font-size: var(--font-size-base);
+        font-family: var(--font-family-base);
+        width: 100%;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        background-color: var(--color-bg);
+    }
+    
+    .form-group input:focus, .form-group select:focus {
+        outline: none;
+        border-color: var(--color-action);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+    
+    .button-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; grid-column: span 3; }
+    .btn {
+        padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-size: var(--font-size-base);
+        font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex;
+        align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+    .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+    .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+    .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+    .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+    
+    .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+    .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+    
+    .result-card-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    @media (min-width: 640px) { .result-card-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .result-card {
+        text-align: center; padding: 1.5rem; background-color: var(--color-bg);
+        border: 1px solid var(--color-border); border-radius: 0.375rem;
+    }
+
+    .result-card-label { font-weight: 500; color: var(--color-secondary); margin-bottom: 0.25rem; display: block; }
+    .result-card-value { font-size: var(--font-size-xl); font-weight: 700; color: var(--color-action); }
+    
+    .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+    
+    .table-container { margin-top: 1.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+    th { font-weight: 600; background-color: var(--color-surface); }
+    tr:last-child td { border-bottom: none; }
+
+    .faq-item { margin-bottom: 1.5rem; }
+    
+    footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+    footer nav { margin: 1rem 0; }
+    footer nav a { margin: 0 0.75rem; }
+    .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+    
+    /* Print Styles */
+    @media print {
+        body { color: #000; background-color: #fff; }
+        header, footer, .button-group, .result-actions { display: none; }
+        main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+        .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+        .results { display: block !important; }
+        .result-card { border: 1px solid #ccc; background-color: transparent !important; }
+        h1, h2, h3 { page-break-after: avoid; }
+        .table-container { overflow: visible; border: 1px solid #ccc; }
+    }
+</style>
+</head>
+<body>
+<header>
+<img src="logo.png" alt="EveryCalc Logo">
+<div class="header-text">
+<h1>Speed Calculator by EveryCalc</h1>
+<p class="subtitle">Fast. Accurate. No distractions.</p>
+</div>
+</header>
+<main>
+    <section class="intro">
+        <h2>Effortless Unit Conversion for Speed</h2>
+        <p>The Speed Calculator by EveryCalc is a versatile and precise tool designed to simplify conversions between various units of speed. From tracking athletic performance and understanding vehicle velocities to scientific calculations and aviation, converting between kilometers per hour, miles per hour, meters per second, feet per second, knots, and more can often be cumbersome. Our calculator eliminates guesswork and manual calculations, providing instant, accurate results for all your needs. Built with a confident, minimal design and a focus on high contrast, it ensures optimal readability and a distraction-free experience. Trust EveryCalc to deliver reliable conversions with the professionalism of a senior frontend engineer, adhering to modern web standards and accessibility guidelines.</p>
+    </section>
+
+    <section class="calculator" aria-labelledby="calculator-heading">
+        <h2 id="calculator-heading">Enter Your Values</h2>
+        <form id="speed-form" novalidate>
+            <div class="calculator-grid">
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" name="amount" placeholder="e.g., 60" required min="0">
+                    <p class="error-message" id="amount-error"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="from-unit">From Unit</label>
+                    <select id="from-unit" name="from-unit" aria-describedby="from-unit-error">
+                        <option value="km/h" selected>Kilometers per Hour (km/h)</option>
+                        <option value="mph">Miles per Hour (mph)</option>
+                        <option value="m/s">Meters per Second (m/s)</option>
+                        <option value="ft/s">Feet per Second (ft/s)</option>
+                        <option value="knot">Knot (kn)</option>
+                    </select>
+                    <p class="error-message" id="from-unit-error"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="to-unit">To Unit</label>
+                    <select id="to-unit" name="to-unit" aria-describedby="to-unit-error">
+                        <option value="mph">Miles per Hour (mph)</option>
+                        <option value="km/h">Kilometers per Hour (km/h)</option>
+                        <option value="m/s">Meters per Second (m/s)</option>
+                        <option value="ft/s">Feet per Second (ft/s)</option>
+                        <option value="knot">Knot (kn)</option>
+                    </select>
+                    <p class="error-message" id="to-unit-error"></p>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary" id="calculate-btn">Convert Speed</button>
+                    <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <section class="results" id="results-section" aria-live="polite">
+        <h2>Conversion Result</h2>
+        <div class="result-card-grid">
+             <div class="result-card">
+                <span class="result-card-label">Original Value</span>
+                <span class="result-card-value" id="original-value-display">0 km/h</span>
+            </div>
+             <div class="result-card">
+                <span class="result-card-label">Converted Value</span>
+                <span class="result-card-value" id="converted-value-display">0 mph</span>
+            </div>
+        </div>
+         <div class="result-actions">
+            <button type="button" class="btn btn-secondary" id="copy-btn">Copy Results</button>
+            <button type="button" class="btn btn-secondary" onclick="window.print()">Print Summary</button>
+        </div>
+    </section>
+
+    <section class="education">
+        <h2>How to Use the Speed Calculator</h2>
+        <p>Using the EveryCalc Speed Calculator is a simple, three-step process designed for maximum efficiency:</p>
+        <ol>
+            <li><strong>Enter Amount:</strong> Input the numerical value of the speed you wish to convert into the "Amount" field. This should be a non-negative number.</li>
+            <li><strong>Select "From Unit":</strong> From the "From Unit" dropdown list, choose the current unit of your speed measurement. The list includes common metric (km/h, m/s) and imperial (mph, ft/s) units, as well as nautical knots.</li>
+            <li><strong>Select "To Unit":</strong> From the "To Unit" dropdown list, select the unit you wish to convert your speed to.</li>
+        </ol>
+        <p>Once your amount and both units are selected, click the "Convert Speed" button. The results section will instantly display your original value with its unit and the precisely converted value in the target unit. To perform a new calculation, use the "Reset" button to clear all fields.</p>
+        <h3>Accuracy Tips</h3>
+        <p>Always ensure your input amount is a non-negative number. The calculator handles floating-point numbers, allowing for precise measurements. Double-check your "From" and "To" unit selections to prevent errors, especially between similar-sounding units. The calculator provides results with a high degree of precision, typically up to 5-7 decimal places, depending on the scale of the conversion.</p>
+    </section>
+
+    <section class="formula">
+        <h2>Formula & Methodology</h2>
+        <p>The Speed Calculator operates on a robust and straightforward methodology, using a single base unit for all intermediate conversions to ensure accuracy. This prevents compounding errors that can occur when converting directly between two arbitrary units without a common reference point.</p>
+        
+        <h3>The Base Unit: Meters per Second (m/s)</h3>
+        <p>All input values are first converted to **meters per second (m/s)**, which is the SI derived unit for speed. This makes the conversion process consistent and reliable. The conversion factors to m/s are as follows:</p>
+        <ul>
+            <li>1 kilometer per hour (km/h) = <code>1000 m / 3600 s</code> = <code>1 / 3.6 m/s</code> ≈ 0.27777778 m/s</li>
+            <li>1 mile per hour (mph) = <code>1609.344 m / 3600 s</code> ≈ 0.44704 m/s</li>
+            <li>1 meter per second (m/s) = 1 m/s</li>
+            <li>1 foot per second (ft/s) = <code>0.3048 m / 1 s</code> = 0.3048 m/s</li>
+            <li>1 knot (kn) = 1 nautical mile per hour = <code>1852 m / 3600 s</code> ≈ 0.51444444 m/s</li>
+        </ul>
+
+        <h3>The Conversion Process:</h3>
+        <p>The calculation follows a simple two-step process:</p>
+        <ol>
+            <li><strong>Convert from "From Unit" to Meters per Second (m/s):</strong> The input `Amount` is multiplied by its corresponding factor to get its equivalent value in m/s.
+                <br><code>Value_in_m/s = Amount × Factor_from_FromUnit_to_m/s</code></li>
+            <li><strong>Convert from Meters per Second (m/s) to "To Unit":</strong> The `Value_in_m/s` is then divided by the factor that converts the "To Unit" into m/s.
+                <br><code>Converted_Amount = Value_in_m/s / Factor_from_ToUnit_to_m/s</code></li>
+        </ol>
+        <p>For example, to convert 100 kilometers per hour (km/h) to miles per hour (mph):</p>
+        <ul>
+            <li>Step 1: Convert 100 km/h to m/s: <code>100 km/h × (1/3.6) m/s per km/h ≈ 27.777778 m/s</code></li>
+            <li>Step 2: Convert 27.777778 m/s to mph: <code>27.777778 m/s / 0.44704 m/s per mph ≈ 62.137 mph</code></li>
+        </ul>
+        <p>This systematic approach guarantees that all conversions are accurate and consistent, regardless of the units involved.</p>
+    </section>
+    
+    <section class="examples">
+        <h2>Practical Speed Conversion Examples</h2>
+        <p>Here are several real-world scenarios demonstrating how the Speed Calculator handles various unit conversions, providing instant and precise results.</p>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>Amount</th>
+                        <th>From Unit</th>
+                        <th>To Unit</th>
+                        <th>Converted Amount (Approx.)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Car Speed Limit</strong></td>
+                        <td>120</td>
+                        <td>km/h</td>
+                        <td>mph</td>
+                        <td>74.56 mph</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Running Pace</strong></td>
+                        <td>10</td>
+                        <td>m/s</td>
+                        <td>km/h</td>
+                        <td>36.00 km/h</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aircraft Speed</strong></td>
+                        <td>500</td>
+                        <td>mph</td>
+                        <td>knot</td>
+                        <td>434.50 kn</td>
+                    </tr>
+                     <tr>
+                        <td><strong>River Current Flow</strong></td>
+                        <td>3</td>
+                        <td>ft/s</td>
+                        <td>m/s</td>
+                        <td>0.91 m/s</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p>*Note: All results are rounded for display purposes, but the internal calculations maintain high precision.</p>
+    </section>
+
+    <section class="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <h3>1. What is the difference between speed and velocity?</h3>
+            <p>Speed is a scalar quantity, meaning it only describes how fast an object is moving (magnitude). Velocity is a vector quantity, describing both how fast an object is moving and in what direction (magnitude and direction). This calculator converts units of speed.</p>
+        </div>
+         <div class="faq-item">
+            <h3>2. Is there a limit to the speed values I can convert?</h3>
+            <p>The calculator uses standard JavaScript floating-point numbers, which can handle a very wide range of values. For practical purposes, you can convert extremely large (like light speed) or small speeds. However, beyond about 15-17 significant digits, floating-point precision might introduce minute rounding errors, though this is rarely an issue for everyday use.</p>
+        </div>
+         <div class="faq-item">
+            <h3>3. Why is "meters per second" chosen as the base unit for conversions?</h3>
+            <p>Meters per second (m/s) is the coherent derived unit of speed in the International System of Units (SI). Using it as an intermediate base unit for all conversions ensures mathematical consistency and minimizes potential cumulative rounding errors that could arise from converting directly between disparate units.</p>
+        </div>
+         <div class="faq-item">
+            <h3>4. What is a "knot" and where is it primarily used?</h3>
+            <p>A knot (kn) is a unit of speed equal to one nautical mile per hour (approximately 1.852 kilometers per hour or 1.151 miles per hour). It is primarily used in nautical (shipping) and aeronautical (aviation) navigation to measure the speed of vessels, aircraft, and ocean currents.</p>
+        </div>
+         <div class="faq-item">
+            <h3>5. What are common mistakes when doing speed conversions manually?</h3>
+            <p>Common mistakes include incorrect conversion factors between different distance or time units, especially when mixing metric and imperial systems (e.g., confusing statute miles with nautical miles, or forgetting to convert hours to seconds). Our calculator automates these steps to prevent such errors.</p>
+        </div>
+        <div class="faq-item">
+            <h3>6. Why is "kilometers per hour" the default "From Unit" and "miles per hour" the default "To Unit"?</h3>
+            <p>Kilometers per hour (km/h) is a widely used metric unit for vehicle speed globally. Miles per hour (mph) is the primary unit for vehicle speed in countries like the United States and the UK. Setting these as defaults addresses a common conversion need between these two prevalent systems.</p>
+        </div>
+        <div class="faq-item">
+            <h3>7. Can this calculator account for relativistic speeds (near light speed)?</h3>
+            <p>No, this calculator performs classical Newtonian speed conversions. At speeds approaching the speed of light, relativistic effects (as described by Einstein's theory of relativity) become significant, and simple linear conversions no longer apply. This calculator is for everyday, non-relativistic speeds.</p>
+        </div>
+        <div class="faq-item">
+            <h3>8. What is a conversion factor?</h3>
+            <p>A conversion factor is a numerical ratio that relates one unit of measurement to another. For example, the conversion factor from km/h to m/s is 1/3.6. These factors are essential for accurately changing units without altering the actual quantity being measured.</p>
+        </div>
+    </section>
+    
+    <section class="insights">
+        <h2>Additional Insights: The Impact of Speed in Modern Life</h2>
+        <p>Speed is an integral concept that governs many aspects of modern life, from efficient transportation networks to high-speed data transfer. Accurate measurement and conversion of speed units are crucial for safety, planning, and innovation. For example, in competitive sports, marginal differences in m/s can separate winners from losers. In space exploration, precise speeds are critical for orbital mechanics. Even in daily commuting, understanding speed limits in different units (e.g., mph vs. km/h) is vital for adherence to traffic laws and personal safety. The continuous push for faster processing in technology, from CPU clock speeds to network bandwidth, underscores speed's pervasive influence. This calculator provides a foundational tool for navigating and understanding this essential physical quantity in its various expressions.</p>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 EveryCalc. All rights reserved.</p>
+    <nav>
+        <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+        <a href="https://everycalc.site/terms-of-service">Terms</a>
+        <a href="https://everycalc.site/contact">Contact</a>
+    </nav>
+    <p class="disclaimer">
+        This calculator provides estimates for informational purposes only.
+        Always consult a qualified professional for critical decisions.
+    </p>
+    <p class="disclaimer">
+        EveryCalc does not store or share any personal data.
+    </p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const amountInput = document.getElementById('amount');
+        const fromUnitSelect = document.getElementById('from-unit');
+        const toUnitSelect = document.getElementById('to-unit');
+        const calculateBtn = document.getElementById('calculate-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const resultsSection = document.getElementById('results-section');
+
+        const amountError = document.getElementById('amount-error');
+
+        const originalValueDisplay = document.getElementById('original-value-display');
+        const convertedValueDisplay = document.getElementById('converted-value-display');
+
+        // Conversion factors to meters per second (m/s) - the base unit
+        // 1 km/h = 1000m / 3600s = 1/3.6 m/s
+        // 1 mph = 1609.344m / 3600s
+        // 1 ft/s = 0.3048m / 1s
+        // 1 knot = 1 nautical mile / 1 hour = 1852m / 3600s
+        const conversionFactorsToMs = {
+            'm/s': 1,
+            'km/h': 1 / 3.6,           // 0.2777777777777778
+            'mph': 0.44704,            // Exactly 1609.344 / 3600
+            'ft/s': 0.3048,
+            'knot': 1852 / 3600         // 0.5144444444444445
+        };
+
+        const validateInput = (inputEl, errorEl, min = 0) => {
+            errorEl.style.display = 'none';
+            inputEl.style.borderColor = 'var(--color-border)';
+            const value = parseFloat(inputEl.value);
+
+            if (inputEl.value.trim() === '' || isNaN(value) || value < min) {
+                errorEl.textContent = 'Please enter a non-negative amount.';
+                errorEl.style.display = 'block';
+                inputEl.style.borderColor = 'var(--color-danger)';
+                return false;
+            }
+            return true;
+        };
+
+        const performConversion = () => {
+            const amount = parseFloat(amountInput.value);
+            const fromUnit = fromUnitSelect.value;
+            const toUnit = toUnitSelect.value;
+
+            if (fromUnit === toUnit) {
+                originalValueDisplay.textContent = `${amount} ${fromUnit}`;
+                convertedValueDisplay.textContent = `${amount} ${toUnit}`;
+                return;
+            }
+
+            // Step 1: Convert amount from 'fromUnit' to meters per second
+            const amountInMs = amount * conversionFactorsToMs[fromUnit];
+
+            // Step 2: Convert amount from meters per second to 'toUnit'
+            const convertedAmount = amountInMs / conversionFactorsToMs[toUnit];
+
+            originalValueDisplay.textContent = `${amount} ${fromUnit}`;
+            // Display up to 7 decimal places for precision, but strip trailing zeros if not needed
+            convertedValueDisplay.textContent = `${parseFloat(convertedAmount.toFixed(7))} ${toUnit}`;
+        };
+
+        calculateBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            calculateBtn.textContent = 'Calculating...';
+            calculateBtn.disabled = true;
+
+            setTimeout(() => {
+                let allValid = true;
+                allValid = validateInput(amountInput, amountError) && allValid;
+
+                if (allValid) {
+                    performConversion();
+                    resultsSection.style.display = 'block';
+                    resultsSection.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    resultsSection.style.display = 'none'; // Hide results if validation fails
+                }
+                
+                calculateBtn.textContent = 'Convert Speed';
+                calculateBtn.disabled = false;
+            }, 500);
+        });
+
+        resetBtn.addEventListener('click', function() {
+            document.getElementById('speed-form').reset();
+            amountInput.style.borderColor = 'var(--color-border)';
+            amountError.style.display = 'none';
+            fromUnitSelect.style.borderColor = 'var(--color-border)';
+            toUnitSelect.style.borderColor = 'var(--color-border)';
+            resultsSection.style.display = 'none';
+            
+            // Reset select options to initial defaults
+            fromUnitSelect.value = 'km/h';
+            toUnitSelect.value = 'mph';
+        });
+
+        copyBtn.addEventListener('click', function() {
+            const summaryText = `Speed Conversion Report by EveryCalc:\n` +
+                              `----------------------------------------\n` +
+                              `Original Value: ${originalValueDisplay.textContent}\n` +
+                              `Converted Value: ${convertedValueDisplay.textContent}\n` +
+                              `From Unit: ${fromUnitSelect.options[fromUnitSelect.selectedIndex].text}\n` +
+                              `To Unit: ${toUnitSelect.options[toUnitSelect.selectedIndex].text}\n` +
+                              `----------------------------------------\n` +
+                              `Calculated at https://everycalc.site`;
+            
+            navigator.clipboard.writeText(summaryText).then(() => {
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                copyBtn.style.backgroundColor = 'var(--color-success)';
+                copyBtn.style.color = 'var(--color-bg)';
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.style.backgroundColor = '';
+                    copyBtn.style.color = '';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy summary: ', err);
+            });
+        });
+    });
+</script>
+</body>
+</html>

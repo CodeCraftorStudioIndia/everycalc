@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calorie Calculator by EveryCalc – Free Online Calculator</title>
+    <meta name="description" content="Use the free Calorie Calculator by EveryCalc to estimate your daily calorie needs for weight maintenance, loss, or gain. Built for clarity, performance, and trust.">
+    <meta name="author" content="EveryCalc">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://everycalc.site/calorie-calculator">
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Calorie Calculator by EveryCalc",
+      "applicationCategory": "HealthAndFitness",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "url": "https://everycalc.site/calorie-calculator"
+    }
+    </script>
+
+    <style>
+        :root {
+            --color-bg: #ffffff;
+            --color-surface: #f5f5f5;
+            --color-primary: #111111;
+            --color-secondary: #6b7280;
+            --color-accent: #000000;
+            --color-action: #2563eb;
+            --color-success: #16a34a;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+
+            --color-border: #e5e7eb;
+
+            --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            --line-height-base: 1.6;
+
+            --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.96rem);
+            --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.33rem);
+            --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.77rem);
+            --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.36rem);
+            --font-size-xl: clamp(1.95rem, 1.56vw + 1.56rem, 3.15rem);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-family-base);
+            line-height: var(--line-height-base);
+            font-weight: 400;
+            background-color: var(--color-bg);
+            color: var(--color-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main { flex-grow: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+
+        header, footer { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        header {
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        header img { width: 48px; height: 48px; }
+        header .header-text { text-align: left; }
+
+        h1, h2, h3 { font-weight: 700; line-height: 1.2; margin-bottom: 1rem; color: var(--color-primary); }
+        h1 { font-size: var(--font-size-xl); }
+        h2 { font-size: var(--font-size-lg); }
+        h3 { font-size: var(--font-size-md); font-weight: 600; }
+        p { font-size: var(--font-size-base); margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        a { color: var(--color-action); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--color-secondary); opacity: 0.9; }
+        li { margin-bottom: 0.5rem; }
+        strong { font-weight: 600; color: var(--color-primary); }
+
+        .subtitle { font-size: var(--font-size-md); color: var(--color-secondary); font-weight: 400; margin: 0; }
+        section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+        section:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media (min-width: 640px) {
+            .calculator-grid { grid-template-columns: repeat(3, 1fr); }
+            .grid-span-3 { grid-column: span 3; }
+        }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 0.5rem; color: var(--color-primary); }
+        
+        .input-unit-group { display: flex; gap: 0.5rem; position: relative; }
+        .input-unit-group input { padding-right: 3rem; }
+        .input-unit-group .unit-label {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-secondary);
+            font-weight: 500;
+            font-size: var(--font-size-base);
+        }
+
+        .form-group input, .form-group select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 0.375rem;
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: var(--color-bg);
+        }
+        
+        .form-group input[type="radio"] + label {
+            padding: 0.75rem 1rem; border: 1px solid var(--color-border); border-radius: 0.375rem;
+            text-align: center; cursor: pointer; transition: all 0.2s;
+            background-color: var(--color-surface); font-weight: 400; margin-bottom: 0;
+        }
+        .form-group input[type="radio"]:checked + label {
+            background-color: var(--color-accent); color: var(--color-bg); border-color: var(--color-accent);
+        }
+        .gender-radio-group { display: flex; gap: 1rem; }
+        .gender-radio-group > div { flex: 1; }
+        .gender-radio-group input[type="radio"] { display: none; }
+        
+        .form-group select:focus, .form-group input:focus {
+            outline: none;
+            border-color: var(--color-action);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .error-message { color: var(--color-danger); font-size: var(--font-size-sm); margin-top: 0.25rem; min-height: 1.2em; display: none; }
+        
+        .unit-toggle { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .unit-toggle label {
+            padding: 0.5rem 1rem; border: 1px solid var(--color-border); border-radius: 0.375rem;
+            cursor: pointer; font-weight: 500; transition: all 0.2s; background-color: var(--color-surface);
+        }
+        .unit-toggle input[type="radio"] { display: none; }
+        .unit-toggle input[type="radio"]:checked + label {
+            background-color: var(--color-accent); color: var(--color-bg); border-color: var(--color-accent);
+        }
+        
+        .button-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+        .btn {
+            padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; font-size: var(--font-size-base);
+            font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex;
+            align-items: center; justify-content: center; gap: 0.5rem;
+        }
+        .btn:active { transform: translateY(1px); }
+        .btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .btn-primary { background-color: var(--color-accent); color: var(--color-bg); }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-secondary { background-color: var(--color-surface); color: var(--color-primary); border: 1px solid var(--color-border); }
+        .btn-secondary:hover:not(:disabled) { background-color: #e5e7eb; }
+        
+        .results { background-color: var(--color-surface); padding: 2rem; border-radius: 0.5rem; display: none; }
+        .results h2 { margin-top: 0; border-bottom: 2px solid var(--color-border); padding-bottom: 1rem; }
+        
+        .calorie-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        @media (min-width: 640px) { .calorie-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .calorie-card {
+            text-align: center; padding: 1rem; background-color: var(--color-bg);
+            border: 1px solid var(--color-border); border-radius: 0.375rem;
+        }
+
+        .calorie-card.maintenance { grid-column: span 1; }
+        .calorie-card.loss { grid-column: span 1; border: 2px solid var(--color-success); }
+        .calorie-card.gain { grid-column: span 1; }
+        @media (max-width: 639px) { .calorie-card.maintenance { grid-column: span 3; } }
+
+        .card-title { font-weight: 600; color: var(--color-primary); margin-bottom: 0.25rem; }
+        .card-value { font-size: var(--font-size-lg); font-weight: 700; color: var(--color-action); }
+        .card-value.loss-color { color: var(--color-success); }
+        .card-value.gain-color { color: var(--color-warning); }
+        .card-subtitle { font-size: var(--font-size-sm); color: var(--color-secondary); margin-top: 0.5rem; }
+        
+        .result-actions { margin-top: 1.5rem; display: flex; gap: 1rem; }
+        
+        .table-container { margin-top: 1.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--color-border); border-radius: 0.375rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+        th { font-weight: 600; background-color: var(--color-surface); }
+        tr:last-child td { border-bottom: none; }
+
+        .faq-item { margin-bottom: 1.5rem; }
+        
+        footer { text-align: center; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-secondary); }
+        footer nav { margin: 1rem 0; }
+        footer nav a { margin: 0 0.75rem; }
+        .disclaimer { font-size: var(--font-size-sm); max-width: 600px; margin: 1rem auto 0; }
+        
+        /* Print Styles */
+        @media print {
+            body { color: #000; background-color: #fff; }
+            header, footer, .unit-toggle, .button-group, .result-actions { display: none; }
+            main, section { border: none !important; padding: 0 !important; margin: 0 0 2rem 0 !important; }
+            .calculator, .results { padding: 0 !important; background-color: transparent !important; }
+            .results { display: block !important; }
+            .calorie-card { border: 1px solid #ccc; background-color: transparent !important; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .table-container { overflow: visible; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="EveryCalc Logo">
+        <div class="header-text">
+            <h1>Calorie Calculator by EveryCalc</h1>
+            <p class="subtitle">Fast. Accurate. No distractions.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Determine Your Daily Calorie Needs</h2>
+            <p>The Calorie Calculator by EveryCalc is your essential tool for crafting a data-driven diet plan, whether your goal is to maintain, lose, or gain weight. This calculator goes beyond simple Basal Metabolic Rate (BMR) by factoring in your activity level and desired outcome to estimate your Total Daily Energy Expenditure (TDEE). Precision in calorie counting is the cornerstone of effective body composition change. By providing you with clear, reliable calorie targets, this utility transforms your health goals from guesswork into a focused, measurable strategy. Built with accessibility and performance in mind, EveryCalc ensures you get the most accurate and actionable numbers for your body.</p>
+        </section>
+
+        <section class="calculator" aria-labelledby="calculator-heading">
+            <h2 id="calculator-heading">Enter Your Details & Goal</h2>
+            
+            <div class="unit-toggle grid-span-3">
+                <input type="radio" id="unit-metric" name="units" value="metric" checked>
+                <label for="unit-metric">Metric (kg, cm)</label>
+                <input type="radio" id="unit-imperial" name="units" value="imperial">
+                <label for="unit-imperial">Imperial (lbs, ft/in)</label>
+            </div>
+
+            <form id="calorie-form" novalidate>
+                <div class="calculator-grid">
+                    
+                    <div class="form-group grid-span-3">
+                        <label>Gender</label>
+                        <div class="gender-radio-group">
+                             <div>
+                                <input type="radio" id="gender-male" name="gender" value="male" checked>
+                                <label for="gender-male">Male</label>
+                             </div>
+                             <div>
+                                <input type="radio" id="gender-female" name="gender" value="female">
+                                <label for="gender-female">Female</label>
+                             </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" name="age" placeholder="e.g., 30" required min="15" max="100">
+                        <p class="error-message" id="age-error"></p>
+                    </div>
+
+                    <!-- Metric Inputs -->
+                    <div class="form-group metric-input">
+                        <label for="weight-kg">Weight (kg)</label>
+                        <div class="input-unit-group">
+                            <input type="number" id="weight-kg" name="weight-kg" placeholder="e.g., 75" required min="1">
+                            <span class="unit-label">kg</span>
+                        </div>
+                        <p class="error-message" id="weight-kg-error"></p>
+                    </div>
+                    <div class="form-group metric-input">
+                        <label for="height-cm">Height (cm)</label>
+                        <div class="input-unit-group">
+                            <input type="number" id="height-cm" name="height-cm" placeholder="e.g., 175" required min="1">
+                            <span class="unit-label">cm</span>
+                        </div>
+                        <p class="error-message" id="height-cm-error"></p>
+                    </div>
+
+                    <!-- Imperial Inputs (Initially Hidden) -->
+                    <div class="form-group imperial-input" style="display: none;">
+                        <label for="weight-lbs">Weight (lbs)</label>
+                        <div class="input-unit-group">
+                            <input type="number" id="weight-lbs" name="weight-lbs" placeholder="e.g., 165" required min="1" disabled>
+                            <span class="unit-label">lbs</span>
+                        </div>
+                        <p class="error-message" id="weight-lbs-error"></p>
+                    </div>
+                    <div class="form-group imperial-input" style="display: none;">
+                        <label for="height-ft">Height (ft)</label>
+                        <div class="input-unit-group" style="gap: 0.5rem;">
+                            <input type="number" id="height-ft" name="height-ft" placeholder="ft" required min="1" max="8" disabled>
+                            <span class="unit-label" style="position: static; transform: none; padding-left: 0.25rem;">ft</span>
+                             <input type="number" id="height-in" name="height-in" placeholder="in" required min="0" max="11" disabled>
+                             <span class="unit-label" style="position: static; transform: none; padding-left: 0.25rem;">in</span>
+                        </div>
+                        <p class="error-message" id="height-ft-error"></p>
+                    </div>
+
+                    <div class="form-group grid-span-3">
+                        <label for="activity">Daily Activity Level</label>
+                        <select id="activity" name="activity" required>
+                            <option value="1.2">Sedentary (little or no exercise)</option>
+                            <option value="1.375">Lightly Active (light exercise/sports 1-3 days/week)</option>
+                            <option value="1.55" selected>Moderately Active (moderate exercise/sports 3-5 days/week)</option>
+                            <option value="1.725">Very Active (hard exercise/sports 6-7 days/week)</option>
+                            <option value="1.9">Extremely Active (hard daily exercise/physical job)</option>
+                        </select>
+                    </div>
+
+                    <div class="button-group grid-span-3">
+                        <button type="submit" class="btn btn-primary" id="calculate-btn">Calculate Calorie Goals</button>
+                        <button type="button" class="btn btn-secondary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="results" id="results-section" aria-live="polite">
+            <h2>Your Daily Calorie Targets (kcal)</h2>
+            <div class="calorie-grid">
+                 <div class="calorie-card maintenance">
+                    <p class="card-title">Maintenance</p>
+                    <p class="card-value" id="maintenance-value">0</p>
+                    <p class="card-subtitle">Maintain current weight</p>
+                </div>
+                 <div class="calorie-card loss">
+                    <p class="card-title">Weight Loss</p>
+                    <p class="card-value loss-color" id="loss-value">0</p>
+                    <p class="card-subtitle">Mild loss (~0.5 lb/week)</p>
+                </div>
+                 <div class="calorie-card gain">
+                    <p class="card-title">Weight Gain</p>
+                    <p class="card-value gain-color" id="gain-value">0</p>
+                    <p class="card-subtitle">Mild gain (~0.5 lb/week)</p>
+                </div>
+                <div class="calorie-card" style="grid-column: span 3; border: 1px solid var(--color-border);">
+                    <p class="card-title">Aggressive Loss Target</p>
+                    <p class="card-value loss-color" id="aggressive-loss-value">0</p>
+                    <p class="card-subtitle">Faster loss (~1.0 lb/week). Consult a doctor before using.</p>
+                </div>
+            </div>
+             <div class="result-actions">
+                <button type="button" class="btn btn-secondary" id="copy-btn">Copy Goals</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">Print Plan</button>
+            </div>
+        </section>
+
+        <section class="education">
+            <h2>How to Use This Calculator for Your Goal</h2>
+            <p>This calculator provides actionable calorie goals based on the scientific principle of energy balance: calories in vs. calories out. To get your personalized targets, follow these steps:</p>
+            <ol>
+                <li><strong>Input Biometrics:</strong> Enter your Gender, Age, Weight, and Height accurately. These are the fundamental inputs for calculating your basal metabolism.</li>
+                <li><strong>Select Activity Level:</strong> Be honest with yourself. This step accounts for the energy you burn *outside* of basic resting function. Overestimating your activity will lead to a maintenance calorie target that is too high, preventing weight loss.</li>
+                <li><strong>Analyze Results:</strong> The calculator provides three primary targets:
+                    <ul>
+                        <li><strong>Maintenance:</strong> The calories needed to sustain your current weight.</li>
+                        <li><strong>Weight Loss:</strong> A safe, mild deficit (TDEE - 250 kcal/day).</li>
+                        <li><strong>Weight Gain:</strong> A mild surplus (TDEE + 250 kcal/day).</li>
+                    </ul>
+                </li>
+            </ol>
+            <p>The **Aggressive Loss Target** (TDEE - 500 kcal/day) is for faster, though less comfortable, weight loss and should be used with caution and professional guidance.</p>
+            <h3>Calorie Adjustment Tip</h3>
+            <p>The calculated numbers are highly accurate estimates. Track your weight for two weeks. If you are not losing or gaining at the expected rate, adjust your intake by $\pm$100 kcal per day until you hit your target rate. Consistency is always more important than the initial number.</p>
+        </section>
+
+        <section class="formula">
+            <h2>Formula & Methodology</h2>
+            <p>The Calorie Calculator performs a two-step calculation based on the highly accurate **Mifflin-St Jeor Equation** for BMR, followed by the **Total Daily Energy Expenditure (TDEE)** formula.</p>
+            
+            <h3>1. Basal Metabolic Rate (BMR) Calculation</h3>
+            <p>The BMR is the base amount of calories your body burns at rest. We use the Mifflin-St Jeor formulas (after converting imperial units to metric):</p>
+            <ul>
+                <li><strong>Men:</strong> BMR = (10 × kg) + (6.25 × cm) - (5 × age) + 5</li>
+                <li><strong>Women:</strong> BMR = (10 × kg) + (6.25 × cm) - (5 × age) - 161</li>
+            </ul>
+            
+            <h3>2. Total Daily Energy Expenditure (TDEE)</h3>
+            <p>TDEE is the BMR adjusted for daily activity, representing the total calories burned.</p>
+            <p style="text-align: center; font-size: 1.2em; font-weight: 600; color: var(--color-primary);">TDEE = BMR × Activity Multiplier</p>
+            
+            <h3>3. Calorie Goal Determination</h3>
+            <p>Your goals are derived directly from the TDEE:</p>
+            <ul>
+                <li><strong>Maintenance:</strong> TDEE (0 kcal $\pm$)</li>
+                <li><strong>Mild Loss (0.5 lb/week):</strong> TDEE - 250 kcal</li>
+                <li><strong>Aggressive Loss (1.0 lb/week):</strong> TDEE - 500 kcal</li>
+                <li><strong>Mild Gain (0.5 lb/week):</strong> TDEE + 250 kcal</li>
+            </ul>
+            <p>These deficits and surpluses are based on the approximation that 3,500 calories equals one pound of body weight, meaning a 500 kcal daily deficit results in a 3,500 kcal weekly deficit, or one pound of fat loss.</p>
+        </section>
+        
+        <section class="examples">
+            <h2>Practical Examples of Calorie Goals</h2>
+            <p>Below are examples of how different biometrics and goals influence the final calorie targets, assuming a **Moderately Active** lifestyle.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>BMR (Approx.)</th>
+                            <th>Maintenance (TDEE)</th>
+                            <th>Loss Goal (-500)</th>
+                            <th>Gain Goal (+500)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>35-Year-Old Male (180 cm, 80 kg)</strong></td>
+                            <td>1,794 kcal</td>
+                            <td>2,781 kcal</td>
+                            <td style="color: var(--color-success);">2,281 kcal</td>
+                            <td style="color: var(--color-warning);">3,281 kcal</td>
+                        </tr>
+                        <tr>
+                            <td><strong>25-Year-Old Female (165 cm, 60 kg)</strong></td>
+                            <td>1,399 kcal</td>
+                            <td>2,168 kcal</td>
+                            <td style="color: var(--color-success);">1,668 kcal</td>
+                            <td style="color: var(--color-warning);">2,668 kcal</td>
+                        </tr>
+                        <tr>
+                            <td><strong>50-Year-Old Sedentary Male (70 kg)</strong></td>
+                            <td>1,570 kcal</td>
+                            <td>1,884 kcal</td>
+                            <td style="color: var(--color-success);">1,384 kcal</td>
+                            <td style="color: var(--color-warning);">2,384 kcal</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>The table highlights how an older, more sedentary individual has a significantly lower BMR and TDEE compared to a younger, more active person, demonstrating the non-linear relationship between biometrics and calorie expenditure.</p>
+        </section>
+
+        <section class="faq">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h3>1. What is the difference between BMR and TDEE?</h3>
+                <p>BMR is the absolute minimum calories needed to keep your body functioning at rest (breathing, heart beating, etc.). TDEE (Total Daily Energy Expenditure) is BMR plus the calories burned through your physical activity, exercise, and the energy needed to digest food. TDEE is the number you should use for setting your diet goals.</p>
+            </div>
+             <div class="faq-item">
+                <h3>2. How accurate are these calorie estimates?</h3>
+                <p>The Mifflin-St Jeor equation used here is considered the most accurate predictive BMR formula for the general population. However, it can be off by $\pm$10-20% for individuals with extremely high or low body fat/muscle mass. The calculated TDEE is an estimate; consistent tracking of your weight is necessary to fine-tune the number for your unique metabolism.</p>
+            </div>
+             <div class="faq-item">
+                <h3>3. What is the minimum recommended calorie intake?</h3>
+                <p>For adult men, it is generally recommended not to go below 1,500 calories per day, and for adult women, not below 1,200 calories per day. Consuming fewer than these amounts can lead to nutrient deficiencies and a metabolic slowdown. Always consult a healthcare provider before adopting a very low-calorie diet.</p>
+            </div>
+             <div class="faq-item">
+                <h3>4. Why is my "Aggressive Loss Target" so low?</h3>
+                <p>The aggressive target represents a 500-calorie daily deficit, designed for a faster weight loss rate of approximately one pound per week. For smaller or less active individuals, this target may fall close to or even below their BMR. It should only be adopted if you have sufficient body fat to lose and are closely monitoring your health.</p>
+            </div>
+             <div class="faq-item">
+                <h3>5. Does the type of calorie matter?</h3>
+                <p>For weight change, total calories are the primary factor. However, for body composition, satiety, and health, the source matters. A diet focused on protein and fiber will support muscle retention during weight loss and keep you feeling fuller than one focused on processed carbohydrates and sugar, even if the total calories are the same.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. Should I eat back the calories I burn through exercise?</h3>
+                <p>If your **Activity Level** in the calculator accurately reflects your daily/weekly exercise, your TDEE *already* includes those calories. Only consider "eating back" extra calories if you exercise significantly more than what you selected in the activity dropdown.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. Can I use this calculator if I am under 15 years old?</h3>
+                <p>No, this calculator is designed for adults (ages 15 and above). Calorie needs for children and adolescents are highly variable due to growth spurts and changing body compositions. A pediatrician or registered dietitian should be consulted for a minor's nutritional needs.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. How fast is a "safe" rate of weight loss?</h3>
+                <p>A safe, sustainable rate of weight loss is generally considered to be 0.5 to 1.0 pounds (0.25 to 0.5 kg) per week. Faster rates are sometimes possible and safe for individuals with a high starting body weight, but rapid weight loss often comes at the expense of lean muscle mass and is harder to sustain long-term.</p>
+            </div>
+        </section>
+        
+        <section class="insights">
+            <h2>Additional Insights: Macronutrient Distribution</h2>
+            <p>Once you have your calorie goal, the next step in a personalized diet plan is setting your **Macronutrient Distribution** (Macros: Protein, Fat, Carbohydrates). While total calories dictate weight change, the macro split governs body composition (muscle gain vs. fat loss). A general healthy split is often around 40-50% Carbs, 25-35% Protein, and 20-30% Fat. However, for weight loss, a higher protein intake (0.8g to 1.2g per pound of body weight) is often recommended to maximize satiety and preserve lean muscle mass during a calorie deficit. For bodybuilders or those aiming for muscle gain, protein intake should be even higher. After using this calculator, consider researching macro splits to further refine your diet for your specific goal.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 EveryCalc. All rights reserved.</p>
+        <nav>
+            <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+            <a href="https://everycalc.site/terms-of-service">Terms</a>
+            <a href="https://everycalc.site/contact">Contact</a>
+        </nav>
+        <p class="disclaimer">
+            This calculator provides estimates for informational purposes only.
+            Always consult a qualified professional for critical decisions.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const unitToggle = document.querySelector('.unit-toggle');
+            const form = document.getElementById('calorie-form');
+            const metricInputs = {
+                weight: document.getElementById('weight-kg'),
+                height: document.getElementById('height-cm')
+            };
+            const imperialInputs = {
+                weight: document.getElementById('weight-lbs'),
+                heightFt: document.getElementById('height-ft'),
+                heightIn: document.getElementById('height-in')
+            };
+            const ageInput = document.getElementById('age');
+            const activitySelect = document.getElementById('activity');
+
+            const resultEls = {
+                section: document.getElementById('results-section'),
+                maintenance: document.getElementById('maintenance-value'),
+                loss: document.getElementById('loss-value'),
+                gain: document.getElementById('gain-value'),
+                aggressiveLoss: document.getElementById('aggressive-loss-value')
+            };
+
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            
+            let currentUnit = 'metric';
+
+            const validateInput = (inputEl, errorId, min, max) => {
+                const errorEl = document.getElementById(errorId);
+                errorEl.style.display = 'none';
+                inputEl.style.borderColor = 'var(--color-border)';
+                const value = parseFloat(inputEl.value);
+
+                if (inputEl.disabled) { return true; }
+
+                if (inputEl.value.trim() === '' || isNaN(value)) {
+                    errorEl.textContent = 'Value cannot be empty.';
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                if (value < min || value > max) {
+                    errorEl.textContent = `Value must be between ${min} and ${max}.`;
+                    errorEl.style.display = 'block';
+                    inputEl.style.borderColor = 'var(--color-danger)';
+                    return false;
+                }
+                return true;
+            };
+
+            const calculateCalories = () => {
+                const gender = form.querySelector('input[name="gender"]:checked').value;
+                const age = parseFloat(ageInput.value);
+                const activityMultiplier = parseFloat(activitySelect.value);
+
+                let weightKg, heightCm;
+
+                if (currentUnit === 'metric') {
+                    weightKg = parseFloat(metricInputs.weight.value);
+                    heightCm = parseFloat(metricInputs.height.value);
+                } else {
+                    const weightLbs = parseFloat(imperialInputs.weight.value);
+                    const heightFt = parseFloat(imperialInputs.heightFt.value);
+                    const heightIn = parseFloat(imperialInputs.heightIn.value);
+                    
+                    // Conversion Factors
+                    weightKg = weightLbs * 0.453592;
+                    heightCm = ((heightFt * 12) + heightIn) * 2.54;
+                }
+
+                let bmr;
+                // Mifflin-St Jeor Equation
+                if (gender === 'male') {
+                    bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
+                } else {
+                    bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
+                }
+                
+                const tdee = bmr * activityMultiplier;
+                const maintenance = Math.round(tdee);
+                const mildLoss = Math.round(tdee - 250);
+                const aggressiveLoss = Math.round(tdee - 500);
+                const mildGain = Math.round(tdee + 250);
+
+                resultEls.maintenance.textContent = maintenance.toLocaleString();
+                resultEls.loss.textContent = mildLoss.toLocaleString();
+                resultEls.gain.textContent = mildGain.toLocaleString();
+                resultEls.aggressiveLoss.textContent = aggressiveLoss.toLocaleString();
+
+                resultEls.section.style.display = 'block';
+                resultEls.section.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            const toggleUnits = (unit) => {
+                currentUnit = unit;
+                document.querySelectorAll('.metric-input, .imperial-input').forEach(el => {
+                    el.style.display = 'none';
+                    el.querySelectorAll('input').forEach(input => input.disabled = true);
+                });
+
+                if (unit === 'metric') {
+                    document.querySelectorAll('.metric-input').forEach(el => {
+                        el.style.display = 'flex';
+                        el.querySelectorAll('input').forEach(input => input.disabled = false);
+                    });
+                } else {
+                    document.querySelectorAll('.imperial-input').forEach(el => {
+                        el.style.display = 'flex';
+                        el.querySelectorAll('input').forEach(input => input.disabled = false);
+                    });
+                }
+                // Clear errors on unit switch
+                document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('input').forEach(input => input.style.borderColor = 'var(--color-border)');
+            };
+
+            unitToggle.addEventListener('change', (e) => {
+                toggleUnits(e.target.value);
+                form.reset();
+                resultEls.section.style.display = 'none';
+                document.getElementById('gender-male').checked = true; // Default back to male
+            });
+            
+            // Initial setup
+            toggleUnits('metric');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                let allValid = true;
+                allValid = validateInput(ageInput, 'age-error', 15, 100) && allValid;
+
+                if (currentUnit === 'metric') {
+                    allValid = validateInput(metricInputs.weight, 'weight-kg-error', 1, 300) && allValid;
+                    allValid = validateInput(metricInputs.height, 'height-cm-error', 50, 250) && allValid;
+                } else {
+                    allValid = validateInput(imperialInputs.weight, 'weight-lbs-error', 1, 700) && allValid;
+                    allValid = validateInput(imperialInputs.heightFt, 'height-ft-error', 1, 8) && allValid;
+                    allValid = validateInput(imperialInputs.heightIn, 'height-ft-error', 0, 11) && allValid;
+                }
+
+                if (allValid) {
+                    calculateBtn.textContent = 'Calculating...';
+                    calculateBtn.disabled = true;
+
+                    setTimeout(() => {
+                        calculateCalories();
+                        calculateBtn.textContent = 'Calculate Calorie Goals';
+                        calculateBtn.disabled = false;
+                    }, 500);
+                }
+            });
+
+            resetBtn.addEventListener('click', function() {
+                form.reset();
+                document.querySelectorAll('input').forEach(input => input.style.borderColor = 'var(--color-border)');
+                document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+                resultEls.section.style.display = 'none';
+                // Reset radio buttons explicitly
+                document.getElementById('unit-metric').checked = true;
+                document.getElementById('gender-male').checked = true;
+                toggleUnits('metric');
+            });
+
+            copyBtn.addEventListener('click', function() {
+                const gender = form.querySelector('input[name="gender"]:checked').value;
+                const activityLevel = activitySelect.options[activitySelect.selectedIndex].text;
+                const weightText = currentUnit === 'metric' ? `${metricInputs.weight.value} kg` : `${imperialInputs.weight.value} lbs`;
+                const heightText = currentUnit === 'metric' ? `${metricInputs.height.value} cm` : `${imperialInputs.heightFt.value}' ${imperialInputs.heightIn.value}''`;
+
+                const summaryText = `Daily Calorie Goals by EveryCalc:\n` +
+                                  `---------------------------------\n` +
+                                  `Gender: ${gender.charAt(0).toUpperCase() + gender.slice(1)}\n` +
+                                  `Age: ${ageInput.value} years\n` +
+                                  `Height: ${heightText}\n` +
+                                  `Weight: ${weightText}\n` +
+                                  `Activity: ${activityLevel}\n` +
+                                  `---------------------------------\n` +
+                                  `Maintenance: ${resultEls.maintenance.textContent} kcal/day\n` +
+                                  `Mild Loss: ${resultEls.loss.textContent} kcal/day\n` +
+                                  `Mild Gain: ${resultEls.gain.textContent} kcal/day\n` +
+                                  `Aggressive Loss: ${resultEls.aggressiveLoss.textContent} kcal/day\n` +
+                                  `---------------------------------\n` +
+                                  `Calculated at https://everycalc.site`;
+                
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.style.backgroundColor = 'var(--color-success)';
+                    copyBtn.style.color = 'var(--color-bg)';
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.backgroundColor = '';
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy summary: ', err);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

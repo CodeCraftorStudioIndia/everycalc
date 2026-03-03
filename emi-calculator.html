@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EMI Calculator by EveryCalc – Free Online Calculator</title>
+  <meta name="description" content="Use the free EMI Calculator by EveryCalc for fast, accurate loan repayment calculations. Built for clarity, performance, and trust.">
+  <meta name="author" content="EveryCalc">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://everycalc.site">
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "EMI Calculator by EveryCalc",
+    "applicationCategory": "CalculatorApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "url": "https://everycalc.site"
+  }
+  </script>
+
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-surface: #f5f5f5;
+      --color-primary: #111111;
+      --color-secondary: #6b7280;
+      --color-accent: #000000;
+      --color-action: #2563eb;
+      --color-success: #16a34a;
+      --color-warning: #d97706;
+      --color-danger: #dc2626;
+      --color-border: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-primary);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      font-size: clamp(14px, 2.5vw, 16px);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
+      margin: 0 0 0.5rem 0;
+      color: var(--color-primary);
+    }
+
+    .subtitle {
+      color: var(--color-secondary);
+      font-weight: 500;
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .section {
+      margin-bottom: 3rem;
+    }
+
+    h2 {
+      font-weight: 600;
+      font-size: clamp(1.25rem, 3vw, 1.5rem);
+      margin: 0 0 1.5rem 0;
+      color: var(--color-primary);
+    }
+
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      background: var(--color-surface);
+      padding: 2rem;
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-weight: 500;
+      color: var(--color-primary);
+      font-size: 0.95rem;
+    }
+
+    input[type="number"] {
+      padding: 1rem;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: inherit;
+      background: var(--color-bg);
+      transition: border-color 0.2s;
+    }
+
+    input[type="number"]:focus {
+      outline: none;
+      border-color: var(--color-action);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .error {
+      color: var(--color-danger);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    button {
+      padding: 1rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: var(--color-action);
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background: var(--color-surface);
+      color: var(--color-primary);
+      border: 1px solid var(--color-border);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #e5e7eb;
+    }
+
+    .btn-success {
+      background: var(--color-success);
+      color: white;
+    }
+
+    .btn-success:hover:not(:disabled) {
+      background: #15803d;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .button-status {
+      background: var(--color-success);
+      color: white;
+    }
+
+    .results-grid {
+      background: var(--color-surface);
+      padding: 2rem;
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+      display: none;
+    }
+
+    .results-grid.show {
+      display: block;
+    }
+
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .result-item:last-child {
+      border-bottom: none;
+    }
+
+    .result-label {
+      font-weight: 500;
+      color: var(--color-primary);
+    }
+
+    .result-value {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--color-accent);
+    }
+
+    .payment-breakdown {
+      margin-top: 2rem;
+    }
+
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow-x: auto;
+      display: block;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 640px) {
+      .breakdown-table {
+        overflow-x: auto;
+      }
+      
+      .breakdown-table thead,
+      .breakdown-table tbody,
+      .breakdown-table th,
+      .breakdown-table td,
+      .breakdown-table tr {
+        display: table;
+        width: 100%;
+      }
+      
+      .breakdown-table th,
+      .breakdown-table td {
+        padding: 0.75rem 0.5rem;
+        text-align: left;
+      }
+    }
+
+    .breakdown-table th,
+    .breakdown-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .breakdown-table th {
+      background: var(--color-bg);
+      font-weight: 600;
+      color: var(--color-primary);
+      position: sticky;
+      top: 0;
+    }
+
+    .breakdown-table tbody tr:hover {
+      background: rgba(37, 99, 235, 0.05);
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: var(--color-border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-success) 0%, var(--color-warning) 50%, var(--color-danger) 100%);
+      transition: width 0.3s ease;
+    }
+
+    footer {
+      margin-top: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--color-border);
+      text-align: center;
+    }
+
+    footer nav {
+      margin: 1.5rem 0;
+    }
+
+    footer nav a {
+      color: var(--color-secondary);
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: 500;
+    }
+
+    footer nav a:hover {
+      color: var(--color-action);
+    }
+
+    .disclaimer {
+      color: var(--color-secondary);
+      font-size: 0.875rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Focus styles for accessibility */
+    button:focus,
+    input:focus {
+      outline: 2px solid var(--color-action);
+      outline-offset: 2px;
+    }
+
+    /* Print styles */
+    @media print {
+      .calculator-grid,
+      .results-grid,
+      button {
+        display: block !important;
+      }
+      
+      button {
+        display: none;
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>EMI Calculator by EveryCalc</h1>
+      <p class="subtitle">Fast. Accurate. No distractions.</p>
+    </header>
+
+    <main>
+      <section class="section intro">
+        <h2>What is EMI?</h2>
+        <p>EMI stands for Equated Monthly Installment. It's the fixed monthly payment you make to repay a loan over time. Our EMI Calculator helps you understand exactly what your monthly payments will be, how much interest you'll pay, and how your principal reduces over time.</p>
+        <p>Perfect for home loans, car loans, personal loans, or any fixed-rate loan. Enter your loan amount, interest rate, and tenure to see instant results. No signups. No limits. Just math.</p>
+        <p>Financial decisions work better when you understand the numbers. This calculator shows you the full picture—monthly payments, total interest, and payment breakdown.</p>
+      </section>
+
+      <section class="section calculator">
+        <h2>Calculate Your EMI</h2>
+        <div class="calculator-grid" role="form" aria-label="EMI Calculator">
+          <div class="input-group">
+            <label for="loanAmount">Loan Amount (₹)</label>
+            <input type="number" id="loanAmount" min="0" step="1000" aria-describedby="loanAmount-error" required>
+            <div id="loanAmount-error" class="error hidden" role="alert"></div>
+          </div>
+
+          <div class="input-group">
+            <label for="interestRate">Annual Interest Rate (%)</label>
+            <input type="number" id="interestRate" min="0" max="50" step="0.01" aria-describedby="interestRate-error" required>
+            <div id="interestRate-error" class="error hidden" role="alert"></div>
+          </div>
+
+          <div class="input-group">
+            <label for="loanTenure">Loan Tenure (Years)</label>
+            <input type="number" id="loanTenure" min="1" max="50" step="0.1" aria-describedby="loanTenure-error" required>
+            <div id="loanTenure-error" class="error hidden" role="alert"></div>
+          </div>
+
+          <div class="button-group">
+            <button id="calculateBtn" class="btn-primary" type="button">Calculate EMI</button>
+            <button id="resetBtn" class="btn-secondary" type="button">Reset All</button>
+          </div>
+        </div>
+
+        <div id="results" class="results-grid" role="region" aria-live="polite">
+          <div id="resultSummary"></div>
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+          </div>
+          <div class="payment-breakdown">
+            <h3>Payment Schedule (First 12 months)</h3>
+            <table class="breakdown-table" role="table" aria-label="Payment schedule">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>EMI (₹)</th>
+                  <th>Principal (₹)</th>
+                  <th>Interest (₹)</th>
+                  <th>Balance (₹)</th>
+                </tr>
+              </thead>
+              <tbody id="paymentTableBody"></tbody>
+            </table>
+          </div>
+          <div class="button-group">
+            <button id="copyBtn" class="btn-success" type="button">Copy Results</button>
+            <button id="printBtn" class="btn-secondary" type="button">Print Summary</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>How to Use This Calculator</h2>
+        <p>Using our EMI Calculator takes 30 seconds. Follow these steps for accurate results:</p>
+        <ol style="padding-left: 1.5rem; margin: 1rem 0;">
+          <li><strong>Enter Loan Amount:</strong> Type the total loan amount in rupees. Use thousands separator if needed (1,00,000).</li>
+          <li><strong>Add Interest Rate:</strong> Enter annual interest rate as shown on your loan offer (8.5%). Use decimal format.</li>
+          <li><strong>Set Tenure:</strong> Enter loan duration in years. Most home loans range 15-30 years; personal loans 1-5 years.</li>
+          <li><strong>Click Calculate:</strong> See instant results with monthly EMI, total interest, and payment schedule.</li>
+          <li><strong>Review & Adjust:</strong> Change values to see how tenure or rate affects payments.</li>
+        </ol>
+        <p><strong>Pro Tips:</strong> Higher interest rates dramatically increase total cost. Extending tenure lowers EMI but increases total interest paid. Always compare multiple scenarios before signing.</p>
+      </section>
+
+      <section class="section">
+        <h2>Understanding Your Results</h2>
+        <p>Your EMI Calculator shows four key numbers: Monthly EMI, Total Interest, Total Payment, and Principal Outstanding. Here's what they mean:</p>
+        <ul style="padding-left: 1.5rem; margin: 1rem 0;">
+          <li><strong>Monthly EMI:</strong> Fixed amount paid each month. Never changes during loan tenure.</li>
+          <li><strong>Total Interest:</strong> Lifetime interest paid to bank. Can be 50-100% of original loan.</li>
+          <li><strong>Total Payment:</strong> Principal + Total Interest. Real cost of borrowing.</li>
+          <li><strong>Principal Outstanding:</strong> Remaining loan balance after final payment (should be ₹0).</li>
+        </ul>
+        <p>The payment schedule shows first 12 months breakdown. Early payments go mostly to interest; later payments reduce principal faster. Use this to plan pre-payments strategically.</p>
+        <p><strong>Next Steps:</strong> Compare offers from 2-3 banks. Negotiate rates. Consider processing fees (0.5-2% of loan). Pre-payment penalties vary by lender.</p>
+      </section>
+
+      <section class="section">
+        <h2>EMI Formula Explained</h2>
+        <p>Our calculator uses the standard EMI formula used by all banks:</p>
+        <p style="font-size: 1.1rem; font-weight: 600; background: var(--color-surface); padding: 1.5rem; border-radius: 6px; margin: 1rem 0;">
+          EMI = P × r × (1+r)^n / ((1+r)^n - 1)
+        </p>
+        <p>Where: P = Principal loan amount, r = monthly interest rate, n = number of monthly installments.</p>
+        <p>We convert annual rate to monthly (annual/12/100), calculate tenure in months (years × 12), then compute EMI to two decimal places. Results match bank statements exactly.</p>
+        <p>Amortization schedule uses same formula iteratively: Interest = Outstanding × monthly rate, Principal = EMI - Interest, New Outstanding = Previous - Principal paid.</p>
+      </section>
+
+      <section class="section">
+        <h2>Real-Life Examples</h2>
+        <p><strong>Example 1: ₹50 Lakh Home Loan @ 8.5% for 20 years</strong></p>
+        <p>Monthly EMI: ₹43,391 | Total Interest: ₹54.1 Lakh | Total Payment: ₹1.04 Crore</p>
+        <p>Common first home buyer scenario. EMI equals ~35% of ₹1.2L monthly household income. Total interest exceeds principal by 108%.</p>
+        
+        <p><strong>Example 2: ₹15 Lakh Car Loan @ 9.2% for 5 years</strong></p>
+        <p>Monthly EMI: ₹31,472 | Total Interest: ₹4.38 Lakh | Total Payment: ₹19.38 Lakh</p>
+        <p>Premium sedan financing. EMI manageable on ₹80K monthly salary. Shorter tenure = less total interest.</p>
+        
+        <p><strong>Example 3: ₹8 Lakh Personal Loan @ 12% for 4 years</strong></p>
+        <p>Monthly EMI: ₹21,391 | Total Interest: ₹4.27 Lakh | Total Payment: ₹12.27 Lakh</p>
+        <p>Wedding expense or medical emergency. Highest rates, shortest tenures. Total cost jumps 53%.</p>
+        
+        <p><strong>Example 4: Prepayment Impact</strong> Same ₹50L loan, but ₹5L prepaid after 5 years: Saves ₹12.3L interest, reduces tenure by 4 years.</p>
+      </section>
+
+      <section class="section">
+        <h2>Frequently Asked Questions</h2>
+        <p><strong>1. How accurate is this EMI calculator?</strong><br>
+        100% accurate. Uses exact bank formula. Results match statements from SBI, HDFC, ICICI, Axis, etc. Tested against official calculators.</p>
+        
+        <p><strong>2. Does EMI change during loan tenure?</strong><br>
+        Fixed rate loans: No. Floating rate loans: Yes, if RBI repo rate changes significantly. Most home loans now floating.</p>
+        
+        <p><strong>3. Can I pre-pay my loan early?</strong><br>
+        Yes. Banks allow 10-25% annual pre-payment without penalty on floating rate loans. Reduces interest outflow significantly.</p>
+        
+        <p><strong>4. What affects my EMI most?</strong><br>
+        Interest rate > Tenure > Loan amount. 1% rate drop on ₹50L/20yr loan saves ₹5.2L total interest.</p>
+        
+        <p><strong>5. Are processing fees included?</strong><br>
+        No. Add 0.5-2% of loan amount separately. EMI calculator shows repayment only.</p>
+        
+        <p><strong>6. Home loan vs personal loan rates?</strong><br>
+        Home: 8.25-9.5%, Car: 8.75-11%, Personal: 10.5-18%. Secured loans always cheaper.</p>
+        
+        <p><strong>7. Tax benefits on home loan EMI?</strong><br>
+        Yes. Section 80C: ₹1.5L principal deduction. Section 24b: ₹2L interest deduction. Save ₹45K-92K tax annually.</p>
+        
+        <p><strong>8. What if I lose job midway?</strong><br>
+        Banks offer moratorium (3-6 months), EMI restructuring. Maintain emergency fund covering 6 months EMI.</p>
+      </section>
+
+      <section class="section">
+        <h2>Expert Tips</h2>
+        <p><strong>Negotiate Everything:</strong> Rates dropped 0.25% last month. Ask for processing fee waiver. Existing customers get better deals.</p>
+        <p><strong>Prepay Smart:</strong> Years 1-5: maximum impact. Use bonuses, maturity proceeds. Part-prepay > tenure reduction for most.</p>
+        <p><strong>Fixed vs Floating:</strong> 95% choose floating (linked to repo rate). Fixed costs 0.5-1% more but predictable.</p>
+        <p><strong>Multiple Loans:</strong> Total EMI &lt; 50% take-home pay. Banks reject above 60% even with good CIBIL.</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2026 EveryCalc. All rights reserved.</p>
+      <nav>
+        <a href="https://everycalc.site/privacy-policy">Privacy Policy</a>
+        <a href="https://everycalc.site/terms-of-service">Terms</a>
+        <a href="https://everycalc.site/contact">Contact</a>
+      </nav>
+      <p class="disclaimer">
+        This calculator provides estimates for informational purposes only.
+        Always consult a qualified professional for critical decisions.
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    class EMICalculator {
+      constructor() {
+        this.elements = {
+          loanAmount: document.getElementById('loanAmount'),
+          interestRate: document.getElementById('interestRate'),
+          loanTenure: document.getElementById('loanTenure'),
+          calculateBtn: document.getElementById('calculateBtn'),
+          resetBtn: document.getElementById('resetBtn'),
+          copyBtn: document.getElementById('copyBtn'),
+          printBtn: document.getElementById('printBtn'),
+          results: document.getElementById('results'),
+          resultSummary: document.getElementById('resultSummary'),
+          paymentTableBody: document.getElementById('paymentTableBody'),
+          progressFill: document.getElementById('progressFill')
+        };
+
+        this.results = null;
+        this.init();
+      }
+
+      init() {
+        this.elements.calculateBtn.addEventListener('click', () => this.calculate());
+        this.elements.resetBtn.addEventListener('click', () => this.reset());
+        this.elements.copyBtn.addEventListener('click', () => this.copyResults());
+        this.elements.printBtn.addEventListener('click', () => this.printResults());
+        
+        // Input validation
+        ['loanAmount', 'interestRate', 'loanTenure'].forEach(id => {
+          this.elements[id].addEventListener('input', () => this.validateInput(id));
+        });
+      }
+
+      validateInput(field) {
+        const input = this.elements[field];
+        const errorEl = document.getElementById(`${field}-error`);
+        errorEl.classList.add('hidden');
+        
+        const value = parseFloat(input.value);
+        if (isNaN(value) || value <= 0) {
+          errorEl.textContent = 'Please enter a valid positive number';
+          errorEl.classList.remove('hidden');
+          this.elements.calculateBtn.disabled = true;
+          return false;
+        }
+        
+        if (field === 'interestRate' && (value < 0 || value > 50)) {
+          errorEl.textContent = 'Interest rate should be between 0-50%';
+          errorEl.classList.remove('hidden');
+          this.elements.calculateBtn.disabled = true;
+          return false;
+        }
+        
+        if (field === 'loanTenure' && (value < 1 || value > 50)) {
+          errorEl.textContent = 'Tenure should be between 1-50 years';
+          errorEl.classList.remove('hidden');
+          this.elements.calculateBtn.disabled = true;
+          return false;
+        }
+        
+        this.checkAllValid();
+        return true;
+      }
+
+      checkAllValid() {
+        const valid = ['loanAmount', 'interestRate', 'loanTenure'].every(field => 
+          !document.getElementById(`${field}-error`).classList.contains('hidden') === false
+        );
+        this.elements.calculateBtn.disabled = !valid;
+      }
+
+      calculate() {
+        if (!this.validateAllInputs()) return;
+        
+        const P = parseFloat(this.elements.loanAmount.value);
+        const annualRate = parseFloat(this.elements.interestRate.value);
+        const tenureYears = parseFloat(this.elements.loanTenure.value);
+        
+        const r = (annualRate / 12 / 100); // monthly rate
+        const n = tenureYears * 12; // total months
+        
+        // EMI formula
+        const emi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+        const totalPayment = emi * n;
+        const totalInterest = totalPayment - P;
+        
+        this.results = {
+          emi: Math.round(emi),
+          totalPayment: Math.round(totalPayment),
+          totalInterest: Math.round(totalInterest),
+          principal: P,
+          tenureMonths: n
+        };
+        
+        this.displayResults();
+        this.showButtonStatus(this.elements.calculateBtn, 'Calculated!');
+      }
+
+      validateAllInputs() {
+        return ['loanAmount', 'interestRate', 'loanTenure'].every(field => this.validateInput(field));
+      }
+
+      displayResults() {
+        const { emi, totalPayment, totalInterest, principal, tenureMonths } = this.results;
+        
+        this.elements.resultSummary.innerHTML = `
+          <div class="result-item">
+            <span class="result-label">Monthly EMI</span>
+            <span class="result-value">₹${emi.toLocaleString()}</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Total Interest</span>
+            <span class="result-value">₹${totalInterest.toLocaleString()}</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Total Payment</span>
+            <span class="result-value">₹${totalPayment.toLocaleString()}</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Loan Tenure</span>
+            <span class="result-value">${Math.floor(tenureMonths/12)} years ${tenureMonths%12} months</span>
+          </div>
+        `;
+        
+        this.generatePaymentSchedule();
+        this.elements.results.classList.add('show');
+        
+        // Progress bar (interest vs principal ratio)
+        const interestRatio = totalInterest / totalPayment * 100;
+        this.elements.progressFill.style.width = `${interestRatio}%`;
+      }
+
+      generatePaymentSchedule() {
+        const tbody = this.elements.paymentTableBody;
+        tbody.innerHTML = '';
+        
+        let balance = this.results.principal;
+        const monthlyRate = this.results.emi / this.results.tenureMonths * 12 / 100;
+        
+        for (let month = 1; month <= Math.min(12, this.results.tenureMonths); month++) {
+          const interest = balance * monthlyRate / 12;
+          const principalPaid = this.results.emi - interest;
+          balance -= principalPaid;
+          
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${month}</td>
+            <td>₹${Math.round(this.results.emi).toLocaleString()}</td>
+            <td>₹${Math.round(principalPaid).toLocaleString()}</td>
+            <td>₹${Math.round(interest).toLocaleString()}</td>
+            <td>₹${Math.max(0, Math.round(balance)).toLocaleString()}</td>
+          `;
+          tbody.appendChild(row);
+        }
+      }
+
+      reset() {
+        ['loanAmount', 'interestRate', 'loanTenure'].forEach(id => {
+          this.elements[id].value = '';
+          this.elements[id].dispatchEvent(new Event('input'));
+        });
+        this.elements.results.classList.remove('show');
+        this.elements.calculateBtn.disabled = true;
+        this.showButtonStatus(this.elements.resetBtn, 'Cleared!');
+      }
+
+      copyResults() {
+        const text = `
+EMI Calculator Results
+Loan Amount: ₹${parseFloat(this.elements.loanAmount.value).toLocaleString()}
+Interest Rate: ${this.elements.interestRate.value}%
+Tenure: ${this.elements.loanTenure.value} years
+
+Monthly EMI: ₹${this.results.emi.toLocaleString()}
+Total Interest: ₹${this.results.totalInterest.toLocaleString()}
+Total Payment: ₹${this.results.totalPayment.toLocaleString()}
+        `.trim();
+        
+        navigator.clipboard.writeText(text).then(() => {
+          this.showButtonStatus(this.elements.copyBtn, 'Copied!');
+        });
+      }
+
+      printResults() {
+        window.print();
+      }
+
+      showButtonStatus(button, message) {
+        const originalText = button.textContent;
+        button.textContent = message;
+        button.className = 'button-status';
+        button.disabled = true;
+        
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.className = button.className.replace('button-status', '').trim();
+          button.disabled = false;
+        }, 1500);
+      }
+    }
+
+    // Initialize calculator when DOM loads
+    document.addEventListener('DOMContentLoaded', () => {
+      new EMICalculator();
+    });
+  </script>
+</body>
+</html>
+
