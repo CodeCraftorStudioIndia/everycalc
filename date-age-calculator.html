@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>Professional Age & Date Calculator | Every Calculator</title>
+    <meta name="title" content="Professional Age & Date Calculator | Every Calculator">
+    <meta name="description" content="Calculate your exact age, next birthday, and duration between any two dates with precision. A culturally inspired professional tool by Every Calculator.">
+    <meta name="keywords" content="age calculator, date difference, days between dates, chronological age, Every Calculator, everycalc.site, Indian date tool">
+    <meta name="author" content="Every Calculator">
+    <link rel="canonical" href="https://everycalc.site/date-age-calculator">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://everycalc.site/">
+    <meta property="og:title" content="Professional Age & Date Calculator | Every Calculator">
+    <meta property="og:description" content="Handcrafted precision for time and age calculations. Deeply rooted in Indian aesthetic and modern logic.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Manrope:wght@300;500;800&display=swap" rel="stylesheet">
+
+    <!-- Schema.org Implementation -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Kāla-Gaṇanā Age Calculator",
+      "url": "https://everycalc.site",
+      "description": "A professional age and date duration calculator with Indian cultural aesthetics.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "author": {
+        "@type": "Organization",
+        "name": "Every Calculator"
+      }
+    }
+    </script>
+
+    <style>
+        :root {
+            /* Palette: Ink Indigo, Madder Red, Sandalwood Parchment */
+            --ink: #1a1b25;
+            --madder: #a63d40;
+            --sandalwood: #f4ece1;
+            --gold: #d4af37;
+            --border: rgba(26, 27, 37, 0.1);
+            --transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--sandalwood);
+            color: var(--ink);
+            font-family: 'Manrope', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Paper Texture Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Background Motif: Chakra (Wheel of Time) */
+        .chakra-bg {
+            position: fixed;
+            width: 80vmax;
+            height: 80vmax;
+            border: 1px solid var(--madder);
+            opacity: 0.05;
+            border-radius: 50%;
+            top: -20%;
+            right: -10%;
+            z-index: -1;
+            animation: rotateChakra 120s linear infinite;
+        }
+
+        @keyframes rotateChakra {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .calc-wrapper {
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.08);
+            position: relative;
+            z-index: 10;
+            animation: reveal 1.2s ease-out forwards;
+        }
+
+        @keyframes reveal {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Side Panels */
+        .input-panel {
+            padding: clamp(2rem, 5vw, 4rem);
+            border-right: 1px solid var(--border);
+        }
+
+        .display-panel {
+            background: var(--ink);
+            color: #fff;
+            padding: clamp(2rem, 5vw, 3rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Branding */
+        .branding {
+            margin-bottom: 3rem;
+        }
+
+        .branding h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            line-height: 0.9;
+            color: var(--madder);
+        }
+
+        .branding span {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--ink);
+            opacity: 0.6;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-trigger {
+            padding: 10px 0;
+            background: none;
+            border: none;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            color: var(--ink);
+            opacity: 0.4;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .tab-trigger.active {
+            opacity: 1;
+        }
+
+        .tab-trigger.active::after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--madder);
+        }
+
+        /* Fields */
+        .field {
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: slideUp 0.8s forwards;
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(20px); }
+        }
+
+        .field:nth-child(1) { animation-delay: 0.2s; }
+        .field:nth-child(2) { animation-delay: 0.4s; }
+
+        label {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--madder);
+        }
+
+        input[type="date"] {
+            width: 100%;
+            padding: 15px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--border);
+            font-family: 'Manrope', sans-serif;
+            font-size: 1.5rem;
+            color: var(--ink);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        input[type="date"]:focus {
+            border-bottom-color: var(--madder);
+        }
+
+        /* Display Values */
+        .main-result {
+            margin-bottom: 3rem;
+        }
+
+        .result-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .result-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            line-height: 1;
+        }
+
+        .sub-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stat-card h4 {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.5;
+            margin-bottom: 5px;
+        }
+
+        .stat-card div {
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .domain-badge {
+            font-size: 0.65rem;
+            text-align: center;
+            opacity: 0.3;
+            letter-spacing: 3px;
+            margin-top: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .calc-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .input-panel {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            .display-panel {
+                min-height: 400px;
+            }
+        }
+
+        /* Custom Date Picker Aesthetic for Chrome/Safari */
+        ::-webkit-calendar-picker-indicator {
+            filter: invert(0.5) sepia(1) saturate(5) hue-rotate(320deg);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chakra-bg"></div>
+
+    <main class="calc-wrapper">
+        <!-- Input Section -->
+        <section class="input-panel">
+            <header class="branding">
+                <span>Kāla-Gaṇanā</span>
+                <h1>Time & Age</h1>
+                <p style="font-size: 0.8rem; margin-top: 10px; color: #666;">Crafted by Every Calculator</p>
+            </header>
+
+            <nav class="tabs">
+                <button class="tab-trigger active" onclick="switchMode('age', this)">Age Calculator</button>
+                <button class="tab-trigger" onclick="switchMode('diff', this)">Date Difference</button>
+            </nav>
+
+            <div id="age-inputs">
+                <div class="field">
+                    <label>Date of Birth</label>
+                    <input type="date" id="dob" onchange="calculate()">
+                </div>
+                <div class="field">
+                    <label>Age at Date</label>
+                    <input type="date" id="ageAt" onchange="calculate()">
+                </div>
+            </div>
+
+            <div id="diff-inputs" style="display: none;">
+                <div class="field">
+                    <label>Start Date</label>
+                    <input type="date" id="start" onchange="calculate()">
+                </div>
+                <div class="field">
+                    <label>End Date</label>
+                    <input type="date" id="end" onchange="calculate()">
+                </div>
+            </div>
+
+            <article style="margin-top: 3rem; font-size: 0.85rem; line-height: 1.6; color: #555;">
+                <strong>Chronological Wisdom:</strong> This tool uses Gregorian logic integrated with precision leap-year algorithms to provide exact temporal measurement down to the day.
+            </article>
+        </section>
+
+        <!-- Display Section -->
+        <section class="display-panel">
+            <div class="main-result">
+                <span class="result-label" id="main-label">Current Age</span>
+                <div class="result-value" id="res-years">--</div>
+                <div style="font-size: 1.5rem; font-weight: 300; margin-top: 5px;" id="res-detail">Years, Months, Days</div>
+            </div>
+
+            <div>
+                <div class="sub-stats">
+                    <div class="stat-card">
+                        <h4>Total Months</h4>
+                        <div id="stat-months">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Total Weeks</h4>
+                        <div id="stat-weeks">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Total Days</h4>
+                        <div id="stat-days">-</div>
+                    </div>
+                    <div class="stat-card" id="next-bday-box">
+                        <h4>Next Birthday</h4>
+                        <div id="stat-next">-</div>
+                    </div>
+                </div>
+
+                <div class="domain-badge">EVERYCALC.SITE</div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Set default dates to Today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('ageAt').value = today;
+        document.getElementById('dob').value = "2000-01-01";
+        document.getElementById('start').value = today;
+        document.getElementById('end').value = today;
+
+        let mode = 'age';
+
+        function switchMode(m, el) {
+            mode = m;
+            document.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            
+            document.getElementById('age-inputs').style.display = m === 'age' ? 'block' : 'none';
+            document.getElementById('diff-inputs').style.display = m === 'diff' ? 'block' : 'none';
+            document.getElementById('main-label').innerText = m === 'age' ? 'Current Age' : 'Time Duration';
+            document.getElementById('next-bday-box').style.visibility = m === 'age' ? 'visible' : 'hidden';
+            
+            calculate();
+        }
+
+        function calculate() {
+            let startVal, endVal;
+            
+            if (mode === 'age') {
+                startVal = new Date(document.getElementById('dob').value);
+                endVal = new Date(document.getElementById('ageAt').value);
+            } else {
+                startVal = new Date(document.getElementById('start').value);
+                endVal = new Date(document.getElementById('end').value);
+            }
+
+            if (isNaN(startVal) || isNaN(endVal)) return;
+
+            // Difference logic
+            let diffTime = Math.abs(endVal - startVal);
+            let totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            // Age/Date breakdown
+            let years = endVal.getFullYear() - startVal.getFullYear();
+            let months = endVal.getMonth() - startVal.getMonth();
+            let days = endVal.getDate() - startVal.getDate();
+
+            if (days < 0) {
+                months--;
+                let lastMonth = new Date(endVal.getFullYear(), endVal.getMonth(), 0);
+                days += lastMonth.getDate();
+            }
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            // Results Update
+            document.getElementById('res-years').innerText = years;
+            document.getElementById('res-detail').innerText = `${months} Months | ${days} Days`;
+            
+            document.getElementById('stat-months').innerText = (years * 12 + months).toLocaleString();
+            document.getElementById('stat-weeks').innerText = (Math.floor(totalDays / 7)).toLocaleString();
+            document.getElementById('stat-days').innerText = totalDays.toLocaleString();
+
+            // Next Birthday Logic (Only for Age mode)
+            if (mode === 'age') {
+                let nextBday = new Date(endVal.getFullYear(), startVal.getMonth(), startVal.getDate());
+                if (nextBday < endVal) {
+                    nextBday.setFullYear(endVal.getFullYear() + 1);
+                }
+                let timeToBday = nextBday - endVal;
+                let daysToBday = Math.ceil(timeToBday / (1000 * 60 * 60 * 24));
+                document.getElementById('stat-next').innerText = daysToBday === 365 || daysToBday === 0 ? "Today! 🎉" : `${daysToBday} Days to go`;
+            }
+        }
+
+        // Run on initial load
+        calculate();
+    </script>
+</body>
+</html>
