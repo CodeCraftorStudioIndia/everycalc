@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & META TAGS -->
+    <title>Professional Interest Calculator | Every Calculator</title>
+    <meta name="description" content="Calculate Simple and Compound Interest with precision. A culturally inspired financial tool by Every Calculator. Plan your savings and investments at everycalc.site.">
+    <meta name="keywords" content="Interest Calculator, Simple Interest, Compound Interest, Financial Planning, India Savings Calculator, Every Calculator, everycalc.site">
+    <meta name="author" content="Every Calculator">
+    <link rel="canonical" href="https://everycalc.site/interest-calculator">
+
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="Interest Calculator | Handcrafted by Every Calculator">
+    <meta property="og:description" content="A professional-grade, culturally inspired interest calculator for precise financial planning.">
+    <meta property="og:image" content="logo.png">
+    <meta property="og:url" content="https://everycalc.site">
+    <meta property="og:type" content="website">
+
+    <!-- FONTS: Syne for Modernity, Crimson Pro for Elegance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+
+    <!-- SCHEMA.ORG -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FinancialCalculator",
+      "name": "Professional Interest Calculator",
+      "description": "Handcrafted Simple and Compound Interest calculator with Indian cultural aesthetics.",
+      "brand": {
+        "@type": "Brand",
+        "name": "Every Calculator"
+      },
+      "url": "https://everycalc.site",
+      "applicationCategory": "Finance",
+      "operatingSystem": "Web"
+    }
+    </script>
+
+    <style>
+        :root {
+            /* Palette: Deep Indigo, Saffron, and Aged Parchment */
+            --ink: #101820;
+            --indigo: #1a2a6c;
+            --saffron: #f4af1b;
+            --clay: #b21f1f;
+            --parchment: #fdfbf7;
+            --border: rgba(26, 42, 108, 0.15);
+            --transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--parchment);
+            color: var(--ink);
+            font-family: 'Syne', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Paper Texture & Background Pattern */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.07;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            width: 120%;
+            height: 120%;
+            top: -10%;
+            left: -10%;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0l10 30h30l-25 20 10 30-25-20-25 20 10-30-25-20h30z' fill='none' stroke='%231a2a6c' stroke-width='0.5' stroke-opacity='0.05'/%3E%3C/svg%3E");
+            z-index: -1;
+            animation: drift 100s linear infinite;
+        }
+
+        @keyframes drift {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Main Container */
+        .calculator-card {
+            width: 100%;
+            max-width: 1100px;
+            background: #fff;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.08);
+            border: 1px solid var(--border);
+            position: relative;
+            z-index: 20;
+            animation: cardEntrance 1.2s ease-out;
+        }
+
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(40px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Branding & Controls Section */
+        .controls-pane {
+            padding: clamp(2rem, 5vw, 4rem);
+            border-right: 1px solid var(--border);
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 3rem;
+        }
+
+        .logo-box img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-box h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.8rem;
+            letter-spacing: -0.5px;
+            color: var(--indigo);
+        }
+
+        .tab-switcher {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 2.5rem;
+            background: #f0f0f0;
+            padding: 5px;
+            border-radius: 0px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--indigo);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: slideUp 0.6s forwards;
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(20px); }
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--indigo);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .field-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .field-wrapper span {
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+            font-family: 'Crimson Pro', serif;
+            color: var(--saffron);
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px 0 12px 25px;
+            border: none;
+            border-bottom: 2px solid var(--border);
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            outline: none;
+            transition: var(--transition);
+            background: transparent;
+        }
+
+        input:focus {
+            border-bottom-color: var(--saffron);
+        }
+
+        /* Results Display Section */
+        .results-pane {
+            background: var(--indigo);
+            color: white;
+            padding: clamp(2rem, 5vw, 4rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .results-pane::after {
+            content: "everycalc.site";
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            opacity: 0.3;
+            text-transform: uppercase;
+        }
+
+        .stat-item {
+            margin-bottom: 3.5rem;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--saffron);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1;
+        }
+
+        .visual-comparison {
+            margin-top: 2rem;
+            height: 6px;
+            width: 100%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+        }
+
+        #p-bar { background: white; height: 100%; transition: width 1s ease; }
+        #i-bar { background: var(--saffron); height: 100%; transition: width 1s ease; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .calculator-card {
+                grid-template-columns: 1fr;
+            }
+            .controls-pane {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+        }
+
+        /* Minimal scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--parchment); }
+        ::-webkit-scrollbar-thumb { background: var(--indigo); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-pattern"></div>
+
+    <main class="calculator-card">
+        <section class="controls-pane">
+            <header class="logo-box">
+                <img src="logo.png" alt="Every Calculator Logo" onerror="this.style.opacity='0'">
+                <h2>Every Calculator</h2>
+            </header>
+
+            <div class="tab-switcher">
+                <button class="tab-btn active" onclick="switchTab('SI', this)">Simple</button>
+                <button class="tab-btn" onclick="switchTab('CI', this)">Compound</button>
+            </div>
+
+            <div class="input-group" style="animation-delay: 0.2s;">
+                <label>Principal Amount</label>
+                <div class="field-wrapper">
+                    <span>₹</span>
+                    <input type="number" id="principal" value="100000" oninput="calculate()">
+                </div>
+            </div>
+
+            <div class="input-group" style="animation-delay: 0.3s;">
+                <label>Rate of Interest (% P.A.)</label>
+                <div class="field-wrapper">
+                    <span style="left: auto; right: 0;">%</span>
+                    <input type="number" id="rate" value="8.5" step="0.1" oninput="calculate()" style="padding-left: 0;">
+                </div>
+            </div>
+
+            <div class="input-group" style="animation-delay: 0.4s;">
+                <label>Time Period (Years)</label>
+                <div class="field-wrapper">
+                    <input type="number" id="time" value="5" oninput="calculate()" style="padding-left: 0;">
+                </div>
+            </div>
+
+            <div class="input-group" id="compounding-group" style="animation-delay: 0.5s; display: none;">
+                <label>Compounding Frequency</label>
+                <select id="frequency" onchange="calculate()" style="padding-left: 0; font-size: 1.2rem;">
+                    <option value="1">Yearly</option>
+                    <option value="2">Half-Yearly</option>
+                    <option value="4">Quarterly</option>
+                    <option value="12">Monthly</option>
+                </select>
+            </div>
+
+            <div style="margin-top: 3rem; font-size: 0.8rem; line-height: 1.6; color: #666; font-style: italic;">
+                * This calculator uses precision algorithms to help you estimate returns based on Indian financial standards. Brought to you by the team at Every Calculator.
+            </div>
+        </section>
+
+        <section class="results-pane">
+            <div class="stat-item">
+                <span class="stat-label">Interest Earned</span>
+                <div class="stat-value">₹ <span id="interest-earned">42,500</span></div>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">Total Maturity Value</span>
+                <div class="stat-value" style="font-size: clamp(2rem, 4vw, 3rem);">₹ <span id="total-value">1,42,500</span></div>
+            </div>
+
+            <div class="visual-comparison">
+                <div id="p-bar" title="Principal" style="width: 70%;"></div>
+                <div id="i-bar" title="Interest" style="width: 30%;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.6rem; text-transform: uppercase; margin-top: 10px; letter-spacing: 1px;">
+                <span>Principal</span>
+                <span style="color: var(--saffron)">Interest</span>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let currentMode = 'SI';
+
+        function switchTab(mode, btn) {
+            currentMode = mode;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const ciGroup = document.getElementById('compounding-group');
+            ciGroup.style.display = mode === 'CI' ? 'block' : 'none';
+            
+            calculate();
+        }
+
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('en-IN').format(Math.round(num));
+        }
+
+        function calculate() {
+            const P = parseFloat(document.getElementById('principal').value) || 0;
+            const R = parseFloat(document.getElementById('rate').value) || 0;
+            const T = parseFloat(document.getElementById('time').value) || 0;
+            const n = parseFloat(document.getElementById('frequency').value);
+
+            let total = 0;
+            let interest = 0;
+
+            if (currentMode === 'SI') {
+                // Simple Interest: SI = (P * R * T) / 100
+                interest = (P * R * T) / 100;
+                total = P + interest;
+            } else {
+                // Compound Interest: A = P(1 + r/n)^(nt)
+                const r = R / 100;
+                total = P * Math.pow((1 + r/n), (n * T));
+                interest = total - P;
+            }
+
+            // Update UI
+            document.getElementById('interest-earned').innerText = formatCurrency(interest);
+            document.getElementById('total-value').innerText = formatCurrency(total);
+
+            // Update Visuals
+            const pWidth = (P / total) * 100;
+            const iWidth = 100 - pWidth;
+            document.getElementById('p-bar').style.width = pWidth + '%';
+            document.getElementById('i-bar').style.width = iWidth + '%';
+        }
+
+        // Initial Calculation
+        window.onload = calculate;
+    </script>
+</body>
+</html>
